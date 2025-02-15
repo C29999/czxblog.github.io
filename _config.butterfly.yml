@@ -17,10 +17,16 @@ nav:
   fixed: false
 
 menu:
- Home: / || fas fa-home
+ 主页: / || fas fa-home
+ 爱好: /archives/ || fas fa-archive
+ 学习 : /tags/ || fas fa-tags
+ 生活 : /categories/ || fas fa-folder-open
  List||fas fa-list:
-     Study: /music/ || fas fa-music
-     link: /link/ || fas fa-video
+   Music: /music/ || fas fa-music
+   Movie: /movies/ || fas fa-video
+ 友链: /link/ || fas fa-link
+ 关于: /about/ || fas fa-heart
+
 
 # --------------------------------------
 # Code Blocks Settings
@@ -46,13 +52,13 @@ code_blocks:
 #   icon: link || the description || color
 social:
    fab fa-github: https://github.com/C29999
-  # fas fa-envelope: mailto:xxxxxx@gmail.com || Email || '#4a7dbe'
+   fas fa-envelope: mailto:xxxxxx@gmail.com || Email || '#4a7dbe'
 
 # --------------------------------------
 # Image Settings
 # --------------------------------------
 
-favicon:  https://github.com/C29999/P.bed/blob/main/2ab96b7ce569ef536a22e219168f16bd.png
+favicon:  'https://github.com/C29999/P.bed/blob/main/2ab96b7ce569ef536a22e219168f16bd.png'
 
 avatar:
   img: \img\logo.jpg
@@ -62,12 +68,12 @@ avatar:
 disable_top_img: false
 
 # If the banner of page not setting, it will show the default_top_img
-default_top_img:
+default_top_img: https://cdn.jsdelivr.net/gh/C29999/P.bed/haizai%E2%80%98.png
 
 # The banner image of index page
-index_img: https://github.com/C29999/P.bed/blob/main/2ab96b7ce569ef536a22e219168f16bd.png
+index_img: https://cdn.jsdelivr.net/gh/C29999/P.bed/haizai%E2%80%98.png
 # The banner image of archive page
-archive_img: https://github.com/C29999/P.bed/blob/main/2ab96b7ce569ef536a22e219168f16bd.png
+archive_img: https://cdn.jsdelivr.net/gh/C29999/P.bed/c1aba3a926df0bf8dfb287a72f8c78fb.png
 
 # Note: tag page, not tags page
 tag_img:
@@ -100,6 +106,9 @@ cover:
   # When cover is not set, the default cover is displayed
   default_cover:
     # - xxx.jpg
+   -https://cdn.jsdelivr.net/gh/C29999/P.bed/b33ae41c692eb0fd82768eb39d284c1f.png
+   -https://cdn.jsdelivr.net/gh/C29999/P.bed/0de60eacdcda934f26a88a2fd97b802d.jpeg
+   -https://cdn.jsdelivr.net/gh/C29999/P.bed/840d27f13c0c9aaed6605774795123e7.png
 
 # Replace Broken Images
 error_img:
@@ -108,7 +117,7 @@ error_img:
 
 # A simple 404 page
 error_404:
-  enable: false
+  enable: true
   subtitle: '????????????'
   background: /img/error-page.png
 
@@ -128,7 +137,7 @@ post_meta:
     # Choose: created / updated / both
     date_type: both
     # Choose: date / relative
-    date_format: date
+    date_format: relative
     categories: true
     tags: true
     label: true
@@ -179,7 +188,7 @@ index_layout: 3
 # 3: auto_excerpt (default)
 # false: do not show the article introduction
 index_post_content:
-  method: 3
+  method: 2
   # If you set method to 2 or 3, the length need to config
   length: 500
 
@@ -322,7 +331,7 @@ aside:
     enable: true
     # Type: monthly / yearly
     type: monthly
-    # Eg: YYYY��MM��
+    # Eg: YYYYÄêMMÔÂ
     format: MMMM YYYY
     # Sort of order. 1, asc for ascending; -1, desc for descending
     order: -1
@@ -358,15 +367,15 @@ rightside_bottom:
 translate:
   enable: false
   # The text of a button
-  default: ��
-  # the language of website (1 - Traditional Chinese/ 2 - Simplified Chinese��
+  default: ·±
+  # the language of website (1 - Traditional Chinese/ 2 - Simplified Chinese£©
   defaultEncoding: 2
   # Time delay
   translateDelay: 0
   # The text of the button when the language is Simplified Chinese
-  msgToTraditionalChinese: '��'
+  msgToTraditionalChinese: '·±'
   # The text of the button when the language is Traditional Chinese
-  msgToSimplifiedChinese: '��'
+  msgToSimplifiedChinese: 'º†'
 
 # Read Mode
 readmode: true
