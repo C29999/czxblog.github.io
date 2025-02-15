@@ -58,10 +58,9 @@ social:
 # Image Settings
 # --------------------------------------
 
-favicon:  'https://github.com/C29999/P.bed/blob/main/2ab96b7ce569ef536a22e219168f16bd.png'
-
+favicon: https://cdn.jsdelivr.net/gh/C29999/P.bed/b_abaf71914f06dd034b7566a7a26edb6e.jpg
 avatar:
-  img: \img\logo.jpg
+  img: https://cdn.jsdelivr.net/gh/C29999/P.bed/b_abaf71914f06dd034b7566a7a26edb6e.jpg
   effect: true
 
 # Disable all banner images
