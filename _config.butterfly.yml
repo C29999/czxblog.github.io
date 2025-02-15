@@ -295,7 +295,7 @@ aside:
       link: https://github.com/xxxxxx
   card_announcement:
     enable: true
-    content: This is my Blog
+    content: 欢迎来到我的小白博客,小站处于刚建设阶段,技术交流QQ1050366415,欢迎各位佬来指点
   card_recent_post:
     enable: true
     # If set 0 will show all
