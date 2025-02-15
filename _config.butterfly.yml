@@ -55,7 +55,7 @@ social:
 favicon: /img/favicon.png
 
 avatar:
-  img: /img/butterfly-icon.png
+  img: \img\logo.jpg
   effect: false
 
 # Disable all banner images
@@ -65,7 +65,7 @@ disable_top_img: false
 default_top_img:
 
 # The banner image of index page
-index_img: /img/logo.jpg
+index_img: \img\My page.png
 
 # The banner image of archive page
 archive_img:
@@ -110,7 +110,7 @@ error_img:
 # A simple 404 page
 error_404:
   enable: false
-  subtitle: 'Page Not Found'
+  subtitle: '????????????'
   background: /img/error-page.png
 
 post_meta:
