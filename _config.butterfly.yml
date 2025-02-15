@@ -65,9 +65,9 @@ disable_top_img: false
 default_top_img:
 
 # The banner image of index page
-index_img: \img\My.png
+index_img: https://github.com/C29999/P.bed/blob/main/2ab96b7ce569ef536a22e219168f16bd.png
 # The banner image of archive page
-archive_img: \img\My.png
+archive_img: https://github.com/C29999/P.bed/blob/main/2ab96b7ce569ef536a22e219168f16bd.png
 
 # Note: tag page, not tags page
 tag_img:
