@@ -19,14 +19,14 @@ nav:
 menu:
  Home: / || fas fa-home
  List||fas fa-list:
-     Music: /music/ || fas fa-music
-  #   Movie: /movies/ || fas fa-video
+     Study: /music/ || fas fa-music
+     link: /link/ || fas fa-video
 
 # --------------------------------------
 # Code Blocks Settings
 # --------------------------------------
 
-code_blocks:
+code_blocks: 
   # Code block theme: darker / pale night / light / ocean / false
   theme: pale night
   macStyle: false
@@ -52,7 +52,7 @@ social:
 # Image Settings
 # --------------------------------------
 
-favicon: /img/favicon.png
+favicon:  https://github.com/C29999/P.bed/blob/main/2ab96b7ce569ef536a22e219168f16bd.png
 
 avatar:
   img: \img\logo.jpg
@@ -90,7 +90,7 @@ footer_img: false
 
 # Website Background
 # Can set it to color or image url
-background:
+background: https://github.com/C29999/P.bed/blob/main/2ab96b7ce569ef536a22e219168f16bd.png
 
 cover:
   # Disable the cover or not
