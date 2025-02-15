@@ -13,9 +13,9 @@ notice: flex-block主题部分重构，详情查看https://github.com/miiiku/fle
 
 # 作者信息
 author:
-  name: Sukoshi
-  avatar: https://s.gravatar.com/avatar/2d6b803eea37de0257620d5fabee7e64?s=200&r=g&d=retro
-  description: 贵在坚持
+  name: 春之雪
+  avatar: 
+  description: 一个来自西南普通本科的电子信息摆烂生
 
 toc:
   max_depth: 3 # 生成 TOC 的最大深度
@@ -103,5 +103,4 @@ social_icon:
     ins     :
     zhihu   :
     weibo   : 
-    github  : https://github.com/miiiku/
-    twitter : https://twitter.com/guanquanhong
+    github  : https://github.com/dashboard
