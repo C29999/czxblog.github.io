@@ -38,8 +38,8 @@ code_blocks:
   copy: true
   language: true
   # true: shrink the code blocks | false: expand the code blocks | none: expand code blocks and hide the button
-  shrink: false
-  fullpage: false
+  shrink: true
+  fullpage: true
 
 # Social media links
 # Formal:
@@ -56,7 +56,7 @@ favicon: /img/favicon.png
 
 avatar:
   img: \img\logo.jpg
-  effect: false
+  effect: true
 
 # Disable all banner images
 disable_top_img: false
@@ -65,10 +65,10 @@ disable_top_img: false
 default_top_img:
 
 # The banner image of index page
-index_img: \img\My page.png
+index_img: \img\My.png
 
 # The banner image of archive page
-archive_img:
+archive_img: \img\My.png
 
 # Note: tag page, not tags page
 tag_img:
