@@ -10,8 +10,8 @@
 # --------------------------------------
 
 nav:
-  # Navigation bar logo image
-  logo: themes/butterfly/source/img/b_abaf71914f06dd034b7566a7a26edb6e.jpg
+  # Navigation bar logo imag
+  logo: /img/logo.jpg
   display_title: true
   # Whether to fix navigation bar
   fixed: false
@@ -31,7 +31,7 @@ code_blocks:
   theme: light
   macStyle: false
   # Code block height limit (unit: px)
-  height_limit: false
+  height_limit: true
   word_wrap: false
 
   # Toolbar
@@ -65,7 +65,7 @@ disable_top_img: false
 default_top_img:
 
 # The banner image of index page
-index_img: themes/butterfly/source/img/b1521a2f80d5efa84bc089462b581609.png
+index_img: /img/logo.jpg
 
 # The banner image of archive page
 archive_img:
