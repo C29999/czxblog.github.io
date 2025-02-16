@@ -21,11 +21,11 @@ menu:
  爱好: /archives/ || fas fa-archive
  学习 : /tags/ || fas fa-tags
  生活 : /categories/ || fas fa-folder-open
+ 友链: /link/ || fas fa-link
+ 关于: /about/ || fas fa-heart
  List||fas fa-list:
    Music: /music/ || fas fa-music
    Movie: /movies/ || fas fa-video
- 友链: /link/ || fas fa-link
- 关于: /about/ || fas fa-heart
 
 
 # --------------------------------------
@@ -80,7 +80,7 @@ tags_img: https://cdn.jsdelivr.net/gh/C29999/P.bed/157dc9b677e20d184952ca5bb8c05
 # The banner image of tag page, you can set the banner image for each tag
 # Format:
 #  - tag name: xxxxx
-tag_img: https://cdn.jsdelivr.net/gh/C29999/P.bed/157dc9b677e20d184952ca5bb8c0527d.png
+tag_per_img: https://cdn.jsdelivr.net/gh/C29999/P.bed/157dc9b677e20d184952ca5bb8c0527d.png
 
 # Note: category page, not categories page
 category_img:
@@ -167,10 +167,10 @@ subtitle:
   # 1 - hitokoto.cn
   # 2 - yijuzhan.com
   # 3 - jinrishici.com
-  source: 2
+  source: flase
   # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
-    - 你好
+    - 欢迎你来到我的博客,让我们彼此之间相互珍惜这份难得的相遇
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
