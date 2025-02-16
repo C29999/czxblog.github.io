@@ -1,6 +1,6 @@
 ---
 title: 竞赛|蓝桥杯备战
-date: 2023-05-17 16:48:00
+date: 2025-02-16 15:00:00
 tags: 蓝桥杯
 categories: 学习
 description: 在备战蓝桥杯时候学习到的东西
