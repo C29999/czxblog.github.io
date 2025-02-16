@@ -292,7 +292,7 @@ aside:
       enable: true
       icon: fab fa-github
       text: Follow Me
-      link: https://github.com/xxxxxx
+      link: 
   card_announcement:
     enable: true
     content: 欢迎来到我的小白博客,小站处于刚建设阶段,技术交流QQ1050366415,欢迎各位佬来指点
