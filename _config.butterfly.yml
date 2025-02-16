@@ -17,12 +17,12 @@ nav:
   fixed: false
 
 menu:
- 涓婚〉: / || fas fa-home
- 鐖卞ソ: /houbes/ || fas fa-archive
- 瀛︿範 : /tags/ || fas fa-tags
- 鐢熸椿 : /categories/ || fas fa-folder-open
- 鍙嬮摼: /link/ || fas fa-link
- 鍏充簬: /about/ || fas fa-heart
+ 主页: / || fas fa-home
+ 爱好: /houbes/ || fas fa-archive
+ 学习 : /tags/ || fas fa-tags
+ 生活: /categories/ || fas fa-folder-open
+ 友链: /link/ || fas fa-link
+ 关于: /about/ || fas fa-heart
  List||fas fa-list:
    Music: /music/ || fas fa-music
    Movie: /movies/ || fas fa-video
@@ -170,7 +170,7 @@ subtitle:
   source: flase
   # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
-    - 娆㈣繋浣犳潵鍒版垜鐨勫崥瀹�,璁╂垜浠郊姝や箣闂寸浉浜掔弽鎯滆繖浠介毦寰楃殑鐩搁亣
+    - 欢迎你来到我的博客,让我们彼此之间相互珍惜这份难得的相遇
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
@@ -295,7 +295,7 @@ aside:
       link: 
   card_announcement:
     enable: true
-    content: 娆㈣繋鏉ュ埌鎴戠殑灏忕櫧鍗氬,灏忕珯澶勪簬鍒氬缓璁鹃樁娈�,鎶€鏈氦娴丵Q1050366415,娆㈣繋鍚勪綅浣潵鎸囩偣
+    content: 欢迎来到我的小白博客,小站处于刚建设阶�?,技术交流QQ1050366415,欢迎各位佬来指点
   card_recent_post:
     enable: true
     # If set 0 will show all
@@ -331,7 +331,7 @@ aside:
     enable: true
     # Type: monthly / yearly
     type: monthly
-    # Eg: YYYY脛锚MM脭脗
+    # Eg: YYYYÄêMMÔÂ
     format: MMMM YYYY
     # Sort of order. 1, asc for ascending; -1, desc for descending
     order: -1
@@ -367,15 +367,15 @@ rightside_bottom:
 translate:
   enable: false
   # The text of a button
-  default: 路卤
-  # the language of website (1 - Traditional Chinese/ 2 - Simplified Chinese拢漏
+  default: ·±
+  # the language of website (1 - Traditional Chinese/ 2 - Simplified Chinese£©
   defaultEncoding: 2
   # Time delay
   translateDelay: 0
   # The text of the button when the language is Simplified Chinese
-  msgToTraditionalChinese: '路卤'
+  msgToTraditionalChinese: '·±'
   # The text of the button when the language is Traditional Chinese
-  msgToSimplifiedChinese: '潞鈥�'
+  msgToSimplifiedChinese: 'º�?'
 
 # Read Mode
 readmode: true
