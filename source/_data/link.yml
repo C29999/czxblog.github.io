@@ -1,23 +1,23 @@
-- class_name: ÓÑÇéæœ½Ó
-  class_desc: ÄÇĞ©ÈË£¬ÄÇĞ©ÊÂ
+- class_name: å‹æƒ…é“¾æ¥
+  class_desc: é‚£äº›äººï¼Œé‚£äº›äº‹
   link_list:
-    - name: Hexo
-      link: https://hexo.io/zh-tw/
-      avatar: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
-      descr: ¿ìËÙ¡¢º††ÎÇÒŠ´óµÄ¾WÕI¿ò¼Ü
-
-- class_name: ¾WÕ¾
-  class_desc: ÖµµÃÍÆË]µÄ¾WÕ¾
+    - name: Paracosm
+      link: https://iyheart.github.io/
+      avatar: https://raw.githubusercontent.com/iyheart/tuchuang/main/img/cover51_1.png
+      descr: è¿™æ˜¯çœŸå¤§ä½¬
+      
+- class_name: ç½‘ç«™
+  class_desc: å€¼å¾—æ¨èçš„ç¶²ç«™
   link_list:
     - name: Youtube
       link: https://www.youtube.com/
       avatar: https://i.loli.net/2020/05/14/9ZkGg8v3azHJfM1.png
-      descr: Ò•îl¾WÕ¾
+      descr: è§†é¢‘ç½‘ç«™
     - name: Weibo
       link: https://www.weibo.com/
       avatar: https://i.loli.net/2020/05/14/TLJBum386vcnI1P.png
-      descr: ÖĞ‡ø×î´óÉç½»·ÖÏíÆ½Ì¨
+      descr: ä¸­åœ‹æœ€å¤§ç¤¾äº¤åˆ†äº«å¹³å°
     - name: Twitter
       link: https://twitter.com/
       avatar: https://i.loli.net/2020/05/14/5VyHPQqR6LWF39a.png
-      descr: Éç½»·ÖÏíÆ½Ì¨
+      descr: ç¤¾äº¤åˆ†äº«å¹³å°
