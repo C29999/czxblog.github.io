@@ -1,9 +1,14 @@
 ---
-title: Stm32F407
+title: Stm32å•ç‰‡æœº
 date : 2025-2-18 10:00:00
-categories: µ¥Æ¬»úÑ§Ï°
-description : ÕâÆªËãÊÇÒ»ÆªÈÕ¼Ç°Ñ£¬¼ÇÂ¼×Ô¼º×öÆ½ºâ³µºÍÑ­¼£Ğ¡³µµÄÈÕ¼Ç
+categories: å•ç‰‡æœºå­¦ä¹ 
+description : stm32å•ç‰‡æœºå­¦ä¹ ç¬”è®°
 top_img : https://cdn.jsdelivr.net/gh/C29999/P.bed/f8922ce33d5c47d7934843f712156d91.png
 cover : https://cdn.jsdelivr.net/gh/C29999/P.bed/f8922ce33d5c47d7934843f712156d91.png
-tags : µ¥Æ¬»úÑ§Ï°
+tags : å•ç‰‡æœºå­¦ä¹ 
 ---
+
+## STM32F103CBT6
+
+STM32ä¸²å£é€šä¿¡
+
