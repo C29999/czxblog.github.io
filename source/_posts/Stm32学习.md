@@ -10,7 +10,7 @@ tags : 单片机学习
 
 ## STM32F103CBT6
 
-### STM32串口通信\
+### STM32串口通信
 
 串口通信比较好的学习链接：[串口通信](https://www.lxlinux.net/e/stm32/stm32-usart-receive-data-using-rxne-time-out.html#_3-%E7%A1%AC%E4%BB%B6%E5%87%86%E5%A4%87)
 
