@@ -45,3 +45,4 @@ tags : 单片机学习
 #### 串口通信中的USART模块
 
  ![UASRT模块引脚分配](https://cdn.jsdelivr.net/gh/C29999/P.bed/a3f655f646eafb23337476746ca3f68f.png)
+ 
