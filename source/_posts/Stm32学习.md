@@ -45,4 +45,20 @@ tags : 单片机学习
 #### 串口通信中的USART模块
 
  ![UASRT模块引脚分配](https://cdn.jsdelivr.net/gh/C29999/P.bed/a3f655f646eafb23337476746ca3f68f.png)
- 
+
+#### 定时器
+
+### HAL库TIM中的一些函数
+
+``` C++
+
+HAL_TIM_PWM_Start();//用于输出PWM信号
+HAL_TIM_PWM_Start_IT();//用于开启PWM输出中断
+HAL_TIM_IC_CaptureCallback();//输入输出捕获
+```
+
+### 定时器中的中断回调函数
+
+#### 基本定时器中断
+
+>void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)函数的中断设置
