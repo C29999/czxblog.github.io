@@ -46,6 +46,15 @@ tags : 单片机学习
 
  ![UASRT模块引脚分配](https://cdn.jsdelivr.net/gh/C29999/P.bed/a3f655f646eafb23337476746ca3f68f.png)
 
+### 串口中断常用函数
+
+``` C++
+HAL_UARTEx_ReceiveToIdle_DMA(&huart1, uart_int, 8);//用处：开启接收
+ HAL_UART_Transmit(&huart1, uart_int, Size, 100);//发送中断
+ 
+
+```
+
 ### 定时器
 
 ### 关于定时器的基础简绍
@@ -72,6 +81,4 @@ HAL_TIM_Base_Start_IT();//以中断的方式开启定时器
 >void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)函数的中断设置
 
 ### 中断优先级的设置
-
-#### 中断优先级的设置
 
