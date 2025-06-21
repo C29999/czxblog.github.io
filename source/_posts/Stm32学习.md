@@ -73,7 +73,6 @@ HAL_TIM_Base_Start_IT();//以中断的方式开启定时器
 
 ### 定时器中的中断回调函数
 
-
 基本定时器：
 
 #### 基本定时器中断
@@ -87,4 +86,3 @@ HAL_TIM_Base_Start_IT();//以中断的方式开启定时器
 ### 陀螺仪
 
  ![MPU6050工作原理](https://cdn.jsdelivr.net/gh/C29999/P.bed/569515344b36649f4ddbc1a5004ff0f1.png)
- 
