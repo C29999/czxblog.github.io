@@ -82,3 +82,9 @@ HAL_TIM_Base_Start_IT();//以中断的方式开启定时器
 
 ### 中断优先级的设置
 
+### SPI
+
+### 陀螺仪
+
+ ![MPU6050工作原理](https://cdn.jsdelivr.net/gh/C29999/P.bed/569515344b36649f4ddbc1a5004ff0f1.png)
+ 
