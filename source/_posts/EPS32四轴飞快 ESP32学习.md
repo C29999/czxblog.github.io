@@ -15,7 +15,6 @@ tags : Plan
 1. [ESP32入门](https://blog.csdn.net/qq_33964936/article/details/133777605)
 2. [ESP32开发环境配置](https://blog.csdn.net/weixin_43842462/article/details/123295842)
 3. [ESP32学习视频](https://www.bilibili.com/video/BV1JS4y1H7Rm/?spm_id_from=333.337.search-card.all.click&vd_source=35e34a8c020f6931dec5585c4482ad05)
-4. 
 
 ## 关于ESP32
 
