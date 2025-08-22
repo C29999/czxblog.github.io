@@ -1,11 +1,12 @@
 ---
 title: 竞赛|蓝桥杯备战
-date: 2025-02-16 15:00:00
 tags: 蓝桥杯
 categories: 编程
 description: 在备战蓝桥杯时候学习到的东西
-top_img: https://cdn.jsdelivr.net/gh/C29999/P.bed/189d40b243a85776cea0a223ff40c90f.png
-cover : https://cdn.jsdelivr.net/gh/C29999/P.bed/189d40b243a85776cea0a223ff40c90f.png
+top_img: 'https://cdn.jsdelivr.net/gh/C29999/P.bed/189d40b243a85776cea0a223ff40c90f.png'
+cover: 'https://cdn.jsdelivr.net/gh/C29999/P.bed/189d40b243a85776cea0a223ff40c90f.png'
+abbrlink: 46521
+date: 2025-02-16 15:00:00
 ---
 **蓝桥杯**考试知识点![蓝桥杯](https://cdn.jsdelivr.net/gh/C29999/P.bed/a8d22c0c1a12d34c9bdb7ceced5f0019.png)
 
