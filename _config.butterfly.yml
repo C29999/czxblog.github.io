@@ -1053,8 +1053,8 @@ electric_clock:
   clock_css: https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu@1.1.6/lib/clock.min.css
   clock_js: https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu@1.1.6/lib/clock.min.js
   ip_api: https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0
-  qweather_key: 39a79c9b61de407aa4b3179af22c0d1b
-  gaud_map_key: ac0a1813f2b5860c1054a11336338c76
+  qweather_key: 
+  gaud_map_key: 
   default_rectangle: true # 开启后将一直显示rectangle位置的天气，否则将获取访问者的地理位置与天气
   rectangle: 112.6534116,27.96920845 # 获取访问者位置失败时会显示该位置的天气，同时该位置为开启default_rectangle后的位置
 
