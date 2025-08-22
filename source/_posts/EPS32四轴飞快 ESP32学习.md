@@ -1,12 +1,13 @@
 ---
 title: 四轴飞控学习ESP32入门
-date : 2025-2-17 12:00:00
-description : 四轴飞控
+description: 四轴飞控
 categories: 四轴飞控
-sticky : 4
-top_img : https://cdn.jsdelivr.net/gh/C29999/P.bed/0de60eacdcda934f26a88a2fd97b802d.jpeg
-cover : https://cdn.jsdelivr.net/gh/C29999/P.bed/0de60eacdcda934f26a88a2fd97b802d.jpeg
-tags : Plan
+sticky: 4
+top_img: 'https://cdn.jsdelivr.net/gh/C29999/P.bed/0de60eacdcda934f26a88a2fd97b802d.jpeg'
+cover: 'https://cdn.jsdelivr.net/gh/C29999/P.bed/0de60eacdcda934f26a88a2fd97b802d.jpeg'
+tags: Plan
+abbrlink: 20377
+date: 2025-08-17 12:00:00
 ---
 
 
