@@ -20,6 +20,7 @@ date: 2025-08-17 12:00:00
 5. [遥控器开源](https://oshwhub.com/a1077/ESP32yao-kong-qi-WIFI-MQTT-ESPNO)
 6. [神书.四旋翼飞行器设计与实现](https://zh.z-library.sk/book/18259743/fab4eb/%E5%9B%9B%E6%97%8B%E7%BF%BC%E9%A3%9E%E8%A1%8C%E5%99%A8%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0.html)
 7.[卡尔曼滤波在智能车中的应用](https://blog.csdn.net/m0_53966219/article/details/126806419)
+8.[MPU6050与磁力计融合：攻克Z轴角度漂移的血泪史](https://blog.csdn.net/qq_45217381/article/details/149421958)
 
 ## 四旋翼飞行器学习
 
@@ -108,6 +109,10 @@ int kalman_filter(kalman_param *kfp, int input)
   四轴飞控硬件大致框架：
   ![四轴飞控硬件](https://cdn.jsdelivr.net/gh/C29999/P.bed/6098bbe8a7d82ff8afe518dec9eb15f9.png)
 
+### 如何解决MPU6050零漂问题？
+
+**我的想法是MPU6050加一个磁力技基础上在加一个滤波算法读出6050的值**
+
 ### 关于ESP32
 
 ESP32是一款ESP32是一款高性能、低功耗的**Wi-Fi/蓝牙双模物联网芯片**，集成了丰富的外设和强大的计算能力。
@@ -115,3 +120,4 @@ ESP32是一款ESP32是一款高性能、低功耗的**Wi-Fi/蓝牙双模物联�
 >使用ESP32进行四轴飞控的开发，作为四轴飞控核心，凭借双核处理、硬件PWM和Wi-Fi/蓝牙一体化，可实现低成本高响应的无人机控制；适合轻量级应用，但复杂环境需优化实时性
 
 ### 机械方面
+
