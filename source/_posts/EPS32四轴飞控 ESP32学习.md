@@ -24,6 +24,39 @@ date: 2025-08-17 12:00:00
 7.[卡尔曼滤波在智能车中的应用](https://blog.csdn.net/m0_53966219/article/details/126806419)
 8.[MPU6050与磁力计融合：攻克Z轴角度漂移的血泪史](https://blog.csdn.net/qq_45217381/article/details/149421958)
 9.[逻辑分析仪的使用和安装](https://blog.csdn.net/qq_50930131/article/details/145970151)
+10.[虚拟机的使用](https://blog.csdn.net/weixin_48384182/article/details/109693775)
+
+## 基础编译学习
+
+Arduino IDE 的三个主要函数的作用：
+  ![esp32界面](https://cdn.jsdelivr.net/gh/C29999/P.bed/10f82368316651ff74288577f5287119.png)
+
+setup() 初始化一次，loop()
+
+``` C++
+void setup() {
+  // 初始化设置，只运行一次
+  pinMode(LED_BUILTIN, OUTPUT);
+  int result = calculateSum(2, 3); // 调用自定义函数
+}
+
+void loop() {
+  // 主循环，重复执行
+  blinkLED(); // 调用自定义函数
+  delay(1000);
+}
+
+// 自定义函数
+int calculateSum(int a, int b) {
+  return a + b;
+}
+
+void blinkLED() {
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(500);
+  digitalWrite(LED_BUILTIN, LOW);
+}
+```
 
 ## 四旋翼飞行器学习
 
