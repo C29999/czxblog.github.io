@@ -96,8 +96,26 @@ TCB 是一个数据结构（一个 struct），由 FreeRTOS 内核在创建任�
 
 >>>TCB 是 FreeRTOS 用来代表一个任务的内核对象，是系统感知和管理任务的唯一依据。 你创建一个任务时，系统就会为它分配一个 TCB；删除一个任务时，就会释放它的 TCB
 
-### 采用STM32G431＋ CUBEMX学习STM32
+### 采用STM32G431(蓝桥杯开发板)＋ CUBEMX学习STM32
 
 #### 使用FRTOS实现点灯
 
 
+配置链接：[STM32CubeMX生成第一个freeRTOS工程](https://blog.csdn.net/LC_8575/article/details/142781687)
+蓝桥杯嵌入式原理图：
+
+![点亮一个LED](https://cdn.jsdelivr.net/gh/C29999/P.bed/ca3479b74e8483c35070d97aaec84e0e.png)
+
+
+CUBEMX配置：![FRTOS第一次配置](https://cdn.jsdelivr.net/gh/C29999/P.bed/49d7f1793924dfb764077d8c76ae91af.png)
+
+
+如果出现以下错误找不到头文件错误
+
+  ![STM32错误](https://cdn.jsdelivr.net/gh/C29999/P.bed/7f5d087659d444bb7c7bb7ffe51ec0d6.png)
+
+ 那么多半是在FRTOS设置使用的新的库，我只需要把这一项关闭就行
+
+   ![2](https://cdn.jsdelivr.net/gh/C29999/P.bed/7865b41b1e66147f547f971f5bcb83be.png)
+
+1231231212321313213123
