@@ -263,3 +263,61 @@ void StartTask02(void *argument)
 #### 任务的栈
 
 
+##### 函数调用栈
+
+每当一个函数被调用时，函数的返回地址，参数以及局部变量会被保持在栈上，函数执行完后，栈会恢复道调用之前的状态
+
+
+#### 创建任务
+
+##### 动态创建任务与静态创建任务
+
+动态和静态两种创建任务的方式这是在FreeRTOS 中创建任务的两种内存管理方式。
+
+>动态创建任务：FreeRTOS 内核自动分配任务栈和 TCB 所需的内存
+>> 优点不需要手动管理内存，适合任务数量不确定或频繁变化的情况。
+缺点可能会生成内存碎片
+
+>静态创建任务：用户手动分配内存，包括 TCB 和 栈空间
+>>无内存碎片，适合内存受限系统
+>>要手动管理内存
+
+CUBEMX生成的动态底层代码:
+
+``` C++
+
+ (xTaskCreate ((TaskFunction_t)func, name, (uint16_t)stack, argument, prio, &hTask) != pdPASS)
+
+
+BaseType_t xTaskCreate(	TaskFunction_t pxTaskCode,
+							const char * const pcName,		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+							const configSTACK_DEPTH_TYPE usStackDepth,
+							void * const pvParameters,
+							UBaseType_t uxPriority,
+							TaskHandle_t * const pxCreatedTask )
+
+(TaskFunction_t)func 任务函数指针
+const char * const pcName 任务名称
+const configSTACK_DEPTH_TYPE usStackDepth 任务栈大小
+void * const pvParameters 任务参数
+UBaseType_t uxPriority 任务优先级
+TaskHandle_t * const pxCreatedTask 任务句柄，通过任务句柄可以找到对应的任务
+BaseType_t 返回值，表示函数是否调用成功 成功返回pdPASS，失败返回pdFAIL
+
+```
+###### 如何动态创建任务函数
+
+``` C++
+
+TaskHandle_t MyTaskHandle;
+xTaskCreate(StartMyTask, "MyTask", 256, (void*)&task_parameter, tskIDLE_PRIORITY + 2, &MyTaskHandle);
+
+StartMyTask(void *pvParameters)
+{
+  for(;;)
+  {
+
+    osdelay();
+  }
+}
+```
