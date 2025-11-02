@@ -12,6 +12,9 @@ tags : FRTOS
 
 将FRTOS想象成一个超级高效的"任务管家"，它核心的工作就是让你的单片机能够同时“一心多用”，通过任务调度、消息队列、信号量等机制，来合理地安排多个任务（比如同时读取传感器、刷新屏幕、进行网络通信）的执行顺序和时间，确保那些最紧急的任务能得到优先处理，从而让你的嵌入式项目运行得更可靠、更有序。
 
+
+***FRTOS实现任务跳转，只会执行主函数前半部分，后面只会执行RTOS中的任务***
+
 ## FRTOS基础
 
 ### 什么是任务栈
@@ -112,7 +115,7 @@ TCB 是一个数据结构（一个 struct），由 FreeRTOS 内核在创建任�
 
 ## 采用STM32F104(蓝桥杯开发板)＋ CUBEMX学习STM32
 
-#### CUBEMX中生成的FRTOS架构
+### CUBEMX中生成的FRTOS架构
 
 ``` C
 
@@ -160,7 +163,7 @@ void StartDefaultTask(void *argument)
 
 ```
 
-#### 使用FRTOS实现串口发送
+### 使用FRTOS实现串口发送
 
 
 配置链接：[STM32CubeMX生成第一个freeRTOS工程](https://blog.csdn.net/LC_8575/article/details/142781687)
@@ -256,21 +259,21 @@ void StartTask02(void *argument)
 
 ```
 
-#### 任务优先级的使用
+### 任务优先级的使用
 
 和中断不同的是FRTOS中的优先级越高,越先使用
 
-#### 任务的栈
+### 任务的栈
 
 
-##### 函数调用栈
+#### 函数调用栈
 
 每当一个函数被调用时，函数的返回地址，参数以及局部变量会被保持在栈上，函数执行完后，栈会恢复道调用之前的状态
 
 
-#### 创建任务
+### 创建任务
 
-##### 动态创建任务与静态创建任务
+#### 动态创建任务与静态创建任务
 
 动态和静态两种创建任务的方式这是在FreeRTOS 中创建任务的两种内存管理方式。
 
@@ -296,16 +299,16 @@ BaseType_t xTaskCreate(	TaskFunction_t pxTaskCode,
 							UBaseType_t uxPriority,
 							TaskHandle_t * const pxCreatedTask )
 
-(TaskFunction_t)func 任务函数指针
-const char * const pcName 任务名称
-const configSTACK_DEPTH_TYPE usStackDepth 任务栈大小
-void * const pvParameters 任务参数
-UBaseType_t uxPriority 任务优先级
-TaskHandle_t * const pxCreatedTask 任务句柄，通过任务句柄可以找到对应的任务
-BaseType_t 返回值，表示函数是否调用成功 成功返回pdPASS，失败返回pdFAIL
+//(TaskFunction_t)func 任务函数指针
+//const char * const pcName 任务名称
+//const configSTACK_DEPTH_TYPE usStackDepth 任务栈大小
+//void * const pvParameters 任务参数
+//UBaseType_t uxPriority 任务优先级
+//TaskHandle_t * const pxCreatedTask 任务句柄，通过任务句柄可以找到对应的任务
+//BaseType_t 返回值，表示函数是否调用成功 成功返回pdPASS，失败返回pdFAIL
 
 ```
-###### 如何动态创建任务函数
+##### 如何动态创建任务函数
 
 ``` C++
 
@@ -321,3 +324,125 @@ StartMyTask(void *pvParameters)
   }
 }
 ```
+
+#### 静态创建任务
+
+``` C++
+
+
+StaticTask_t MyTaskTCB;
+StackType_t MyTaskStack[256];
+
+TaskHandle_t MyTaskHandle = xTaskCreateStatic(
+    StartMyTask,           // 任务函数指针
+    "MyTask",              // 任务名称  
+    256,                   // 任务栈大小
+    (void*)&task_parameter,// 任务参数
+    tskIDLE_PRIORITY + 2,  // 任务优先级
+    MyTaskStack,           // 栈缓冲区
+    &MyTaskTCB             // TCB缓冲区
+);
+
+```
+
+静态创建任务和动态创建任务的区别：
+动态创建只需指定栈大小，系统自动分配内存；静态创建必须额外提供栈和任务控制块的具体内存地址，由开发者预先分配好所有内存空间。
+
+### 如何实现任务轮询
+
+FreeRTOS 通过 基于优先级的抢占式调度 实现任务轮询：调度器借助硬件定时器中断周期性地触发，检查所有任务状态，始终让 最高优先级的就绪任务 获得 CPU 使用权；每个任务必须 主动调用如 osDelay 等阻塞函数 来让出 CPU，从而保证同等优先级的任务能通过 时间片轮转 公平共享处理器，实现多任务的并发执行与平滑切换
+
+>比喻：FreeRTOS 就像一个永不疲倦的超级指挥家，它手握一个精准的节拍器（系统心跳），指挥着整个乐队（多个任务）。每一位乐手（任务）都必须在演奏完自己的一个小节后，主动停下来（调用如 osDelay 这样的函数），把舞台让给指挥。指挥则遵循一条黄金法则：谁的任务更紧急、谁等得最久，就让谁接下来表演。通过这种方式，指挥家确保了所有乐手都能轮流上场，既不会有人一直霸占麦克风，也不会有人被彻底冷落，从而奏出一曲和谐流畅的多任务交响乐
+
+### 任务调度算法
+
+#### 抢占式任务调度
+
+***抢占式任务调度***运行在任务执行期间，基于任务优先级动态抢占CPU资源，暂停当前任务并切换到其他任务，FROTS可以在任何时候根据任务优先级来决定哪个任务应当运行
+
+
+抢占式任务调度实验：
+``` C++
+
+void StartDefaultTask(void *argument)
+{
+  /* USER CODE BEGIN StartDefaultTask */
+  /* Infinite loop */\
+	//HAL_UART_Transmit(&huart1, (uint8_t *)"hello wi99ndows!\r\n", 16 , 0xffff);
+  for(;;)
+  {
+    printf("text\n\r");
+    myTask02Handle = osThreadNew(StartTask02, NULL, &myTask02_attributes);
+    printf("11212\n\r");
+    osDelay(2000);
+  }
+  /* USER CODE END StartDefaultTask */
+}
+
+/* USER CODE BEGIN Header_StartTask02 */
+/**
+* @brief Function implementing the myTask02 thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartTask02 */
+void StartTask02(void *argument)
+{
+  /* USER CODE BEGIN StartTask02 */
+  /* Infinite loop */
+	int i=0;
+	int* cnt =(int*)argument;
+  for(;;)
+  {
+		printf("hello world\n\r");
+	  osDelay(2000);
+  }
+  /* USER CODE END StartTask02 */
+}
+```
+
+
+#### 关于FreeRTOSConfig.h
+
+FreeRTOSConfig.h文件是FreeRTOS的配置文件，它允许用户根据具体的应用需求来定制和优化FreeRTOS的运行时行为。
+
+``` C++
+
+ /* 调度模式配置 */
+#define configUSE_PREEMPTION                     1       /* 1=启用抢占式调度，0=协作式调度 */
+
+/* 内存分配方式配置 */
+#define configSUPPORT_STATIC_ALLOCATION          1       /* 1=支持静态内存分配（用户提供内存） */
+#define configSUPPORT_DYNAMIC_ALLOCATION         1       /* 1=支持动态内存分配（系统自动分配） */
+
+/* 钩子函数配置 */
+#define configUSE_IDLE_HOOK                      0       /* 1=启用空闲任务钩子函数，0=禁用 */
+#define configUSE_TICK_HOOK                      0       /* 1=启用系统心跳钩子函数，0=禁用 */
+
+/* 系统时钟配置 */
+#define configCPU_CLOCK_HZ                       ( SystemCoreClock )  /* CPU时钟频率，通常等于系统核心时钟 */
+#define configTICK_RATE_HZ                       ((TickType_t)1000)   /* 系统心跳频率=1000Hz，即1个tick=1ms */
+
+/* 任务系统配置 */
+#define configMAX_PRIORITIES                     (56)    /* 最大优先级数量，范围1-255 */
+#define configMINIMAL_STACK_SIZE                 ((uint16_t)128)      /* 空闲任务的最小栈大小（字） */
+#define configTOTAL_HEAP_SIZE                    ((size_t)3072)       /* 动态内存分配的总堆大小=3KB */
+#define configMAX_TASK_NAME_LEN                  ( 16 )  /* 任务名称最大长度 */
+
+/* 调试和跟踪配置 */
+#define configUSE_TRACE_FACILITY                 1       /* 1=启用可视化跟踪调试功能 */
+
+/* 时间系统配置 */
+#define configUSE_16_BIT_TICKS                   0       /* 0=使用32位tick计数器，1=使用16位（已过时） */
+
+/* 内核对象配置 */
+#define configUSE_MUTEXES                        1       /* 1=启用互斥锁功能 */
+#define configQUEUE_REGISTRY_SIZE                8       /* 队列注册表大小，用于调试 */
+#define configUSE_RECURSIVE_MUTEXES              1       /* 1=启用递归互斥锁 */
+#define configUSE_COUNTING_SEMAPHORES            1       /* 1=启用计数信号量 */
+
+/* 任务选择优化 */
+#define configUSE_PORT_OPTIMISED_TASK_SELECTION  0       /* 1=使用端口优化的任务选择（依赖硬件），0=通用C代码 */
+
+```
+
