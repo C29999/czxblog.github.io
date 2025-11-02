@@ -1,11 +1,12 @@
 ---
 title: FRTOS学习
-date : 2025-10-29 12:00:00
-description : FRTOS
+description: FRTOS
 categories: 关于我
-top_img : https://cdn.jsdelivr.net/gh/C29999/P.bed/0832c767e6558a3be965a14286e016f3.png
-cover : https://cdn.jsdelivr.net/gh/C29999/P.bed/0832c767e6558a3be965a14286e016f3.png
-tags : FRTOS
+top_img: 'https://cdn.jsdelivr.net/gh/C29999/P.bed/0832c767e6558a3be965a14286e016f3.png'
+cover: 'https://cdn.jsdelivr.net/gh/C29999/P.bed/0832c767e6558a3be965a14286e016f3.png'
+tags: FRTOS
+abbrlink: 52906
+date: 2025-10-29 12:00:00
 ---
 
 ## 什么是FRTOS？
