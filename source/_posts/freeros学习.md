@@ -495,5 +495,117 @@ FreeRTOS 任务拥有四种核心状态：运行态（正在CPU执行）、就�
 
 [动态表示四种状态](https://www.bilibili.com/video/BV1xM1KB3EXr/?spm_id_from=333.337.search-card.all.click&vd_source=35e34a8c020f6931dec5585c4482ad05)
 
+#### 空闲任务和空闲钩子函数
 
-121
+>空闲任务：空闲任务 是 FreeRTOS 自动创建的一个系统任务，它始终处于最低优先级，当且仅当系统中所有用户任务都处于阻塞或挂起状态时，调度器才会切换到空闲任务来运行，它的存在确保了 CPU 永远不会停止执行，同时为开发者提供了通过空闲任务钩子函数在系统“空闲”时执行后台维护或进入低功耗模式的机会
+
+ ![空闲钩子函数](https://cdn.jsdelivr.net/gh/C29999/P.bed/243fca50abb12220614e1c2f57be5289.png)
+
+
+
+什么是空闲钩子函数？
+
+空闲钩子函数的作用:挂载到空闲任务上的自定义函数，在系统空闲时自动执行
+
+如何开启空闲钩子函数？
+ ![空闲钩子函数的开启](https://cdn.jsdelivr.net/gh/C29999/P.bed/f452cc037be6b95bb858bb9cf8f0bfdd.png)
+
+
+#####  任务控制块
+
+###### TCB的基本概念
+
+TCB（任务控制块） 是 FreeRTOS 中用于描述和管理一个任务所有信息的数据结构，每个任务都有自己独立的 TCB，相当于任务的"身份证"或"人事档案"
+
+``` C++
+typedef struct tskTaskControlBlock
+{
+    /* 1. 栈指针 */
+    volatile StackType_t *pxTopOfStack;    // 当前栈顶位置
+    
+    /* 2. 任务状态 */
+    eTaskState eCurrentState;              // 当前状态：就绪、运行、阻塞、挂起
+    
+    /* 3. 任务优先级 */
+    UBaseType_t uxPriority;                // 任务优先级 (0 = 最低)
+    
+    /* 4. 任务函数和参数 */
+    TaskFunction_t pvTaskCode;             // 指向任务函数的指针
+    void *pvParameters;                    // 传递给任务的参数
+    
+    /* 5. 任务名（用于调试） */
+    const char *pcTaskName;                // 任务名称字符串
+    
+    /* 6. 事件相关 */
+    void *pvEventList;                     // 事件列表项（等待队列、信号量等）
+    
+    /* 7. 时间管理 */
+    TickType_t xTicksToDelay;              // 剩余延时时间（如果处于阻塞态）
+    
+    /* 8. 栈信息 */
+    StackType_t *pxStack;                  // 栈起始地址
+    uint16_t usStackDepth;                 // 栈深度
+    
+    /* 9. 链表指针 */
+    struct tskTaskControlBlock *pxNextTask; // 就绪/阻塞链表中的下一个任务
+    struct tskTaskControlBlock *pxPreviousTask; // 就绪/阻塞链表中的前一个任务
+    
+} tskTCB;
+```
+
+#### 任务的删除
+
+FreeRTOS 实现任务删除主要通过 vTaskDelete() 函数完成，这是一个安全、有序的资源清理过程。
+
+``` C++
+
+vTaskDelete(xTaskHandle);  // xTaskHandle 是要删除的任务句柄
+vTaskDelete(NULL);  
+// 参数为NULL表示删除自己
+```
+
+当任务被删除后，就会被移除任务调度列表
+表示执行五次后，删除自己：
+``` C++ 
+void StartDefaultTask(void *argument)
+{
+  /* USER CODE BEGIN StartDefaultTask */
+  /* Infinite loop */\
+	//HAL_UART_Transmit(&huart1, (uint8_t *)"hello wi99ndows!\r\n", 16 , 0xffff);
+  int i=0;
+  for(;;)
+  {
+    for(i=0;i<5;i++){
+    printf("text\n\r");
+    printf("11212\n\r");
+		    osDelay(2000);}
+    vTaskDelete(NULL);
+  }
+  /* USER CODE END StartDefaultTask */
+}
+
+```
+
+#### 同步和互斥
+
+同步和互斥是多任务系统中解决任务协作和资源共享问题的两种核心机制
+
+##### 同步
+
+
+同步 = 任务间的协作机制，确保多个任务按照预期的顺序执行
+
+就像工厂的流水线：A工序完成后，B工序才能开始
+
+就像接力赛跑：前一个选手交棒，后一个选手才能起跑
+
+##### 互斥
+
+互斥 = 对共享资源的独占访问，防止多个任务同时访问临界资源。
+
+防止多个任务同时修改同一个全局变量
+
+保护共享硬件资源（如串口、SPI、I2C等）
+
+避免数据竞争和不一致
+
