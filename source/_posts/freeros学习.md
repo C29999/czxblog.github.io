@@ -609,3 +609,56 @@ void StartDefaultTask(void *argument)
 
 避免数据竞争和不一致
 
+#### 队列
+
+队列 是 FreeRTOS 中最重要的任务间通信机制，它提供了安全、可靠的数据传递方式，支持异步通信和数据缓冲。
+
+>比喻理解：
+>就像邮局的信箱：发送者投递，接收者取件
+>
+>就像生产线传送带：生产者放产品，消费者取产品
+
+队列思维导图：
+ ![FRTOS](https://cdn.jsdelivr.net/gh/C29999/P.bed/873f6107aeaf91e6a8f133d40c0d37e0.png)
+
+
+##### 信号量
+
+***信号量***: 是 FreeRTOS 中用于任务同步和资源管理的核心机制，它可以看作是一个计数器，用于控制对共享资源的访问或协调任务间的执行顺序
+
+二进制信号量：值只有 0 和 1，用于互斥访问
+计数信号量：值可以大于 1，用于资源池管理
+
+
+STM32CUBEMX创建信号量的封装函数：
+
+``` C++
+
+osSemaphoreId_t osSemaphoreNew (uint32_t max_count, uint32_t initial_count, const osSemaphoreAttr_t *attr)
+
+
+//表示：
+osSemaphoreId_t osSemaphoreNew (
+    uint32_t max_count,           // 最大计数值
+    uint32_t initial_count,       // 初始计数值  
+    const osSemaphoreAttr_t *attr // 信号量属性
+);
+
+
+
+//申请信号量，请求信号量
+osStatus_t osSemaphoreAcquire (
+    osSemaphoreId_t semaphore_id,  // 信号量句柄
+    uint32_t timeout               // 超时时间
+);
+//返回值代表是否请求成功，请求信号量完成后，信号量就会减1。
+
+//释放信号量
+osStatus_t osSemaphoreRelease (
+    osSemaphoreId_t semaphore_id  // 信号量句柄
+);
+
+//返回值代表是否成功，释放信号量后，信号量就会加1。
+
+```
+
