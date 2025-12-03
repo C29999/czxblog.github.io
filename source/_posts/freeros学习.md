@@ -627,8 +627,27 @@ void StartDefaultTask(void *argument)
 ***信号量***: 是 FreeRTOS 中用于任务同步和资源管理的核心机制，它可以看作是一个计数器，用于控制对共享资源的访问或协调任务间的执行顺序
 
 二进制信号量：值只有 0 和 1，用于互斥访问
-计数信号量：值可以大于 1，用于资源池管理
+void StartDefaultTask(void *argument)
+{
+  /* USER CODE BEGIN StartDefaultTask */
+  /* Infinite loop */\
+	//HAL_UART_Transmit(&huart1, (uint8_t *)"hello wi99ndows!\r\n", 16 , 0xffff);
+  for(;;)
+  {
+    //1.使用前先要获取信号量
+  osSemaphoreAcquire(myBinarySem01Handle,1000);
+    //2.操作信号量
+    data++;
+    printf("data:%d\r\n",data);
+    //3.释放信号量
+    osSemaphoreRelease(myBinarySem01Handle);
+    osDelay(100);
+  }
+  /* USER CODE END StartDefaultTask */
+}：值可以大于 1，用于资源池管理
 
+>什么是共享资源：
+>共享资源：全局变量，串口，定时器
 
 STM32CUBEMX创建信号量的封装函数：
 
@@ -661,4 +680,29 @@ osStatus_t osSemaphoreRelease (
 //返回值代表是否成功，释放信号量后，信号量就会加1。
 
 ```
+
+用信号量保护硬件资源
+``` C++
+
+void StartDefaultTask(void *argument)
+{
+  /* USER CODE BEGIN StartDefaultTask */
+  /* Infinite loop */\
+	//HAL_UART_Transmit(&huart1, (uint8_t *)"hello wi99ndows!\r\n", 16 , 0xffff);
+  for(;;)
+  {
+    //1.使用前先要获取信号量
+  osSemaphoreAcquire(myBinarySem01Handle,1000);
+    //2.操作信号量
+    data++;
+    printf("data:%d\r\n",data);
+    //3.释放信号量
+    osSemaphoreRelease(myBinarySem01Handle);
+    osDelay(100);
+  }
+  /* USER CODE END StartDefaultTask */
+}
+```
+
+##### 信号量和队列的关系
 
