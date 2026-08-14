@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@barry-flynn/hexo-github-calendar": "^1.0.4",
-    "add": "^2.0.6",
+    "add": "^2.0.9",
     "gulp": "^5.0.1",
     "gulp-htmlmin": "^5.0.1",
     "hexo": "^7.3.0",
