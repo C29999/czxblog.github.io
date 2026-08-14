@@ -16,7 +16,7 @@
     "add": "^2.0.6",
     "gulp": "^5.0.1",
     "gulp-htmlmin": "^5.0.1",
-    "hexo": "^7.3.0",
+    "hexo": "^8.1.2",
     "hexo-abbrlink": "^2.2.1",
     "hexo-bilibili-bangumi": "^2.0.1",
     "hexo-butterfly-clock-anzhiyu": "^1.1.8",
