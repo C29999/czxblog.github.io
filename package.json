@@ -44,7 +44,7 @@
     "yarn": "^1.22.22"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.3",
+    "@babel/core": "^8.0.1",
     "@babel/preset-env": "^7.28.3",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.3.0",
