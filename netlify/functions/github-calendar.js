@@ -52,6 +52,31 @@ function parseCalendar(html) {
   }
 }
 
+async function fetchGithubCalendar(username) {
+  const url = `https://github.com/users/${encodeURIComponent(username)}/contributions`
+  let lastError
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Accept: 'text/html',
+          'User-Agent': 'czxsblog-github-calendar'
+        }
+      })
+
+      if (response.ok || response.status === 404) return response
+      lastError = new Error(`GitHub returned ${response.status}`)
+    } catch (error) {
+      lastError = error
+    }
+
+    if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, (attempt + 1) * 300))
+  }
+
+  throw lastError
+}
+
 exports.handler = async function handler(event) {
   const requestedUsername = event.queryStringParameters?.user || DEFAULT_GITHUB_USERNAME
   const username = requestedUsername.trim()
@@ -61,12 +86,7 @@ exports.handler = async function handler(event) {
   }
 
   try {
-    const githubResponse = await fetch(`https://github.com/users/${encodeURIComponent(username)}/contributions`, {
-      headers: {
-        Accept: 'text/html',
-        'User-Agent': 'czxsblog-github-calendar'
-      }
-    })
+    const githubResponse = await fetchGithubCalendar(username)
 
     if (!githubResponse.ok) {
       return response(githubResponse.status === 404 ? 404 : 502, { error: 'Unable to load GitHub contributions' })
