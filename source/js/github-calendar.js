@@ -154,12 +154,9 @@
     return sumCounts(days.slice(Math.max(0, days.length - count)))
   }
 
-  function getDayCount(days, offset) {
-    const target = new Date()
-    target.setDate(target.getDate() - offset)
-    const key = new Date(target.getTime() - target.getTimezoneOffset() * 60000).toISOString().slice(0, 10)
-    const hit = days.find((day) => day.date === key)
-    return hit ? Number(hit.count) || 0 : 0
+  function getLatestCount(days) {
+    const latestDay = days[days.length - 1]
+    return latestDay ? Number(latestDay.count) || 0 : 0
   }
 
   function createMetric(label, value) {
@@ -241,8 +238,8 @@
     const activeDays = days.filter((day) => Number(day.count) > 0).length
     const bestDay = days.reduce((best, day) => (Number(day.count) > Number(best.count) ? day : best), { count: 0, date: '-' })
     const recent7Days = countRecentDays(days, 7)
-    const todayCount = getDayCount(days, 0)
-    const yesterdayCount = getDayCount(days, 1)
+    const todayCount = getLatestCount(days)
+    const yesterdayCount = days.length > 1 ? Number(days[days.length - 2].count) || 0 : 0
     const currentMonthKey = getMonthKey(new Date())
     const currentMonthTotal = days
       .filter((day) => getMonthKey(parseDate(day)) === currentMonthKey)

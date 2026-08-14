@@ -1,6 +1,6 @@
 const DEFAULT_GITHUB_USERNAME = 'C29999'
 const GITHUB_USERNAME_PATTERN = /^[a-z\d](?:[a-z\d-]{0,37}[a-z\d])?$/i
-const CACHE_CONTROL = 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400'
+const CACHE_CONTROL = 'no-store, max-age=0'
 
 function response(statusCode, body, cacheControl = 'no-store') {
   return {
@@ -48,12 +48,13 @@ function parseCalendar(html) {
 
   return {
     total: days.reduce((sum, day) => sum + day.count, 0),
+    latestDate: days[days.length - 1].date,
     weeks
   }
 }
 
 async function fetchGithubCalendar(username) {
-  const url = `https://github.com/users/${encodeURIComponent(username)}/contributions`
+  const url = `https://github.com/users/${encodeURIComponent(username)}/contributions?cache=${Date.now()}`
   let lastError
 
   for (let attempt = 0; attempt < 3; attempt += 1) {
@@ -61,7 +62,9 @@ async function fetchGithubCalendar(username) {
       const response = await fetch(url, {
         headers: {
           Accept: 'text/html',
-          'User-Agent': 'czxsblog-github-calendar'
+          'User-Agent': 'czxsblog-github-calendar',
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache'
         }
       })
 
