@@ -2,6 +2,11 @@
   display: block !important;
   height: auto !important;
   padding: 20px 24px !important;
+  background: rgba(255, 255, 255, 0.10) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 12px 30px rgba(16, 24, 40, 0.10);
 }
 
 .github-calendar__header {
@@ -51,8 +56,10 @@
 .github-calendar__block {
   padding: 16px;
   border-radius: 10px;
-  background: rgba(144, 145, 153, 0.06);
-  border: 1px solid rgba(144, 145, 153, 0.12);
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .github-calendar__block-head {
@@ -170,8 +177,8 @@
   min-width: 0;
   padding: 14px 12px;
   border-radius: 8px;
-  background: linear-gradient(180deg, rgba(64, 196, 99, 0.12), rgba(144, 145, 153, 0.08));
-  border: 1px solid rgba(144, 145, 153, 0.1);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.12));
+  border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .github-calendar__metric strong {
@@ -220,7 +227,7 @@
   display: block;
   min-height: 4px;
   border-radius: 3px 3px 0 0;
-  background: linear-gradient(180deg, #40c463, #216e39);
+  background: linear-gradient(180deg, rgba(64, 196, 99, 0.92), rgba(33, 110, 57, 0.92));
   transition: filter 0.2s ease, transform 0.2s ease;
 }
 
@@ -235,10 +242,11 @@
 
 [data-theme='dark'] .github-calendar__metric {
   background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 [data-theme='dark'] .github-calendar__bar span {
-  background: linear-gradient(180deg, #39d353, #0e4429);
+  background: linear-gradient(180deg, rgba(57, 211, 83, 0.95), rgba(14, 68, 41, 0.95));
 }
 
 .github-calendar__bar:hover {
@@ -259,6 +267,12 @@
   color: var(--font-color);
   font-size: 0.92em;
   opacity: 0.76;
+}
+
+.github-calendar__loading {
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
 }
 
 .github-calendar__retry {

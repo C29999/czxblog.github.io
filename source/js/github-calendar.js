@@ -173,7 +173,10 @@
       bar.title = `${item.label}: ${item.count} 次贡献`
 
       const fill = document.createElement('span')
-      fill.style.height = `${Math.max(4, Math.round((item.count / max) * 100))}%`
+      fill.style.height = '4%'
+      requestAnimationFrame(() => {
+        fill.style.height = `${Math.max(4, Math.round((item.count / max) * 100))}%`
+      })
 
       const label = document.createElement('em')
       label.textContent = item.shortLabel || item.label
