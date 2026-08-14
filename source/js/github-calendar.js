@@ -107,6 +107,33 @@
     return grid
   }
 
+  function createCalendarBlock(title, subtitle, weeks) {
+    const block = document.createElement('section')
+    block.className = 'github-calendar__block'
+
+    const head = document.createElement('div')
+    head.className = 'github-calendar__block-head'
+
+    const heading = document.createElement('h3')
+    heading.textContent = title
+
+    const note = document.createElement('span')
+    note.textContent = subtitle
+
+    head.append(heading, note)
+
+    const scroll = document.createElement('div')
+    scroll.className = 'github-calendar__scroll'
+
+    const canvas = document.createElement('div')
+    canvas.className = 'github-calendar__canvas'
+    canvas.append(createMonths(weeks), createGrid(weeks))
+    scroll.append(canvas)
+
+    block.append(head, scroll)
+    return block
+  }
+
   function getDays(weeks) {
     return weeks.flat().filter(Boolean)
   }
@@ -216,13 +243,14 @@
     const content = document.createElement('div')
     content.className = 'github-calendar__content'
 
-    const scroll = document.createElement('div')
-    scroll.className = 'github-calendar__scroll'
-
-    const canvas = document.createElement('div')
-    canvas.className = 'github-calendar__canvas'
-    canvas.append(createMonths(data.weeks), createGrid(data.weeks))
-    scroll.append(canvas)
+    const firstHalfWeeks = data.weeks.slice(0, Math.ceil(data.weeks.length / 2))
+    const secondHalfWeeks = data.weeks.slice(Math.ceil(data.weeks.length / 2))
+    const mainArea = document.createElement('div')
+    mainArea.className = 'github-calendar__main'
+    mainArea.append(
+      createCalendarBlock('前半段', '最近 26 周', firstHalfWeeks),
+      createCalendarBlock('后半段', '较早 27 周', secondHalfWeeks)
+    )
 
     const legend = document.createElement('div')
     legend.className = 'github-calendar__legend'
@@ -230,7 +258,7 @@
 
     const stats = createStats(data)
 
-    content.append(scroll, stats)
+    content.append(mainArea, stats)
     calendar.append(content, legend)
     card.append(calendar)
   }

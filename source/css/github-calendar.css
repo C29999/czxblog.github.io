@@ -38,9 +38,43 @@
 
 .github-calendar__content {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  grid-template-columns: minmax(0, 1.2fr) minmax(290px, 0.8fr);
   gap: 18px;
   align-items: start;
+}
+
+.github-calendar__main {
+  display: grid;
+  gap: 16px;
+}
+
+.github-calendar__block {
+  padding: 16px;
+  border-radius: 10px;
+  background: rgba(144, 145, 153, 0.06);
+  border: 1px solid rgba(144, 145, 153, 0.12);
+}
+
+.github-calendar__block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.github-calendar__block-head h3 {
+  margin: 0;
+  color: var(--text-highlight-color);
+  font-size: 0.98em;
+  font-weight: 600;
+}
+
+.github-calendar__block-head span {
+  color: var(--font-color);
+  font-size: 0.8em;
+  opacity: 0.68;
+  white-space: nowrap;
 }
 
 .github-calendar__canvas {
@@ -128,15 +162,16 @@
 
 .github-calendar__metrics {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
 .github-calendar__metric {
   min-width: 0;
-  padding: 12px;
-  border-radius: 6px;
-  background: rgba(144, 145, 153, 0.1);
+  padding: 14px 12px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(64, 196, 99, 0.12), rgba(144, 145, 153, 0.08));
+  border: 1px solid rgba(144, 145, 153, 0.1);
 }
 
 .github-calendar__metric strong {
@@ -178,6 +213,7 @@
   align-items: end;
   min-width: 10px;
   height: 100%;
+  transition: transform 0.2s ease;
 }
 
 .github-calendar__bar span {
@@ -185,6 +221,7 @@
   min-height: 4px;
   border-radius: 3px 3px 0 0;
   background: linear-gradient(180deg, #40c463, #216e39);
+  transition: filter 0.2s ease, transform 0.2s ease;
 }
 
 .github-calendar__bar em {
@@ -202,6 +239,14 @@
 
 [data-theme='dark'] .github-calendar__bar span {
   background: linear-gradient(180deg, #39d353, #0e4429);
+}
+
+.github-calendar__bar:hover {
+  transform: translateY(-2px);
+}
+
+.github-calendar__bar:hover span {
+  filter: brightness(1.06);
 }
 
 .github-calendar__loading,
@@ -254,5 +299,9 @@
 
   .github-calendar__bars {
     grid-auto-columns: 18px;
+  }
+
+  .github-calendar__block-head {
+    flex-wrap: wrap;
   }
 }
