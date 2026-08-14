@@ -19,7 +19,7 @@
     "hexo": "^7.3.0",
     "hexo-abbrlink": "^2.2.1",
     "hexo-bilibili-bangumi": "^2.0.1",
-    "hexo-butterfly-clock-anzhiyu": "^1.1.8",
+    "hexo-butterfly-clock-anzhiyu": "^1.1.9",
     "hexo-filter-gitcalendar": "^1.0.11",
     "hexo-filter-mathjax": "^0.9.0",
     "hexo-generator-archive": "^2.0.0",
