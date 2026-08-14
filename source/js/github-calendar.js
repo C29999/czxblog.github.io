@@ -142,6 +142,42 @@
     return items.reduce((total, item) => total + (Number(item.count) || 0), 0)
   }
 
+  function parseDate(day) {
+    return new Date(`${day.date}T00:00:00`)
+  }
+
+  function formatMonthLabel(date) {
+    return `${date.getMonth() + 1}月`
+  }
+
+  function getMonthKey(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+  }
+
+  function countRecentDays(days, count) {
+    return sumCounts(days.slice(Math.max(0, days.length - count)))
+  }
+
+  function getBestSevenDays(days) {
+    if (!days.length) return 0
+
+    let best = 0
+    let current = 0
+    const window = []
+
+    days.forEach((day) => {
+      const value = Number(day.count) || 0
+      window.push(value)
+      current += value
+      if (window.length > 7) {
+        current -= window.shift()
+      }
+      if (window.length === 7 && current > best) best = current
+    })
+
+    return best
+  }
+
   function createMetric(label, value) {
     const item = document.createElement('div')
     item.className = 'github-calendar__metric'
@@ -193,6 +229,19 @@
     const days = getDays(data.weeks)
     const activeDays = days.filter((day) => Number(day.count) > 0).length
     const bestDay = days.reduce((best, day) => (Number(day.count) > Number(best.count) ? day : best), { count: 0, date: '-' })
+    const recent4Weeks = countRecentDays(days, 28)
+    const currentMonthKey = getMonthKey(new Date())
+    const currentMonthTotal = days
+      .filter((day) => getMonthKey(parseDate(day)) === currentMonthKey)
+      .reduce((total, day) => total + (Number(day.count) || 0), 0)
+    const prevMonth = new Date()
+    prevMonth.setDate(1)
+    prevMonth.setMonth(prevMonth.getMonth() - 1)
+    const previousMonthKey = getMonthKey(prevMonth)
+    const previousMonthTotal = days
+      .filter((day) => getMonthKey(parseDate(day)) === previousMonthKey)
+      .reduce((total, day) => total + (Number(day.count) || 0), 0)
+    const bestSevenDays = getBestSevenDays(days)
     const weeklyItems = data.weeks.map((week, index) => ({
       label: `第 ${index + 1} 周`,
       shortLabel: String(index + 1),
@@ -221,6 +270,10 @@
     metrics.className = 'github-calendar__metrics'
     metrics.append(
       createMetric('过去一年总贡献', data.total),
+      createMetric('最近四周', recent4Weeks),
+      createMetric('上个月', previousMonthTotal),
+      createMetric('此月', currentMonthTotal),
+      createMetric('最佳七天', bestSevenDays),
       createMetric('活跃天数', activeDays),
       createMetric('最高单日', `${bestDay.count} 次`),
       createMetric('平均每周', (data.total / Math.max(data.weeks.length, 1)).toFixed(1))

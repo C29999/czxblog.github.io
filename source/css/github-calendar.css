@@ -59,11 +59,10 @@
 .github-calendar__block {
   padding: 16px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(12px) saturate(125%);
   -webkit-backdrop-filter: blur(12px) saturate(125%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10);
 }
 
 .github-calendar__block-head {
@@ -167,37 +166,37 @@
 
 .github-calendar__stats {
   display: grid;
-  gap: 18px;
+  gap: 14px;
 }
 
 .github-calendar__metrics {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
 }
 
 .github-calendar__metric {
   min-width: 0;
-  padding: 14px 12px;
+  padding: 12px 12px 11px;
   border-radius: 8px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.22));
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
 .github-calendar__metric strong {
   display: block;
-  color: #0f2038;
-  font-size: 1.6em;
+  color: #fff;
+  font-size: 1.45em;
   line-height: 1.15;
   font-weight: 800;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
 }
 
 .github-calendar__metric span {
   display: block;
   margin-top: 4px;
-  color: rgba(15, 32, 56, 0.9);
-  font-size: 0.78em;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.76em;
   font-weight: 600;
 }
 
@@ -246,8 +245,8 @@
 }
 
 [data-theme='dark'] .github-calendar__metric {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 [data-theme='dark'] .github-calendar__bar span {
@@ -275,7 +274,7 @@
 
 .github-calendar__loading {
   background: rgba(255, 255, 255, 0.12);
-  border: 1px dashed rgba(255, 255, 255, 0.26);
+  border: 1px dashed rgba(255, 255, 255, 0.18);
   border-radius: 10px;
 }
 
