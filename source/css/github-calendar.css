@@ -1,12 +1,13 @@
 .github-calendar-card {
   display: block !important;
   height: auto !important;
-  padding: 20px 24px !important;
-  background: linear-gradient(180deg, rgba(19, 25, 51, 0.55), rgba(92, 70, 140, 0.28)) !important;
-  border: 1px solid rgba(255, 255, 255, 0.26) !important;
-  backdrop-filter: blur(20px) saturate(130%);
-  -webkit-backdrop-filter: blur(20px) saturate(130%);
-  box-shadow: 0 18px 36px rgba(8, 14, 32, 0.18);
+  padding: 18px 22px !important;
+  background: linear-gradient(180deg, rgba(18, 24, 42, 0.46), rgba(70, 54, 116, 0.20)) !important;
+  border: 0 !important;
+  border-radius: 18px;
+  backdrop-filter: blur(18px) saturate(128%);
+  -webkit-backdrop-filter: blur(18px) saturate(128%);
+  box-shadow: 0 18px 36px rgba(8, 14, 32, 0.14);
 }
 
 .github-calendar__header {
@@ -21,19 +22,18 @@
   color: #fff;
   font-size: 1.14em;
   font-weight: 700;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.26);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.24);
 }
 
 .github-calendar__profile {
-  color: rgba(255, 255, 255, 0.94);
+  color: rgba(255, 255, 255, 0.92);
   font-size: 0.94em;
   font-weight: 600;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
 }
 
 .github-calendar__summary {
   margin-left: auto;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.88);
   font-size: 0.9em;
   font-weight: 600;
   white-space: nowrap;
@@ -46,7 +46,7 @@
 
 .github-calendar__content {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(290px, 0.8fr);
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
   gap: 18px;
   align-items: start;
 }
@@ -57,12 +57,9 @@
 }
 
 .github-calendar__block {
-  padding: 16px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.10);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px) saturate(125%);
-  -webkit-backdrop-filter: blur(12px) saturate(125%);
+  padding: 12px 10px 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .github-calendar__block-head {
@@ -76,14 +73,13 @@
 .github-calendar__block-head h3 {
   margin: 0;
   color: #f8fbff;
-  font-size: 1.02em;
+  font-size: 1.01em;
   font-weight: 700;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
 }
 
 .github-calendar__block-head span {
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 0.82em;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.8em;
   white-space: nowrap;
 }
 
@@ -106,11 +102,10 @@
 }
 
 .github-calendar__months span {
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(255, 255, 255, 0.84);
   font-size: 11px;
   line-height: 16px;
   white-space: nowrap;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
 }
 
 .github-calendar__grid {
@@ -122,7 +117,7 @@
   width: var(--github-calendar-cell-size);
   height: var(--github-calendar-cell-size);
   border-radius: 2px;
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .github-calendar__cell--level-1 { background: #9be9a8; }
@@ -130,7 +125,7 @@
 .github-calendar__cell--level-3 { background: #30a14e; }
 .github-calendar__cell--level-4 { background: #216e39; }
 
-[data-theme='dark'] .github-calendar__cell { background: rgba(255, 255, 255, 0.12); }
+[data-theme='dark'] .github-calendar__cell { background: rgba(255, 255, 255, 0.10); }
 [data-theme='dark'] .github-calendar__cell--level-1 { background: #0e4429; }
 [data-theme='dark'] .github-calendar__cell--level-2 { background: #006d32; }
 [data-theme='dark'] .github-calendar__cell--level-3 { background: #26a641; }
@@ -142,7 +137,7 @@
   justify-content: flex-end;
   gap: 4px;
   margin-top: 12px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.86);
   font-size: 0.78em;
 }
 
@@ -150,7 +145,7 @@
   width: 11px;
   height: 11px;
   border-radius: 2px;
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .github-calendar__legend i:nth-of-type(2) { background: #9be9a8; }
@@ -158,7 +153,7 @@
 .github-calendar__legend i:nth-of-type(4) { background: #30a14e; }
 .github-calendar__legend i:nth-of-type(5) { background: #216e39; }
 
-[data-theme='dark'] .github-calendar__legend i { background: rgba(255, 255, 255, 0.12); }
+[data-theme='dark'] .github-calendar__legend i { background: rgba(255, 255, 255, 0.10); }
 [data-theme='dark'] .github-calendar__legend i:nth-of-type(2) { background: #0e4429; }
 [data-theme='dark'] .github-calendar__legend i:nth-of-type(3) { background: #006d32; }
 [data-theme='dark'] .github-calendar__legend i:nth-of-type(4) { background: #26a641; }
@@ -166,7 +161,7 @@
 
 .github-calendar__stats {
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .github-calendar__metrics {
@@ -177,27 +172,38 @@
 
 .github-calendar__metric {
   min-width: 0;
+  min-height: 66px;
   padding: 12px 12px 11px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .github-calendar__metric strong {
   display: block;
   color: #fff;
-  font-size: 1.45em;
+  font-size: 1.42em;
   line-height: 1.15;
   font-weight: 800;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
 }
 
 .github-calendar__metric span {
   display: block;
   margin-top: 4px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.88);
   font-size: 0.76em;
   font-weight: 600;
+}
+
+[data-theme='dark'] .github-calendar__metric {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.github-calendar__chart {
+  padding: 14px 14px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .github-calendar__chart h3 {
@@ -205,60 +211,47 @@
   color: #f8fbff;
   font-size: 1em;
   font-weight: 700;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
 }
 
-.github-calendar__bars {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(10px, 1fr);
-  align-items: end;
-  gap: 5px;
-  height: 112px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-
-.github-calendar__bar {
-  display: grid;
-  grid-template-rows: 1fr 16px;
-  align-items: end;
-  min-width: 10px;
-  height: 100%;
-  transition: transform 0.2s ease;
-}
-
-.github-calendar__bar span {
+.github-calendar__sparkline {
   display: block;
-  min-height: 4px;
-  border-radius: 3px 3px 0 0;
-  background: linear-gradient(180deg, rgba(64, 196, 99, 0.96), rgba(33, 110, 57, 0.96));
-  transition: filter 0.2s ease, transform 0.2s ease;
+  width: 100%;
+  height: 72px;
+  overflow: visible;
 }
 
-.github-calendar__bar em {
-  color: rgba(255, 255, 255, 0.86);
+.github-calendar__sparkline-area {
+  fill: rgba(64, 196, 99, 0.14);
+  stroke: none;
+}
+
+.github-calendar__sparkline-line {
+  fill: none;
+  stroke: #6ae38a;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.github-calendar__sparkline-dot {
+  fill: #ffffff;
+  opacity: 0.9;
+}
+
+.github-calendar__chart-labels {
+  display: grid;
+  grid-template-columns: repeat(14, minmax(0, 1fr));
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.github-calendar__chart-labels span {
+  color: rgba(255, 255, 255, 0.68);
   font-size: 10px;
-  font-style: normal;
-  line-height: 16px;
   text-align: center;
-}
-
-[data-theme='dark'] .github-calendar__metric {
-  background: rgba(255, 255, 255, 0.10);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-[data-theme='dark'] .github-calendar__bar span {
-  background: linear-gradient(180deg, rgba(57, 211, 83, 0.95), rgba(14, 68, 41, 0.95));
-}
-
-.github-calendar__bar:hover {
-  transform: translateY(-2px);
-}
-
-.github-calendar__bar:hover span {
-  filter: brightness(1.06);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .github-calendar__loading,
@@ -273,9 +266,8 @@
 }
 
 .github-calendar__loading {
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px dashed rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 12px;
 }
 
 .github-calendar__retry {
@@ -312,10 +304,6 @@
 
   .github-calendar__metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .github-calendar__bars {
-    grid-auto-columns: 18px;
   }
 
   .github-calendar__block-head {

@@ -17,7 +17,7 @@
 
     const loading = document.createElement('div')
     loading.className = 'github-calendar__loading'
-    loading.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i><span>加载 GitHub 贡献中</span>'
+    loading.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i><span>Loading GitHub contributions</span>'
     card.append(loading)
   }
 
@@ -146,10 +146,6 @@
     return new Date(`${day.date}T00:00:00`)
   }
 
-  function formatMonthLabel(date) {
-    return `${date.getMonth() + 1}月`
-  }
-
   function getMonthKey(date) {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
   }
@@ -159,7 +155,7 @@
   }
 
   function getBestSevenDays(days) {
-    if (!days.length) return 0
+    if (days.length < 7) return sumCounts(days)
 
     let best = 0
     let current = 0
@@ -169,13 +165,19 @@
       const value = Number(day.count) || 0
       window.push(value)
       current += value
-      if (window.length > 7) {
-        current -= window.shift()
-      }
+      if (window.length > 7) current -= window.shift()
       if (window.length === 7 && current > best) best = current
     })
 
     return best
+  }
+
+  function getYesterdayCount(days) {
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
+    const key = yesterday.toISOString().slice(0, 10)
+    const hit = days.find((day) => day.date === key)
+    return hit ? Number(hit.count) || 0 : 0
   }
 
   function createMetric(label, value) {
@@ -192,36 +194,63 @@
     return item
   }
 
-  function createBarChart(title, items) {
+  function createTrendChart(days) {
     const section = document.createElement('section')
     section.className = 'github-calendar__chart'
 
     const heading = document.createElement('h3')
-    heading.textContent = title
+    heading.textContent = '最近 14 天提交折线图'
+    section.append(heading)
 
-    const max = Math.max(...items.map((item) => item.count), 1)
-    const bars = document.createElement('div')
-    bars.className = 'github-calendar__bars'
+    const items = days.slice(-14)
+    const values = items.map((day) => Number(day.count) || 0)
+    const width = 100
+    const height = 56
+    const max = Math.max(...values, 1)
 
-    items.forEach((item) => {
-      const bar = document.createElement('div')
-      bar.className = 'github-calendar__bar'
-      bar.title = `${item.label}: ${item.count} 次贡献`
-
-      const fill = document.createElement('span')
-      fill.style.height = '4%'
-      requestAnimationFrame(() => {
-        fill.style.height = `${Math.max(4, Math.round((item.count / max) * 100))}%`
-      })
-
-      const label = document.createElement('em')
-      label.textContent = item.shortLabel || item.label
-
-      bar.append(fill, label)
-      bars.append(bar)
+    const points = values.map((value, index) => {
+      const x = items.length === 1 ? 0 : (index / (items.length - 1)) * width
+      const y = height - (value / max) * (height - 8) - 4
+      return `${x.toFixed(1)},${y.toFixed(1)}`
     })
 
-    section.append(heading, bars)
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
+    svg.setAttribute('preserveAspectRatio', 'none')
+    svg.classList.add('github-calendar__sparkline')
+
+    const area = document.createElementNS('http://www.w3.org/2000/svg', 'polyline')
+    area.setAttribute('points', `0,${height} ${points.join(' ')} ${width},${height}`)
+    area.setAttribute('class', 'github-calendar__sparkline-area')
+    svg.append(area)
+
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline')
+    line.setAttribute('points', points.join(' '))
+    line.setAttribute('class', 'github-calendar__sparkline-line')
+    svg.append(line)
+
+    const dots = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+    values.forEach((value, index) => {
+      const x = items.length === 1 ? 0 : (index / (items.length - 1)) * width
+      const y = height - (value / max) * (height - 8) - 4
+      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+      dot.setAttribute('cx', x.toFixed(1))
+      dot.setAttribute('cy', y.toFixed(1))
+      dot.setAttribute('r', '1.7')
+      dot.setAttribute('class', 'github-calendar__sparkline-dot')
+      dots.append(dot)
+    })
+    svg.append(dots)
+
+    const labels = document.createElement('div')
+    labels.className = 'github-calendar__chart-labels'
+    items.forEach((day) => {
+      const label = document.createElement('span')
+      label.textContent = day.date.slice(5)
+      labels.append(label)
+    })
+
+    section.append(svg, labels)
     return section
   }
 
@@ -229,7 +258,8 @@
     const days = getDays(data.weeks)
     const activeDays = days.filter((day) => Number(day.count) > 0).length
     const bestDay = days.reduce((best, day) => (Number(day.count) > Number(best.count) ? day : best), { count: 0, date: '-' })
-    const recent4Weeks = countRecentDays(days, 28)
+    const recent7Days = countRecentDays(days, 7)
+    const yesterdayCount = getYesterdayCount(days)
     const currentMonthKey = getMonthKey(new Date())
     const currentMonthTotal = days
       .filter((day) => getMonthKey(parseDate(day)) === currentMonthKey)
@@ -241,27 +271,8 @@
     const previousMonthTotal = days
       .filter((day) => getMonthKey(parseDate(day)) === previousMonthKey)
       .reduce((total, day) => total + (Number(day.count) || 0), 0)
+    const recent4Weeks = countRecentDays(days, 28)
     const bestSevenDays = getBestSevenDays(days)
-    const weeklyItems = data.weeks.map((week, index) => ({
-      label: `第 ${index + 1} 周`,
-      shortLabel: String(index + 1),
-      count: sumCounts(week.filter(Boolean))
-    }))
-    const monthMap = new Map()
-
-    days.forEach((day) => {
-      const key = day.date.slice(0, 7)
-      monthMap.set(key, (monthMap.get(key) || 0) + (Number(day.count) || 0))
-    })
-
-    const monthlyItems = Array.from(monthMap, ([key, count]) => {
-      const month = Number(key.slice(5, 7))
-      return {
-        label: key,
-        shortLabel: MONTHS[month - 1],
-        count
-      }
-    })
 
     const stats = document.createElement('div')
     stats.className = 'github-calendar__stats'
@@ -270,21 +281,18 @@
     metrics.className = 'github-calendar__metrics'
     metrics.append(
       createMetric('过去一年总贡献', data.total),
+      createMetric('最近七天', recent7Days),
+      createMetric('昨日提交', yesterdayCount),
+      createMetric('最高单日', `${bestDay.count} 次`),
       createMetric('最近四周', recent4Weeks),
       createMetric('上个月', previousMonthTotal),
       createMetric('此月', currentMonthTotal),
-      createMetric('最佳七天', bestSevenDays),
       createMetric('活跃天数', activeDays),
-      createMetric('最高单日', `${bestDay.count} 次`),
-      createMetric('平均每周', (data.total / Math.max(data.weeks.length, 1)).toFixed(1))
+      createMetric('平均每周', (data.total / Math.max(data.weeks.length, 1)).toFixed(1)),
+      createMetric('最近七天峰值', bestSevenDays)
     )
 
-    stats.append(
-      metrics,
-      createBarChart('按月对比', monthlyItems),
-      createBarChart('按周对比', weeklyItems)
-    )
-
+    stats.append(metrics, createTrendChart(days))
     return stats
   }
 
@@ -304,17 +312,15 @@
     const mainArea = document.createElement('div')
     mainArea.className = 'github-calendar__main'
     mainArea.append(
-      createCalendarBlock('前半段', '最近 26 周', firstHalfWeeks),
-      createCalendarBlock('后半段', '较早 27 周', secondHalfWeeks)
+      createCalendarBlock('前半年', '最近 26 周', firstHalfWeeks),
+      createCalendarBlock('后半年', '较早 27 周', secondHalfWeeks)
     )
 
     const legend = document.createElement('div')
     legend.className = 'github-calendar__legend'
     legend.innerHTML = '<span>少</span><i></i><i></i><i></i><i></i><i></i><span>多</span>'
 
-    const stats = createStats(data)
-
-    content.append(mainArea, stats)
+    content.append(mainArea, createStats(data))
     calendar.append(content, legend)
     card.append(calendar)
   }
@@ -324,7 +330,6 @@
       pendingRequest = fetch(CALENDAR_ENDPOINT, { headers: { Accept: 'application/json' } })
         .then(async (response) => {
           if (!response.ok) throw new Error(`GitHub calendar request failed: ${response.status}`)
-
           const data = await response.json()
           if (!Array.isArray(data.weeks) || !data.username) throw new Error('GitHub calendar response is invalid')
           return data
