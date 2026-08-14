@@ -213,6 +213,9 @@
     calendar.className = 'github-calendar'
     calendar.append(createHeader(data.username, data.total))
 
+    const content = document.createElement('div')
+    content.className = 'github-calendar__content'
+
     const scroll = document.createElement('div')
     scroll.className = 'github-calendar__scroll'
 
@@ -225,7 +228,10 @@
     legend.className = 'github-calendar__legend'
     legend.innerHTML = '<span>少</span><i></i><i></i><i></i><i></i><i></i><span>多</span>'
 
-    calendar.append(scroll, legend, createStats(data))
+    const stats = createStats(data)
+
+    content.append(scroll, stats)
+    calendar.append(content, legend)
     card.append(calendar)
   }
 

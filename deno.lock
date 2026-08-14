@@ -1,0 +1,53 @@
+{
+  "version": "5",
+  "remote": {
+    "https://edge.netlify.com/": "fd941d61d88673d5f28aab283fb86fcc50f08a3bc80ee5470498fcfa88c65cfb",
+    "https://edge.netlify.com/bootstrap/config.ts": "6a2ce0e544e15e8f8883a5c18da5948e37fd0f2619f68cb31f3af53c51817025",
+    "https://edge.netlify.com/bootstrap/context.ts": "e97240232121e2f369f6546ce961490f34d961ea1ea54be3ff09633e3f08373f",
+    "https://edge.netlify.com/bootstrap/cookie.ts": "8b0baae708989ca183c6f3b4ab3d029e6abcbc2e43f93edeb0ff447b3bbc3a05",
+    "https://edge.netlify.com/bootstrap/edge_function.ts": "b8253e86aa83c67341f5cfedeba5049d77fbf84dcab7eceff7566b7728ae9b39",
+    "https://edge.netlify.com/bootstrap/globals/types.ts": "eaa6148ded3121d8dee62dd91c86e7fe76601df0f3ca8d7962243a30f4c8935f"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@babel/core@^7.28.3",
+        "npm:@babel/preset-env@^7.28.3",
+        "npm:add@^2.0.6",
+        "npm:gulp-babel@8",
+        "npm:gulp-clean-css@^4.3.0",
+        "npm:gulp-htmlclean@^2.7.22",
+        "npm:gulp-htmlmin@^5.0.1",
+        "npm:gulp-terser@^2.1.0",
+        "npm:gulp-uglify@^3.0.2",
+        "npm:gulp@^5.0.1",
+        "npm:hexo-abbrlink@^2.2.1",
+        "npm:hexo-bilibili-bangumi@^2.0.1",
+        "npm:hexo-butterfly-clock-anzhiyu@^1.1.8",
+        "npm:hexo-filter-mathjax@0.9",
+        "npm:hexo-generator-archive@2",
+        "npm:hexo-generator-baidu-sitemap@~0.1.9",
+        "npm:hexo-generator-category@2",
+        "npm:hexo-generator-feed@3",
+        "npm:hexo-generator-index@4",
+        "npm:hexo-generator-search@^2.4.3",
+        "npm:hexo-generator-sitemap@^3.0.1",
+        "npm:hexo-generator-tag@2",
+        "npm:hexo-math@5",
+        "npm:hexo-renderer-ejs@2",
+        "npm:hexo-renderer-kramed@~0.1.4",
+        "npm:hexo-renderer-pug@3",
+        "npm:hexo-renderer-stylus@^3.0.1",
+        "npm:hexo-server@3",
+        "npm:hexo-tag-aplayer@^3.0.4",
+        "npm:hexo-theme-landscape@1",
+        "npm:hexo-wordcount@^6.0.1",
+        "npm:hexo@^7.3.0",
+        "npm:live2d-widget-model-koharu@^1.0.5",
+        "npm:or@0.2",
+        "npm:workbox-build@^7.3.0",
+        "npm:yarn@^1.22.22"
+      ]
+    }
+  }
+}

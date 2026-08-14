@@ -36,6 +36,13 @@
   padding-bottom: 6px;
 }
 
+.github-calendar__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  gap: 18px;
+  align-items: start;
+}
+
 .github-calendar__canvas {
   --github-calendar-cell-size: 12px;
   --github-calendar-gap: 3px;
@@ -117,9 +124,6 @@
 .github-calendar__stats {
   display: grid;
   gap: 18px;
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(144, 145, 153, 0.18);
 }
 
 .github-calendar__metrics {
@@ -238,6 +242,10 @@
 
   .github-calendar__summary {
     margin-left: 0;
+  }
+
+  .github-calendar__content {
+    grid-template-columns: 1fr;
   }
 
   .github-calendar__metrics {
