@@ -1060,11 +1060,11 @@ electric_clock:
 
 inject:
   head:
-    - <link rel="stylesheet" href="/css/github-calendar.css">
+    - <link rel="stylesheet" href="/css/github-calendar.css?v=20260815">
   bottom:
     # aplayer音乐
     - <div class="aplayer no-destroy" data-id="8152976493" data-server="netease" data-type="playlist"   data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div>
-    - <script data-pjax src="/js/github-calendar.js"></script>
+    - <script data-pjax src="/js/github-calendar.js?v=20260815"></script>
 
 
 # CDN Settings

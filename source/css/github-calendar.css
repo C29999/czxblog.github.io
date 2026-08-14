@@ -323,3 +323,56 @@
     flex-wrap: wrap;
   }
 }
+
+.aplayer.aplayer-fixed {
+  left: auto !important;
+  right: 18px !important;
+  bottom: 18px !important;
+  width: 320px;
+  max-width: calc(100vw - 36px);
+  transform: translateX(calc(100% - 44px));
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  z-index: 1002;
+  border-radius: 12px 0 0 12px;
+  overflow: hidden;
+}
+
+.aplayer.aplayer-fixed:hover,
+.aplayer.aplayer-fixed.aplayer-narrow {
+  transform: translateX(0);
+}
+
+.aplayer.aplayer-fixed .aplayer-body {
+  border-radius: 12px 0 0 12px;
+  background: rgba(24, 32, 54, 0.78);
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+}
+
+.aplayer.aplayer-fixed .aplayer-miniswitcher {
+  width: 44px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.aplayer.aplayer-fixed .aplayer-miniswitcher .aplayer-icon {
+  color: #fff;
+}
+
+.aplayer.aplayer-fixed .aplayer-pic {
+  width: 44px;
+  height: 44px;
+}
+
+.aplayer.aplayer-fixed .aplayer-info {
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media screen and (max-width: 650px) {
+  .aplayer.aplayer-fixed {
+    width: 280px;
+    transform: translateX(calc(100% - 38px));
+    right: 8px !important;
+    bottom: 8px !important;
+  }
+}
