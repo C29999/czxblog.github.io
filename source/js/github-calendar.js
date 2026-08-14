@@ -154,28 +154,10 @@
     return sumCounts(days.slice(Math.max(0, days.length - count)))
   }
 
-  function getBestSevenDays(days) {
-    if (days.length < 7) return sumCounts(days)
-
-    let best = 0
-    let current = 0
-    const window = []
-
-    days.forEach((day) => {
-      const value = Number(day.count) || 0
-      window.push(value)
-      current += value
-      if (window.length > 7) current -= window.shift()
-      if (window.length === 7 && current > best) best = current
-    })
-
-    return best
-  }
-
-  function getYesterdayCount(days) {
-    const yesterday = new Date()
-    yesterday.setDate(yesterday.getDate() - 1)
-    const key = yesterday.toISOString().slice(0, 10)
+  function getDayCount(days, offset) {
+    const target = new Date()
+    target.setDate(target.getDate() - offset)
+    const key = new Date(target.getTime() - target.getTimezoneOffset() * 60000).toISOString().slice(0, 10)
     const hit = days.find((day) => day.date === key)
     return hit ? Number(hit.count) || 0 : 0
   }
@@ -259,7 +241,8 @@
     const activeDays = days.filter((day) => Number(day.count) > 0).length
     const bestDay = days.reduce((best, day) => (Number(day.count) > Number(best.count) ? day : best), { count: 0, date: '-' })
     const recent7Days = countRecentDays(days, 7)
-    const yesterdayCount = getYesterdayCount(days)
+    const todayCount = getDayCount(days, 0)
+    const yesterdayCount = getDayCount(days, 1)
     const currentMonthKey = getMonthKey(new Date())
     const currentMonthTotal = days
       .filter((day) => getMonthKey(parseDate(day)) === currentMonthKey)
@@ -272,7 +255,6 @@
       .filter((day) => getMonthKey(parseDate(day)) === previousMonthKey)
       .reduce((total, day) => total + (Number(day.count) || 0), 0)
     const recent4Weeks = countRecentDays(days, 28)
-    const bestSevenDays = getBestSevenDays(days)
 
     const stats = document.createElement('div')
     stats.className = 'github-calendar__stats'
@@ -282,14 +264,14 @@
     metrics.append(
       createMetric('过去一年总贡献', data.total),
       createMetric('最近七天', recent7Days),
+      createMetric('今日提交', todayCount),
       createMetric('昨日提交', yesterdayCount),
       createMetric('最高单日', `${bestDay.count} 次`),
       createMetric('最近四周', recent4Weeks),
       createMetric('上个月', previousMonthTotal),
       createMetric('此月', currentMonthTotal),
       createMetric('活跃天数', activeDays),
-      createMetric('平均每周', (data.total / Math.max(data.weeks.length, 1)).toFixed(1)),
-      createMetric('最近七天峰值', bestSevenDays)
+      createMetric('平均每周', (data.total / Math.max(data.weeks.length, 1)).toFixed(1))
     )
 
     stats.append(metrics, createTrendChart(days))
