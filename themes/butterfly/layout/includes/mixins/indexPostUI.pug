@@ -2,6 +2,10 @@ mixin indexPostUI()
   - const indexLayout = theme.index_layout
   - const masonryLayoutClass = (indexLayout === 6 || indexLayout === 7) ? 'masonry' : ''
   #recent-posts.recent-posts.nc(class=masonryLayoutClass)
+    section#github-calendar.recent-post-item.github-calendar-card(aria-live='polite')
+      .github-calendar__loading
+        i.fas.fa-spinner.fa-spin(aria-hidden='true')
+        span Loading GitHub contributions
     .recent-post-items
       each article, index in page.posts.data
         .recent-post-item

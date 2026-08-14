@@ -12,6 +12,7 @@
   }
 
   function setLoading(card) {
+    card.dataset.loaded = 'false'
     card.replaceChildren()
 
     const loading = document.createElement('div')
@@ -106,7 +107,106 @@
     return grid
   }
 
+  function getDays(weeks) {
+    return weeks.flat().filter(Boolean)
+  }
+
+  function sumCounts(items) {
+    return items.reduce((total, item) => total + (Number(item.count) || 0), 0)
+  }
+
+  function createMetric(label, value) {
+    const item = document.createElement('div')
+    item.className = 'github-calendar__metric'
+
+    const number = document.createElement('strong')
+    number.textContent = value
+
+    const caption = document.createElement('span')
+    caption.textContent = label
+
+    item.append(number, caption)
+    return item
+  }
+
+  function createBarChart(title, items) {
+    const section = document.createElement('section')
+    section.className = 'github-calendar__chart'
+
+    const heading = document.createElement('h3')
+    heading.textContent = title
+
+    const max = Math.max(...items.map((item) => item.count), 1)
+    const bars = document.createElement('div')
+    bars.className = 'github-calendar__bars'
+
+    items.forEach((item) => {
+      const bar = document.createElement('div')
+      bar.className = 'github-calendar__bar'
+      bar.title = `${item.label}: ${item.count} 次贡献`
+
+      const fill = document.createElement('span')
+      fill.style.height = `${Math.max(4, Math.round((item.count / max) * 100))}%`
+
+      const label = document.createElement('em')
+      label.textContent = item.shortLabel || item.label
+
+      bar.append(fill, label)
+      bars.append(bar)
+    })
+
+    section.append(heading, bars)
+    return section
+  }
+
+  function createStats(data) {
+    const days = getDays(data.weeks)
+    const activeDays = days.filter((day) => Number(day.count) > 0).length
+    const bestDay = days.reduce((best, day) => (Number(day.count) > Number(best.count) ? day : best), { count: 0, date: '-' })
+    const weeklyItems = data.weeks.map((week, index) => ({
+      label: `第 ${index + 1} 周`,
+      shortLabel: String(index + 1),
+      count: sumCounts(week.filter(Boolean))
+    }))
+    const monthMap = new Map()
+
+    days.forEach((day) => {
+      const key = day.date.slice(0, 7)
+      monthMap.set(key, (monthMap.get(key) || 0) + (Number(day.count) || 0))
+    })
+
+    const monthlyItems = Array.from(monthMap, ([key, count]) => {
+      const month = Number(key.slice(5, 7))
+      return {
+        label: key,
+        shortLabel: MONTHS[month - 1],
+        count
+      }
+    })
+
+    const stats = document.createElement('div')
+    stats.className = 'github-calendar__stats'
+
+    const metrics = document.createElement('div')
+    metrics.className = 'github-calendar__metrics'
+    metrics.append(
+      createMetric('过去一年总贡献', data.total),
+      createMetric('活跃天数', activeDays),
+      createMetric('最高单日', `${bestDay.count} 次`),
+      createMetric('平均每周', (data.total / Math.max(data.weeks.length, 1)).toFixed(1))
+    )
+
+    stats.append(
+      metrics,
+      createBarChart('按月对比', monthlyItems),
+      createBarChart('按周对比', weeklyItems)
+    )
+
+    return stats
+  }
+
   function renderCalendar(card, data) {
+    card.dataset.loaded = 'true'
     card.replaceChildren()
 
     const calendar = document.createElement('div')
@@ -125,7 +225,7 @@
     legend.className = 'github-calendar__legend'
     legend.innerHTML = '<span>少</span><i></i><i></i><i></i><i></i><i></i><span>多</span>'
 
-    calendar.append(scroll, legend)
+    calendar.append(scroll, legend, createStats(data))
     card.append(calendar)
   }
 
@@ -154,7 +254,7 @@
     if (!target) return
 
     let card = target.querySelector('#github-calendar')
-    if (card && !force) return
+    if (card && !force && card.dataset.loaded === 'true') return
 
     if (!card) {
       card = createCard()
