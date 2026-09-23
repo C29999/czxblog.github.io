@@ -221,7 +221,7 @@ body::before {
   font-family: ui-serif, Georgia, 'Times New Roman', 'Songti SC', STSong, serif;
   line-height: 1.22;
   letter-spacing: 0.015em;
-  color: #ffffff;
+  color: #ffd86b;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.6);
 }
 
