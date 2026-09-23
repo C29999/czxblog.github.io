@@ -221,6 +221,8 @@ body::before {
   font-family: ui-serif, Georgia, 'Times New Roman', 'Songti SC', STSong, serif;
   line-height: 1.22;
   letter-spacing: 0.015em;
+  color: #ffffff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6), 0 0 2px rgba(0, 0, 0, 0.4);
 }
 
 #post {
