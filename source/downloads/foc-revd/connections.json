@@ -1,0 +1,5440 @@
+{
+  "revision": "D",
+  "parts": [
+    {
+      "ref": "U11",
+      "value": "DRV8313PWPR",
+      "footprint": "HTSSOP-28 PWP + EP29",
+      "pins": {
+        "1": {
+          "name": "CPL",
+          "net": "M1_CPL"
+        },
+        "2": {
+          "name": "CPH",
+          "net": "M1_CPH"
+        },
+        "3": {
+          "name": "VCP",
+          "net": "M1_VCP"
+        },
+        "4": {
+          "name": "VM",
+          "net": "VM"
+        },
+        "5": {
+          "name": "OUT1",
+          "net": "M1_U"
+        },
+        "6": {
+          "name": "PGND1",
+          "net": "M1_SU"
+        },
+        "7": {
+          "name": "PGND2",
+          "net": "M1_SV"
+        },
+        "8": {
+          "name": "OUT2",
+          "net": "M1_V"
+        },
+        "9": {
+          "name": "OUT3",
+          "net": "M1_W"
+        },
+        "10": {
+          "name": "PGND3",
+          "net": "GND"
+        },
+        "11": {
+          "name": "VM",
+          "net": "VM"
+        },
+        "12": {
+          "name": "COMPP",
+          "net": "GND"
+        },
+        "13": {
+          "name": "COMPN",
+          "net": "GND"
+        },
+        "14": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "15": {
+          "name": "V3P3",
+          "net": "M1_DRV3V3"
+        },
+        "16": {
+          "name": "nRESET",
+          "net": "M1_RESET_N"
+        },
+        "17": {
+          "name": "nSLEEP",
+          "net": "M1_SLEEP_N"
+        },
+        "18": {
+          "name": "nFAULT",
+          "net": "M1_FAULT_N"
+        },
+        "19": {
+          "name": "nCOMPO",
+          "net": "GND"
+        },
+        "20": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "21": {
+          "name": "NC",
+          "net": "NC"
+        },
+        "22": {
+          "name": "EN3",
+          "net": "M1_EN"
+        },
+        "23": {
+          "name": "IN3",
+          "net": "M1_PWM_W"
+        },
+        "24": {
+          "name": "EN2",
+          "net": "M1_EN"
+        },
+        "25": {
+          "name": "IN2",
+          "net": "M1_PWM_V"
+        },
+        "26": {
+          "name": "EN1",
+          "net": "M1_EN"
+        },
+        "27": {
+          "name": "IN1",
+          "net": "M1_PWM_U"
+        },
+        "28": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "29": {
+          "name": "EP",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C101",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "紧贴 pin4"
+    },
+    {
+      "ref": "C102",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "紧贴 pin11"
+    },
+    {
+      "ref": "C103",
+      "value": "22uF/35V",
+      "footprint": "1210 X7R",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "有效容量随偏压复核"
+    },
+    {
+      "ref": "C104",
+      "value": "10nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_CPH"
+        },
+        "2": {
+          "name": "2",
+          "net": "M1_CPL"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C105",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_VCP"
+        },
+        "2": {
+          "name": "2",
+          "net": "VM"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C106",
+      "value": "470nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_DRV3V3"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "RS11",
+      "value": "10mΩ/1%/≥0.5W",
+      "footprint": "2010",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_SU"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "放大器从电阻两端 Kelvin 引出"
+    },
+    {
+      "ref": "RS12",
+      "value": "10mΩ/1%/≥0.5W",
+      "footprint": "2010",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_SV"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "放大器从电阻两端 Kelvin 引出"
+    },
+    {
+      "ref": "JM1",
+      "value": "电机三相",
+      "footprint": "3焊盘",
+      "pins": {
+        "1": {
+          "name": "U",
+          "net": "M1_U"
+        },
+        "2": {
+          "name": "V",
+          "net": "M1_V"
+        },
+        "3": {
+          "name": "W",
+          "net": "M1_W"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U12",
+      "value": "DRV8313PWPR",
+      "footprint": "HTSSOP-28 PWP + EP29",
+      "pins": {
+        "1": {
+          "name": "CPL",
+          "net": "M2_CPL"
+        },
+        "2": {
+          "name": "CPH",
+          "net": "M2_CPH"
+        },
+        "3": {
+          "name": "VCP",
+          "net": "M2_VCP"
+        },
+        "4": {
+          "name": "VM",
+          "net": "VM"
+        },
+        "5": {
+          "name": "OUT1",
+          "net": "M2_U"
+        },
+        "6": {
+          "name": "PGND1",
+          "net": "M2_SU"
+        },
+        "7": {
+          "name": "PGND2",
+          "net": "M2_SV"
+        },
+        "8": {
+          "name": "OUT2",
+          "net": "M2_V"
+        },
+        "9": {
+          "name": "OUT3",
+          "net": "M2_W"
+        },
+        "10": {
+          "name": "PGND3",
+          "net": "GND"
+        },
+        "11": {
+          "name": "VM",
+          "net": "VM"
+        },
+        "12": {
+          "name": "COMPP",
+          "net": "GND"
+        },
+        "13": {
+          "name": "COMPN",
+          "net": "GND"
+        },
+        "14": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "15": {
+          "name": "V3P3",
+          "net": "M2_DRV3V3"
+        },
+        "16": {
+          "name": "nRESET",
+          "net": "M2_RESET_N"
+        },
+        "17": {
+          "name": "nSLEEP",
+          "net": "M2_SLEEP_N"
+        },
+        "18": {
+          "name": "nFAULT",
+          "net": "M2_FAULT_N"
+        },
+        "19": {
+          "name": "nCOMPO",
+          "net": "GND"
+        },
+        "20": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "21": {
+          "name": "NC",
+          "net": "NC"
+        },
+        "22": {
+          "name": "EN3",
+          "net": "M2_EN"
+        },
+        "23": {
+          "name": "IN3",
+          "net": "M2_PWM_W"
+        },
+        "24": {
+          "name": "EN2",
+          "net": "M2_EN"
+        },
+        "25": {
+          "name": "IN2",
+          "net": "M2_PWM_V"
+        },
+        "26": {
+          "name": "EN1",
+          "net": "M2_EN"
+        },
+        "27": {
+          "name": "IN1",
+          "net": "M2_PWM_U"
+        },
+        "28": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "29": {
+          "name": "EP",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C201",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "紧贴 pin4"
+    },
+    {
+      "ref": "C202",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "紧贴 pin11"
+    },
+    {
+      "ref": "C203",
+      "value": "22uF/35V",
+      "footprint": "1210 X7R",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "有效容量随偏压复核"
+    },
+    {
+      "ref": "C204",
+      "value": "10nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_CPH"
+        },
+        "2": {
+          "name": "2",
+          "net": "M2_CPL"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C205",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_VCP"
+        },
+        "2": {
+          "name": "2",
+          "net": "VM"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C206",
+      "value": "470nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_DRV3V3"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "RS21",
+      "value": "10mΩ/1%/≥0.5W",
+      "footprint": "2010",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_SU"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "放大器从电阻两端 Kelvin 引出"
+    },
+    {
+      "ref": "RS22",
+      "value": "10mΩ/1%/≥0.5W",
+      "footprint": "2010",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_SV"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "放大器从电阻两端 Kelvin 引出"
+    },
+    {
+      "ref": "JM2",
+      "value": "电机三相",
+      "footprint": "3焊盘",
+      "pins": {
+        "1": {
+          "name": "U",
+          "net": "M2_U"
+        },
+        "2": {
+          "name": "V",
+          "net": "M2_V"
+        },
+        "3": {
+          "name": "W",
+          "net": "M2_W"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U13",
+      "value": "DRV8313PWPR",
+      "footprint": "HTSSOP-28 PWP + EP29",
+      "pins": {
+        "1": {
+          "name": "CPL",
+          "net": "M3_CPL"
+        },
+        "2": {
+          "name": "CPH",
+          "net": "M3_CPH"
+        },
+        "3": {
+          "name": "VCP",
+          "net": "M3_VCP"
+        },
+        "4": {
+          "name": "VM",
+          "net": "VM"
+        },
+        "5": {
+          "name": "OUT1",
+          "net": "M3_U"
+        },
+        "6": {
+          "name": "PGND1",
+          "net": "M3_SU"
+        },
+        "7": {
+          "name": "PGND2",
+          "net": "M3_SV"
+        },
+        "8": {
+          "name": "OUT2",
+          "net": "M3_V"
+        },
+        "9": {
+          "name": "OUT3",
+          "net": "M3_W"
+        },
+        "10": {
+          "name": "PGND3",
+          "net": "GND"
+        },
+        "11": {
+          "name": "VM",
+          "net": "VM"
+        },
+        "12": {
+          "name": "COMPP",
+          "net": "GND"
+        },
+        "13": {
+          "name": "COMPN",
+          "net": "GND"
+        },
+        "14": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "15": {
+          "name": "V3P3",
+          "net": "M3_DRV3V3"
+        },
+        "16": {
+          "name": "nRESET",
+          "net": "M3_RESET_N"
+        },
+        "17": {
+          "name": "nSLEEP",
+          "net": "M3_SLEEP_N"
+        },
+        "18": {
+          "name": "nFAULT",
+          "net": "M3_FAULT_N"
+        },
+        "19": {
+          "name": "nCOMPO",
+          "net": "GND"
+        },
+        "20": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "21": {
+          "name": "NC",
+          "net": "NC"
+        },
+        "22": {
+          "name": "EN3",
+          "net": "M3_EN"
+        },
+        "23": {
+          "name": "IN3",
+          "net": "M3_PWM_W"
+        },
+        "24": {
+          "name": "EN2",
+          "net": "M3_EN"
+        },
+        "25": {
+          "name": "IN2",
+          "net": "M3_PWM_V"
+        },
+        "26": {
+          "name": "EN1",
+          "net": "M3_EN"
+        },
+        "27": {
+          "name": "IN1",
+          "net": "M3_PWM_U"
+        },
+        "28": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "29": {
+          "name": "EP",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C301",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "紧贴 pin4"
+    },
+    {
+      "ref": "C302",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "紧贴 pin11"
+    },
+    {
+      "ref": "C303",
+      "value": "22uF/35V",
+      "footprint": "1210 X7R",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "有效容量随偏压复核"
+    },
+    {
+      "ref": "C304",
+      "value": "10nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_CPH"
+        },
+        "2": {
+          "name": "2",
+          "net": "M3_CPL"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C305",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_VCP"
+        },
+        "2": {
+          "name": "2",
+          "net": "VM"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C306",
+      "value": "470nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_DRV3V3"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "RS31",
+      "value": "10mΩ/1%/≥0.5W",
+      "footprint": "2010",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_SU"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "放大器从电阻两端 Kelvin 引出"
+    },
+    {
+      "ref": "RS32",
+      "value": "10mΩ/1%/≥0.5W",
+      "footprint": "2010",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_SV"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "放大器从电阻两端 Kelvin 引出"
+    },
+    {
+      "ref": "JM3",
+      "value": "电机三相",
+      "footprint": "3焊盘",
+      "pins": {
+        "1": {
+          "name": "U",
+          "net": "M3_U"
+        },
+        "2": {
+          "name": "V",
+          "net": "M3_V"
+        },
+        "3": {
+          "name": "W",
+          "net": "M3_W"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U14",
+      "value": "DRV8313PWPR",
+      "footprint": "HTSSOP-28 PWP + EP29",
+      "pins": {
+        "1": {
+          "name": "CPL",
+          "net": "M4_CPL"
+        },
+        "2": {
+          "name": "CPH",
+          "net": "M4_CPH"
+        },
+        "3": {
+          "name": "VCP",
+          "net": "M4_VCP"
+        },
+        "4": {
+          "name": "VM",
+          "net": "VM"
+        },
+        "5": {
+          "name": "OUT1",
+          "net": "M4_U"
+        },
+        "6": {
+          "name": "PGND1",
+          "net": "M4_SU"
+        },
+        "7": {
+          "name": "PGND2",
+          "net": "M4_SV"
+        },
+        "8": {
+          "name": "OUT2",
+          "net": "M4_V"
+        },
+        "9": {
+          "name": "OUT3",
+          "net": "M4_W"
+        },
+        "10": {
+          "name": "PGND3",
+          "net": "GND"
+        },
+        "11": {
+          "name": "VM",
+          "net": "VM"
+        },
+        "12": {
+          "name": "COMPP",
+          "net": "GND"
+        },
+        "13": {
+          "name": "COMPN",
+          "net": "GND"
+        },
+        "14": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "15": {
+          "name": "V3P3",
+          "net": "M4_DRV3V3"
+        },
+        "16": {
+          "name": "nRESET",
+          "net": "M4_RESET_N"
+        },
+        "17": {
+          "name": "nSLEEP",
+          "net": "M4_SLEEP_N"
+        },
+        "18": {
+          "name": "nFAULT",
+          "net": "M4_FAULT_N"
+        },
+        "19": {
+          "name": "nCOMPO",
+          "net": "GND"
+        },
+        "20": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "21": {
+          "name": "NC",
+          "net": "NC"
+        },
+        "22": {
+          "name": "EN3",
+          "net": "M4_EN"
+        },
+        "23": {
+          "name": "IN3",
+          "net": "M4_PWM_W"
+        },
+        "24": {
+          "name": "EN2",
+          "net": "M4_EN"
+        },
+        "25": {
+          "name": "IN2",
+          "net": "M4_PWM_V"
+        },
+        "26": {
+          "name": "EN1",
+          "net": "M4_EN"
+        },
+        "27": {
+          "name": "IN1",
+          "net": "M4_PWM_U"
+        },
+        "28": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "29": {
+          "name": "EP",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C401",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "紧贴 pin4"
+    },
+    {
+      "ref": "C402",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "紧贴 pin11"
+    },
+    {
+      "ref": "C403",
+      "value": "22uF/35V",
+      "footprint": "1210 X7R",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "有效容量随偏压复核"
+    },
+    {
+      "ref": "C404",
+      "value": "10nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_CPH"
+        },
+        "2": {
+          "name": "2",
+          "net": "M4_CPL"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C405",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_VCP"
+        },
+        "2": {
+          "name": "2",
+          "net": "VM"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C406",
+      "value": "470nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_DRV3V3"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "RS41",
+      "value": "10mΩ/1%/≥0.5W",
+      "footprint": "2010",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_SU"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "放大器从电阻两端 Kelvin 引出"
+    },
+    {
+      "ref": "RS42",
+      "value": "10mΩ/1%/≥0.5W",
+      "footprint": "2010",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_SV"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "放大器从电阻两端 Kelvin 引出"
+    },
+    {
+      "ref": "JM4",
+      "value": "电机三相",
+      "footprint": "3焊盘",
+      "pins": {
+        "1": {
+          "name": "U",
+          "net": "M4_U"
+        },
+        "2": {
+          "name": "V",
+          "net": "M4_V"
+        },
+        "3": {
+          "name": "W",
+          "net": "M4_W"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U1",
+      "value": "STM32G431CBT6",
+      "footprint": "LQFP48",
+      "pins": {
+        "1": {
+          "name": "VBAT",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "PC13 / GPIO",
+          "net": "ARM_SAFE"
+        },
+        "3": {
+          "name": "PC14/PC15",
+          "net": "NC"
+        },
+        "4": {
+          "name": "PC14/PC15",
+          "net": "NC"
+        },
+        "5": {
+          "name": "PF0 / HSE_IN",
+          "net": "A_OSC_IN"
+        },
+        "6": {
+          "name": "PF1 / HSE_OUT",
+          "net": "A_OSC_OUT"
+        },
+        "7": {
+          "name": "PG10 / NRST",
+          "net": "A_NRST"
+        },
+        "8": {
+          "name": "PA0 / ADC1.1",
+          "net": "M1_IU"
+        },
+        "9": {
+          "name": "PA1 / ADC2.2",
+          "net": "M1_IV"
+        },
+        "10": {
+          "name": "PA2 / USART2_TX",
+          "net": "A_UART_TX"
+        },
+        "11": {
+          "name": "PA3 / USART2_RX",
+          "net": "A_UART_RX"
+        },
+        "12": {
+          "name": "PA4 / ADC2.17",
+          "net": "A_VBUS"
+        },
+        "13": {
+          "name": "PA5 / ADC2.13",
+          "net": "A_NTC"
+        },
+        "14": {
+          "name": "PA6 / ADC2.3",
+          "net": "M2_IV"
+        },
+        "15": {
+          "name": "PA7 / unused",
+          "net": "NC"
+        },
+        "16": {
+          "name": "PB0 / ADC1.15",
+          "net": "M2_IU"
+        },
+        "17": {
+          "name": "PB1 / unused",
+          "net": "NC"
+        },
+        "18": {
+          "name": "PB2 / GPIO",
+          "net": "M2_RESET_N"
+        },
+        "19": {
+          "name": "VSS/A",
+          "net": "GND"
+        },
+        "20": {
+          "name": "VREF+",
+          "net": "A_VDDA"
+        },
+        "21": {
+          "name": "VDDA",
+          "net": "A_VDDA"
+        },
+        "22": {
+          "name": "PB10 / GPIO",
+          "net": "M1_RUN"
+        },
+        "23": {
+          "name": "VSS/A",
+          "net": "GND"
+        },
+        "24": {
+          "name": "VDD",
+          "net": "+3V3_A"
+        },
+        "25": {
+          "name": "PB11 / GPIO",
+          "net": "M2_RUN"
+        },
+        "26": {
+          "name": "PB12 / TIM1_BKIN",
+          "net": "M1_FAULT_N"
+        },
+        "27": {
+          "name": "PB13 / GPIO",
+          "net": "M1_SLEEP_N"
+        },
+        "28": {
+          "name": "PB14 / GPIO",
+          "net": "M1_RESET_N"
+        },
+        "29": {
+          "name": "PB15 / GPIO",
+          "net": "M2_SLEEP_N"
+        },
+        "30": {
+          "name": "PA8 / TIM1_CH1",
+          "net": "M1_PWM_U"
+        },
+        "31": {
+          "name": "PA9 / TIM1_CH2",
+          "net": "M1_PWM_V"
+        },
+        "32": {
+          "name": "PA10 / TIM1_CH3",
+          "net": "M1_PWM_W"
+        },
+        "33": {
+          "name": "PA11 / CAN_RX",
+          "net": "A_CAN_RX"
+        },
+        "34": {
+          "name": "PA12 / CAN_TX",
+          "net": "A_CAN_TX"
+        },
+        "35": {
+          "name": "VSS/A",
+          "net": "GND"
+        },
+        "36": {
+          "name": "VDD",
+          "net": "+3V3_A"
+        },
+        "37": {
+          "name": "PA13 / SWDIO",
+          "net": "A_SWDIO"
+        },
+        "38": {
+          "name": "PA14 / SWCLK",
+          "net": "A_SWCLK"
+        },
+        "39": {
+          "name": "PA15 / TIM8_CH1",
+          "net": "M2_PWM_U"
+        },
+        "40": {
+          "name": "PB3/4/5/6",
+          "net": "NC"
+        },
+        "41": {
+          "name": "PB3/4/5/6",
+          "net": "NC"
+        },
+        "42": {
+          "name": "PB3/4/5/6",
+          "net": "NC"
+        },
+        "43": {
+          "name": "PB3/4/5/6",
+          "net": "NC"
+        },
+        "44": {
+          "name": "PB7 / TIM8_BKIN",
+          "net": "M2_FAULT_N"
+        },
+        "45": {
+          "name": "PB8 / TIM8_CH2",
+          "net": "M2_PWM_V"
+        },
+        "46": {
+          "name": "PB9 / TIM8_CH3",
+          "net": "M2_PWM_W"
+        },
+        "47": {
+          "name": "VSS/A",
+          "net": "GND"
+        },
+        "48": {
+          "name": "VDD",
+          "net": "+3V3_A"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C701",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "pin24 就近"
+    },
+    {
+      "ref": "C702",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "pin36 就近"
+    },
+    {
+      "ref": "C703",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "pin48 就近"
+    },
+    {
+      "ref": "C704",
+      "value": "4.7uF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R701",
+      "value": "10Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "A_VDDA"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C705",
+      "value": "1uF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_VDDA"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C706",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_VDDA"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "VDDA/VREF+ 邻近接地"
+    },
+    {
+      "ref": "U2",
+      "value": "STM32G431CBT6",
+      "footprint": "LQFP48",
+      "pins": {
+        "1": {
+          "name": "VBAT",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "PC13 / GPIO",
+          "net": "B_ARM_FB"
+        },
+        "3": {
+          "name": "PC14/PC15",
+          "net": "NC"
+        },
+        "4": {
+          "name": "PC14/PC15",
+          "net": "NC"
+        },
+        "5": {
+          "name": "PF0 / HSE_IN",
+          "net": "B_OSC_IN"
+        },
+        "6": {
+          "name": "PF1 / HSE_OUT",
+          "net": "B_OSC_OUT"
+        },
+        "7": {
+          "name": "PG10 / NRST",
+          "net": "B_NRST"
+        },
+        "8": {
+          "name": "PA0 / ADC1.1",
+          "net": "M3_IU"
+        },
+        "9": {
+          "name": "PA1 / ADC2.2",
+          "net": "M3_IV"
+        },
+        "10": {
+          "name": "PA2 / USART2_TX",
+          "net": "B_UART_TX"
+        },
+        "11": {
+          "name": "PA3 / USART2_RX",
+          "net": "B_UART_RX"
+        },
+        "12": {
+          "name": "PA4 / ADC2.17",
+          "net": "B_VBUS"
+        },
+        "13": {
+          "name": "PA5 / ADC2.13",
+          "net": "B_NTC"
+        },
+        "14": {
+          "name": "PA6 / ADC2.3",
+          "net": "M4_IV"
+        },
+        "15": {
+          "name": "PA7 / unused",
+          "net": "NC"
+        },
+        "16": {
+          "name": "PB0 / ADC1.15",
+          "net": "M4_IU"
+        },
+        "17": {
+          "name": "PB1 / unused",
+          "net": "NC"
+        },
+        "18": {
+          "name": "PB2 / GPIO",
+          "net": "M4_RESET_N"
+        },
+        "19": {
+          "name": "VSS/A",
+          "net": "GND"
+        },
+        "20": {
+          "name": "VREF+",
+          "net": "B_VDDA"
+        },
+        "21": {
+          "name": "VDDA",
+          "net": "B_VDDA"
+        },
+        "22": {
+          "name": "PB10 / GPIO",
+          "net": "M3_RUN"
+        },
+        "23": {
+          "name": "VSS/A",
+          "net": "GND"
+        },
+        "24": {
+          "name": "VDD",
+          "net": "+3V3_B"
+        },
+        "25": {
+          "name": "PB11 / GPIO",
+          "net": "M4_RUN"
+        },
+        "26": {
+          "name": "PB12 / TIM1_BKIN",
+          "net": "M3_FAULT_N"
+        },
+        "27": {
+          "name": "PB13 / GPIO",
+          "net": "M3_SLEEP_N"
+        },
+        "28": {
+          "name": "PB14 / GPIO",
+          "net": "M3_RESET_N"
+        },
+        "29": {
+          "name": "PB15 / GPIO",
+          "net": "M4_SLEEP_N"
+        },
+        "30": {
+          "name": "PA8 / TIM1_CH1",
+          "net": "M3_PWM_U"
+        },
+        "31": {
+          "name": "PA9 / TIM1_CH2",
+          "net": "M3_PWM_V"
+        },
+        "32": {
+          "name": "PA10 / TIM1_CH3",
+          "net": "M3_PWM_W"
+        },
+        "33": {
+          "name": "PA11 / CAN_RX",
+          "net": "B_CAN_RX"
+        },
+        "34": {
+          "name": "PA12 / CAN_TX",
+          "net": "B_CAN_TX"
+        },
+        "35": {
+          "name": "VSS/A",
+          "net": "GND"
+        },
+        "36": {
+          "name": "VDD",
+          "net": "+3V3_B"
+        },
+        "37": {
+          "name": "PA13 / SWDIO",
+          "net": "B_SWDIO"
+        },
+        "38": {
+          "name": "PA14 / SWCLK",
+          "net": "B_SWCLK"
+        },
+        "39": {
+          "name": "PA15 / TIM8_CH1",
+          "net": "M4_PWM_U"
+        },
+        "40": {
+          "name": "PB3/4/5/6",
+          "net": "NC"
+        },
+        "41": {
+          "name": "PB3/4/5/6",
+          "net": "NC"
+        },
+        "42": {
+          "name": "PB3/4/5/6",
+          "net": "NC"
+        },
+        "43": {
+          "name": "PB3/4/5/6",
+          "net": "NC"
+        },
+        "44": {
+          "name": "PB7 / TIM8_BKIN",
+          "net": "M4_FAULT_N"
+        },
+        "45": {
+          "name": "PB8 / TIM8_CH2",
+          "net": "M4_PWM_V"
+        },
+        "46": {
+          "name": "PB9 / TIM8_CH3",
+          "net": "M4_PWM_W"
+        },
+        "47": {
+          "name": "VSS/A",
+          "net": "GND"
+        },
+        "48": {
+          "name": "VDD",
+          "net": "+3V3_B"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C801",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "pin24 就近"
+    },
+    {
+      "ref": "C802",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "pin36 就近"
+    },
+    {
+      "ref": "C803",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "pin48 就近"
+    },
+    {
+      "ref": "C804",
+      "value": "4.7uF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R801",
+      "value": "10Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "B_VDDA"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C805",
+      "value": "1uF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_VDDA"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C806",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_VDDA"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "VDDA/VREF+ 邻近接地"
+    },
+    {
+      "ref": "U51",
+      "value": "TCAN1042HGVDR",
+      "footprint": "SOIC-8",
+      "pins": {
+        "1": {
+          "name": "TXD",
+          "net": "A_CAN_TX"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "VCC",
+          "net": "+5V"
+        },
+        "4": {
+          "name": "RXD",
+          "net": "A_CAN_RX"
+        },
+        "5": {
+          "name": "VIO",
+          "net": "+3V3_A"
+        },
+        "6": {
+          "name": "CANL",
+          "net": "CANL"
+        },
+        "7": {
+          "name": "CANH",
+          "net": "CANH"
+        },
+        "8": {
+          "name": "STB",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U52",
+      "value": "TCAN1042HGVDR",
+      "footprint": "SOIC-8",
+      "pins": {
+        "1": {
+          "name": "TXD",
+          "net": "B_CAN_TX"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "VCC",
+          "net": "+5V"
+        },
+        "4": {
+          "name": "RXD",
+          "net": "B_CAN_RX"
+        },
+        "5": {
+          "name": "VIO",
+          "net": "+3V3_B"
+        },
+        "6": {
+          "name": "CANL",
+          "net": "CANL"
+        },
+        "7": {
+          "name": "CANH",
+          "net": "CANH"
+        },
+        "8": {
+          "name": "STB",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R510",
+      "value": "10k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_CAN_TX"
+        },
+        "2": {
+          "name": "2",
+          "net": "+3V3_A"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R520",
+      "value": "10k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_CAN_TX"
+        },
+        "2": {
+          "name": "2",
+          "net": "+3V3_B"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C511",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+5V"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C512",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C521",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+5V"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C522",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R530",
+      "value": "120Ω/0.25W",
+      "footprint": "1206",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "CANH"
+        },
+        "2": {
+          "name": "2",
+          "net": "TERM_L"
+        }
+      },
+      "note": "全板唯一终端电阻"
+    },
+    {
+      "ref": "SJ1",
+      "value": "焊桥 / 默认闭合",
+      "footprint": "焊桥",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "TERM_L"
+        },
+        "2": {
+          "name": "2",
+          "net": "CANL"
+        }
+      },
+      "note": "仅当电调为总线末端时闭合"
+    },
+    {
+      "ref": "D3",
+      "value": "PESD2CAN,215",
+      "footprint": "SOT23",
+      "pins": {
+        "1": {
+          "name": "K1",
+          "net": "CANH"
+        },
+        "2": {
+          "name": "K2",
+          "net": "CANL"
+        },
+        "3": {
+          "name": "common",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "J2",
+      "value": "飞控接口",
+      "footprint": "5针",
+      "pins": {
+        "1": {
+          "name": "CANH",
+          "net": "CANH"
+        },
+        "2": {
+          "name": "CANL",
+          "net": "CANL"
+        },
+        "3": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "4": {
+          "name": "ARM 3.3V",
+          "net": "ARM_EXT"
+        },
+        "5": {
+          "name": "5V_OUT option",
+          "net": "5V_OUT"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "SJ2",
+      "value": "DNP / 5V输出选择",
+      "footprint": "焊桥",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+5V"
+        },
+        "2": {
+          "name": "2",
+          "net": "5V_OUT"
+        }
+      },
+      "note": "默认断开；外部供电不可互相顶电"
+    },
+    {
+      "ref": "J1",
+      "value": "电池输入",
+      "footprint": "XT30/焊盘",
+      "pins": {
+        "1": {
+          "name": "BAT+",
+          "net": "BAT+"
+        },
+        "2": {
+          "name": "BAT-",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "Q1",
+      "value": "AO4407A",
+      "footprint": "SOIC-8",
+      "pins": {
+        "4": {
+          "name": "G",
+          "net": "RP_GATE"
+        },
+        "1,2,3": {
+          "name": "S",
+          "net": "VM"
+        },
+        "5,6,7,8": {
+          "name": "D",
+          "net": "BAT_FUSED"
+        }
+      },
+      "note": "反接保护：D 接电池侧，S 接负载侧；不是普通高侧开关接法"
+    },
+    {
+      "ref": "D1",
+      "value": "SMBJ15A",
+      "footprint": "SMB",
+      "pins": {
+        "K": {
+          "name": "K",
+          "net": "VM"
+        },
+        "A": {
+          "name": "A",
+          "net": "GND"
+        }
+      },
+      "note": "只抑制瞬态，不吸收持续回馈能量"
+    },
+    {
+      "ref": "D2",
+      "value": "BZT52C12",
+      "footprint": "SOD123",
+      "pins": {
+        "K": {
+          "name": "K",
+          "net": "VM"
+        },
+        "A": {
+          "name": "A",
+          "net": "RP_GATE"
+        }
+      },
+      "note": "Q1栅源保护"
+    },
+    {
+      "ref": "F1",
+      "value": "10A慢断 / 暂定",
+      "footprint": "保险丝",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "BAT+"
+        },
+        "2": {
+          "name": "2",
+          "net": "BAT_FUSED"
+        }
+      },
+      "note": "保护导线/短路；额定值按总电流复核"
+    },
+    {
+      "ref": "R610",
+      "value": "100k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "RP_GATE"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C610",
+      "value": "470uF/35V 低ESR",
+      "footprint": "径向电解",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": "容量/纹波/回馈按实测调整"
+    },
+    {
+      "ref": "U61",
+      "value": "TPS54302DDCR",
+      "footprint": "SOT23-THIN-6",
+      "pins": {
+        "1": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "2": {
+          "name": "SW",
+          "net": "SW5"
+        },
+        "3": {
+          "name": "VIN",
+          "net": "VM"
+        },
+        "4": {
+          "name": "FB",
+          "net": "FB5"
+        },
+        "5": {
+          "name": "EN",
+          "net": "BUCK_EN"
+        },
+        "6": {
+          "name": "BOOT",
+          "net": "BST5"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C611",
+      "value": "10uF/35V",
+      "footprint": "1210 X7R",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C612",
+      "value": "100nF/35V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C613",
+      "value": "100nF/16V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "BST5"
+        },
+        "2": {
+          "name": "2",
+          "net": "SW5"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "L1",
+      "value": "10uH / Isat≥4A",
+      "footprint": "屏蔽功率电感",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "SW5"
+        },
+        "2": {
+          "name": "2",
+          "net": "+5V"
+        }
+      },
+      "note": "Irms≥3A、低DCR；实际布局温升复核"
+    },
+    {
+      "ref": "C614",
+      "value": "22uF/25V",
+      "footprint": "1210 X7R",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+5V"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C615",
+      "value": "22uF/25V",
+      "footprint": "1210 X7R",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+5V"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R611",
+      "value": "100k/1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+5V"
+        },
+        "2": {
+          "name": "2",
+          "net": "FB5"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R612",
+      "value": "13.3k/1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "FB5"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C616",
+      "value": "75pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+5V"
+        },
+        "2": {
+          "name": "2",
+          "net": "FB5"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R613",
+      "value": "511k/1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "BUCK_EN"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R614",
+      "value": "105k/1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "BUCK_EN"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U62",
+      "value": "TLV75533PDBVR",
+      "footprint": "SOT23-5",
+      "pins": {
+        "1": {
+          "name": "IN",
+          "net": "+5V"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "EN",
+          "net": "+5V"
+        },
+        "4": {
+          "name": "NC",
+          "net": "NC"
+        },
+        "5": {
+          "name": "OUT",
+          "net": "+3V3_A"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U63",
+      "value": "TLV75533PDBVR",
+      "footprint": "SOT23-5",
+      "pins": {
+        "1": {
+          "name": "IN",
+          "net": "+5V"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "EN",
+          "net": "+5V"
+        },
+        "4": {
+          "name": "NC",
+          "net": "NC"
+        },
+        "5": {
+          "name": "OUT",
+          "net": "+3V3_B"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C621",
+      "value": "1uF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+5V"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C622",
+      "value": "4.7uF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C631",
+      "value": "1uF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+5V"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C632",
+      "value": "4.7uF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U21",
+      "value": "INA181A1IDBVR",
+      "footprint": "SOT23-6",
+      "pins": {
+        "1": {
+          "name": "OUT",
+          "net": "M1_OU"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "IN+",
+          "net": "M1_SU"
+        },
+        "4": {
+          "name": "IN-",
+          "net": "GND"
+        },
+        "5": {
+          "name": "REF",
+          "net": "A_MID"
+        },
+        "6": {
+          "name": "VS",
+          "net": "+3V3_A"
+        }
+      },
+      "note": "IN- 必须 Kelvin 返回对应分流电阻低端"
+    },
+    {
+      "ref": "R21",
+      "value": "100Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_OU"
+        },
+        "2": {
+          "name": "2",
+          "net": "M1_IU"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C21",
+      "value": "220pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_IU"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C221",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U22",
+      "value": "INA181A1IDBVR",
+      "footprint": "SOT23-6",
+      "pins": {
+        "1": {
+          "name": "OUT",
+          "net": "M1_OV"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "IN+",
+          "net": "M1_SV"
+        },
+        "4": {
+          "name": "IN-",
+          "net": "GND"
+        },
+        "5": {
+          "name": "REF",
+          "net": "A_MID"
+        },
+        "6": {
+          "name": "VS",
+          "net": "+3V3_A"
+        }
+      },
+      "note": "IN- 必须 Kelvin 返回对应分流电阻低端"
+    },
+    {
+      "ref": "R22",
+      "value": "100Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_OV"
+        },
+        "2": {
+          "name": "2",
+          "net": "M1_IV"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C22",
+      "value": "220pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_IV"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C222",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U23",
+      "value": "INA181A1IDBVR",
+      "footprint": "SOT23-6",
+      "pins": {
+        "1": {
+          "name": "OUT",
+          "net": "M2_OU"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "IN+",
+          "net": "M2_SU"
+        },
+        "4": {
+          "name": "IN-",
+          "net": "GND"
+        },
+        "5": {
+          "name": "REF",
+          "net": "A_MID"
+        },
+        "6": {
+          "name": "VS",
+          "net": "+3V3_A"
+        }
+      },
+      "note": "IN- 必须 Kelvin 返回对应分流电阻低端"
+    },
+    {
+      "ref": "R23",
+      "value": "100Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_OU"
+        },
+        "2": {
+          "name": "2",
+          "net": "M2_IU"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C23",
+      "value": "220pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_IU"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C223",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U24",
+      "value": "INA181A1IDBVR",
+      "footprint": "SOT23-6",
+      "pins": {
+        "1": {
+          "name": "OUT",
+          "net": "M2_OV"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "IN+",
+          "net": "M2_SV"
+        },
+        "4": {
+          "name": "IN-",
+          "net": "GND"
+        },
+        "5": {
+          "name": "REF",
+          "net": "A_MID"
+        },
+        "6": {
+          "name": "VS",
+          "net": "+3V3_A"
+        }
+      },
+      "note": "IN- 必须 Kelvin 返回对应分流电阻低端"
+    },
+    {
+      "ref": "R24",
+      "value": "100Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_OV"
+        },
+        "2": {
+          "name": "2",
+          "net": "M2_IV"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C24",
+      "value": "220pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_IV"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C224",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U25",
+      "value": "INA181A1IDBVR",
+      "footprint": "SOT23-6",
+      "pins": {
+        "1": {
+          "name": "OUT",
+          "net": "M3_OU"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "IN+",
+          "net": "M3_SU"
+        },
+        "4": {
+          "name": "IN-",
+          "net": "GND"
+        },
+        "5": {
+          "name": "REF",
+          "net": "B_MID"
+        },
+        "6": {
+          "name": "VS",
+          "net": "+3V3_B"
+        }
+      },
+      "note": "IN- 必须 Kelvin 返回对应分流电阻低端"
+    },
+    {
+      "ref": "R25",
+      "value": "100Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_OU"
+        },
+        "2": {
+          "name": "2",
+          "net": "M3_IU"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C25",
+      "value": "220pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_IU"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C225",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U26",
+      "value": "INA181A1IDBVR",
+      "footprint": "SOT23-6",
+      "pins": {
+        "1": {
+          "name": "OUT",
+          "net": "M3_OV"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "IN+",
+          "net": "M3_SV"
+        },
+        "4": {
+          "name": "IN-",
+          "net": "GND"
+        },
+        "5": {
+          "name": "REF",
+          "net": "B_MID"
+        },
+        "6": {
+          "name": "VS",
+          "net": "+3V3_B"
+        }
+      },
+      "note": "IN- 必须 Kelvin 返回对应分流电阻低端"
+    },
+    {
+      "ref": "R26",
+      "value": "100Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_OV"
+        },
+        "2": {
+          "name": "2",
+          "net": "M3_IV"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C26",
+      "value": "220pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_IV"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C226",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U27",
+      "value": "INA181A1IDBVR",
+      "footprint": "SOT23-6",
+      "pins": {
+        "1": {
+          "name": "OUT",
+          "net": "M4_OU"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "IN+",
+          "net": "M4_SU"
+        },
+        "4": {
+          "name": "IN-",
+          "net": "GND"
+        },
+        "5": {
+          "name": "REF",
+          "net": "B_MID"
+        },
+        "6": {
+          "name": "VS",
+          "net": "+3V3_B"
+        }
+      },
+      "note": "IN- 必须 Kelvin 返回对应分流电阻低端"
+    },
+    {
+      "ref": "R27",
+      "value": "100Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_OU"
+        },
+        "2": {
+          "name": "2",
+          "net": "M4_IU"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C27",
+      "value": "220pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_IU"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C227",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U28",
+      "value": "INA181A1IDBVR",
+      "footprint": "SOT23-6",
+      "pins": {
+        "1": {
+          "name": "OUT",
+          "net": "M4_OV"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "IN+",
+          "net": "M4_SV"
+        },
+        "4": {
+          "name": "IN-",
+          "net": "GND"
+        },
+        "5": {
+          "name": "REF",
+          "net": "B_MID"
+        },
+        "6": {
+          "name": "VS",
+          "net": "+3V3_B"
+        }
+      },
+      "note": "IN- 必须 Kelvin 返回对应分流电阻低端"
+    },
+    {
+      "ref": "R28",
+      "value": "100Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_OV"
+        },
+        "2": {
+          "name": "2",
+          "net": "M4_IV"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C28",
+      "value": "220pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_IV"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C228",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U41",
+      "value": "SN74LVC1G11DBVR",
+      "footprint": "SOT23-6",
+      "pins": {
+        "1": {
+          "name": "A",
+          "net": "ARM_SAFE"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "B",
+          "net": "M1_RUN"
+        },
+        "4": {
+          "name": "Y",
+          "net": "M1_GATE"
+        },
+        "5": {
+          "name": "VCC",
+          "net": "+3V3_A"
+        },
+        "6": {
+          "name": "C",
+          "net": "M1_FAULT_N"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R41",
+      "value": "100Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_GATE"
+        },
+        "2": {
+          "name": "2",
+          "net": "M1_EN"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C41",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U42",
+      "value": "SN74LVC1G11DBVR",
+      "footprint": "SOT23-6",
+      "pins": {
+        "1": {
+          "name": "A",
+          "net": "ARM_SAFE"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "B",
+          "net": "M2_RUN"
+        },
+        "4": {
+          "name": "Y",
+          "net": "M2_GATE"
+        },
+        "5": {
+          "name": "VCC",
+          "net": "+3V3_A"
+        },
+        "6": {
+          "name": "C",
+          "net": "M2_FAULT_N"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R42",
+      "value": "100Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_GATE"
+        },
+        "2": {
+          "name": "2",
+          "net": "M2_EN"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C42",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U43",
+      "value": "SN74LVC1G11DBVR",
+      "footprint": "SOT23-6",
+      "pins": {
+        "1": {
+          "name": "A",
+          "net": "ARM_SAFE"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "B",
+          "net": "M3_RUN"
+        },
+        "4": {
+          "name": "Y",
+          "net": "M3_GATE"
+        },
+        "5": {
+          "name": "VCC",
+          "net": "+3V3_B"
+        },
+        "6": {
+          "name": "C",
+          "net": "M3_FAULT_N"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R43",
+      "value": "100Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_GATE"
+        },
+        "2": {
+          "name": "2",
+          "net": "M3_EN"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C43",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U44",
+      "value": "SN74LVC1G11DBVR",
+      "footprint": "SOT23-6",
+      "pins": {
+        "1": {
+          "name": "A",
+          "net": "ARM_SAFE"
+        },
+        "2": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "3": {
+          "name": "B",
+          "net": "M4_RUN"
+        },
+        "4": {
+          "name": "Y",
+          "net": "M4_GATE"
+        },
+        "5": {
+          "name": "VCC",
+          "net": "+3V3_B"
+        },
+        "6": {
+          "name": "C",
+          "net": "M4_FAULT_N"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R44",
+      "value": "100Ω",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_GATE"
+        },
+        "2": {
+          "name": "2",
+          "net": "M4_EN"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C44",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U31",
+      "value": "TLV9001IDBVR",
+      "footprint": "SOT23-5",
+      "pins": {
+        "1": {
+          "name": "OUT",
+          "net": "A_MID"
+        },
+        "2": {
+          "name": "V-",
+          "net": "GND"
+        },
+        "3": {
+          "name": "IN+",
+          "net": "A_DIV"
+        },
+        "4": {
+          "name": "IN-",
+          "net": "A_MID"
+        },
+        "5": {
+          "name": "V+",
+          "net": "+3V3_A"
+        }
+      },
+      "note": "标准TLV9001 DBV，不是U版本"
+    },
+    {
+      "ref": "R311",
+      "value": "10k/0.1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "A_DIV"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R312",
+      "value": "10k/0.1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_DIV"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C311",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_DIV"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C312",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U32",
+      "value": "TLV9001IDBVR",
+      "footprint": "SOT23-5",
+      "pins": {
+        "1": {
+          "name": "OUT",
+          "net": "B_MID"
+        },
+        "2": {
+          "name": "V-",
+          "net": "GND"
+        },
+        "3": {
+          "name": "IN+",
+          "net": "B_DIV"
+        },
+        "4": {
+          "name": "IN-",
+          "net": "B_MID"
+        },
+        "5": {
+          "name": "V+",
+          "net": "+3V3_B"
+        }
+      },
+      "note": "标准TLV9001 DBV，不是U版本"
+    },
+    {
+      "ref": "R321",
+      "value": "10k/0.1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "B_DIV"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R322",
+      "value": "10k/0.1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_DIV"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C321",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_DIV"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C322",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U45",
+      "value": "SN74LVC1G17DBVR",
+      "footprint": "SOT23-5",
+      "pins": {
+        "1": {
+          "name": "NC",
+          "net": "NC"
+        },
+        "2": {
+          "name": "A",
+          "net": "ARM_F"
+        },
+        "3": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "4": {
+          "name": "Y",
+          "net": "ARM_SAFE"
+        },
+        "5": {
+          "name": "VCC",
+          "net": "+3V3_A"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "U46",
+      "value": "SN74LVC1G17DBVR",
+      "footprint": "SOT23-5",
+      "pins": {
+        "1": {
+          "name": "NC",
+          "net": "NC"
+        },
+        "2": {
+          "name": "A",
+          "net": "ARM_SAFE"
+        },
+        "3": {
+          "name": "GND",
+          "net": "GND"
+        },
+        "4": {
+          "name": "Y",
+          "net": "B_ARM_FB"
+        },
+        "5": {
+          "name": "VCC",
+          "net": "+3V3_B"
+        }
+      },
+      "note": "B域ARM回读缓冲；Ioff避免B域断电时ARM向PC13倒灌"
+    },
+    {
+      "ref": "R450",
+      "value": "1k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "ARM_EXT"
+        },
+        "2": {
+          "name": "2",
+          "net": "ARM_F"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R451",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "ARM_F"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C450",
+      "value": "10nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "ARM_F"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R452",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "ARM_SAFE"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C451",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R460",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_ARM_FB"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C460",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "Y1",
+      "value": "8MHz CL12pF",
+      "footprint": "3225晶体",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_OSC_IN"
+        },
+        "2": {
+          "name": "2",
+          "net": "A_OSC_OUT"
+        }
+      },
+      "note": "ESR/负阻与CL实测；18pF为初值"
+    },
+    {
+      "ref": "C707",
+      "value": "18pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_OSC_IN"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C708",
+      "value": "18pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_OSC_OUT"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R702",
+      "value": "10k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "A_NRST"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C709",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_NRST"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R703",
+      "value": "10k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_PWM_V"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R704",
+      "value": "100k/1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "A_VBUS"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R705",
+      "value": "10k/1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_VBUS"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C710",
+      "value": "10nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_VBUS"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R706",
+      "value": "10k/1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "A_NTC"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "TH1",
+      "value": "NTC10k B3950",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_NTC"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C711",
+      "value": "10nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_NTC"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "JDA",
+      "value": "SWD",
+      "footprint": "1x5",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_A"
+        },
+        "2": {
+          "name": "2",
+          "net": "A_SWDIO"
+        },
+        "3": {
+          "name": "3",
+          "net": "A_SWCLK"
+        },
+        "4": {
+          "name": "4",
+          "net": "GND"
+        },
+        "5": {
+          "name": "5",
+          "net": "A_NRST"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "JUA",
+      "value": "UART 3.3V",
+      "footprint": "1x3",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "A_UART_TX"
+        },
+        "2": {
+          "name": "2",
+          "net": "A_UART_RX"
+        },
+        "3": {
+          "name": "3",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "Y2",
+      "value": "8MHz CL12pF",
+      "footprint": "3225晶体",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_OSC_IN"
+        },
+        "2": {
+          "name": "2",
+          "net": "B_OSC_OUT"
+        }
+      },
+      "note": "ESR/负阻与CL实测；18pF为初值"
+    },
+    {
+      "ref": "C807",
+      "value": "18pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_OSC_IN"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C808",
+      "value": "18pF/C0G",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_OSC_OUT"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R802",
+      "value": "10k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "B_NRST"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C809",
+      "value": "100nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_NRST"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R803",
+      "value": "10k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_PWM_V"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R804",
+      "value": "100k/1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "VM"
+        },
+        "2": {
+          "name": "2",
+          "net": "B_VBUS"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R805",
+      "value": "10k/1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_VBUS"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C810",
+      "value": "10nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_VBUS"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R806",
+      "value": "10k/1%",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "B_NTC"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "TH2",
+      "value": "NTC10k B3950",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_NTC"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "C811",
+      "value": "10nF/10V",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_NTC"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "JDB",
+      "value": "SWD",
+      "footprint": "1x5",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "+3V3_B"
+        },
+        "2": {
+          "name": "2",
+          "net": "B_SWDIO"
+        },
+        "3": {
+          "name": "3",
+          "net": "B_SWCLK"
+        },
+        "4": {
+          "name": "4",
+          "net": "GND"
+        },
+        "5": {
+          "name": "5",
+          "net": "B_NRST"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "JUB",
+      "value": "UART 3.3V",
+      "footprint": "1x3",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "B_UART_TX"
+        },
+        "2": {
+          "name": "2",
+          "net": "B_UART_RX"
+        },
+        "3": {
+          "name": "3",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R101",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_RUN"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R102",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_EN"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R103",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_SLEEP_N"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R104",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_RESET_N"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R105",
+      "value": "10k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M1_FAULT_N"
+        },
+        "2": {
+          "name": "2",
+          "net": "+3V3_A"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R201",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_RUN"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R202",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_EN"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R203",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_SLEEP_N"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R204",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_RESET_N"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R205",
+      "value": "10k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M2_FAULT_N"
+        },
+        "2": {
+          "name": "2",
+          "net": "+3V3_A"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R301",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_RUN"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R302",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_EN"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R303",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_SLEEP_N"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R304",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_RESET_N"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R305",
+      "value": "10k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M3_FAULT_N"
+        },
+        "2": {
+          "name": "2",
+          "net": "+3V3_B"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R401",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_RUN"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R402",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_EN"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R403",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_SLEEP_N"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R404",
+      "value": "47k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_RESET_N"
+        },
+        "2": {
+          "name": "2",
+          "net": "GND"
+        }
+      },
+      "note": ""
+    },
+    {
+      "ref": "R405",
+      "value": "10k",
+      "footprint": "0603",
+      "pins": {
+        "1": {
+          "name": "1",
+          "net": "M4_FAULT_N"
+        },
+        "2": {
+          "name": "2",
+          "net": "+3V3_B"
+        }
+      },
+      "note": ""
+    }
+  ],
+  "nets": {
+    "M1_CPL": [
+      "U11.1",
+      "C104.2"
+    ],
+    "M1_CPH": [
+      "U11.2",
+      "C104.1"
+    ],
+    "M1_VCP": [
+      "U11.3",
+      "C105.1"
+    ],
+    "VM": [
+      "U11.4",
+      "U11.11",
+      "C101.1",
+      "C102.1",
+      "C103.1",
+      "C105.2",
+      "U12.4",
+      "U12.11",
+      "C201.1",
+      "C202.1",
+      "C203.1",
+      "C205.2",
+      "U13.4",
+      "U13.11",
+      "C301.1",
+      "C302.1",
+      "C303.1",
+      "C305.2",
+      "U14.4",
+      "U14.11",
+      "C401.1",
+      "C402.1",
+      "C403.1",
+      "C405.2",
+      "Q1.1,2,3",
+      "D1.K",
+      "D2.K",
+      "C610.1",
+      "U61.3",
+      "C611.1",
+      "C612.1",
+      "R613.1",
+      "R704.1",
+      "R804.1"
+    ],
+    "M1_U": [
+      "U11.5",
+      "JM1.1"
+    ],
+    "M1_SU": [
+      "U11.6",
+      "RS11.1",
+      "U21.3"
+    ],
+    "M1_SV": [
+      "U11.7",
+      "RS12.1",
+      "U22.3"
+    ],
+    "M1_V": [
+      "U11.8",
+      "JM1.2"
+    ],
+    "M1_W": [
+      "U11.9",
+      "JM1.3"
+    ],
+    "GND": [
+      "U11.10",
+      "U11.12",
+      "U11.13",
+      "U11.14",
+      "U11.19",
+      "U11.20",
+      "U11.28",
+      "U11.29",
+      "C101.2",
+      "C102.2",
+      "C103.2",
+      "C106.2",
+      "RS11.2",
+      "RS12.2",
+      "U12.10",
+      "U12.12",
+      "U12.13",
+      "U12.14",
+      "U12.19",
+      "U12.20",
+      "U12.28",
+      "U12.29",
+      "C201.2",
+      "C202.2",
+      "C203.2",
+      "C206.2",
+      "RS21.2",
+      "RS22.2",
+      "U13.10",
+      "U13.12",
+      "U13.13",
+      "U13.14",
+      "U13.19",
+      "U13.20",
+      "U13.28",
+      "U13.29",
+      "C301.2",
+      "C302.2",
+      "C303.2",
+      "C306.2",
+      "RS31.2",
+      "RS32.2",
+      "U14.10",
+      "U14.12",
+      "U14.13",
+      "U14.14",
+      "U14.19",
+      "U14.20",
+      "U14.28",
+      "U14.29",
+      "C401.2",
+      "C402.2",
+      "C403.2",
+      "C406.2",
+      "RS41.2",
+      "RS42.2",
+      "U1.19",
+      "U1.23",
+      "U1.35",
+      "U1.47",
+      "C701.2",
+      "C702.2",
+      "C703.2",
+      "C704.2",
+      "C705.2",
+      "C706.2",
+      "U2.19",
+      "U2.23",
+      "U2.35",
+      "U2.47",
+      "C801.2",
+      "C802.2",
+      "C803.2",
+      "C804.2",
+      "C805.2",
+      "C806.2",
+      "U51.2",
+      "U51.8",
+      "U52.2",
+      "U52.8",
+      "C511.2",
+      "C512.2",
+      "C521.2",
+      "C522.2",
+      "D3.3",
+      "J2.3",
+      "J1.2",
+      "D1.A",
+      "R610.2",
+      "C610.2",
+      "U61.1",
+      "C611.2",
+      "C612.2",
+      "C614.2",
+      "C615.2",
+      "R612.2",
+      "R614.2",
+      "U62.2",
+      "U63.2",
+      "C621.2",
+      "C622.2",
+      "C631.2",
+      "C632.2",
+      "U21.2",
+      "U21.4",
+      "C21.2",
+      "C221.2",
+      "U22.2",
+      "U22.4",
+      "C22.2",
+      "C222.2",
+      "U23.2",
+      "U23.4",
+      "C23.2",
+      "C223.2",
+      "U24.2",
+      "U24.4",
+      "C24.2",
+      "C224.2",
+      "U25.2",
+      "U25.4",
+      "C25.2",
+      "C225.2",
+      "U26.2",
+      "U26.4",
+      "C26.2",
+      "C226.2",
+      "U27.2",
+      "U27.4",
+      "C27.2",
+      "C227.2",
+      "U28.2",
+      "U28.4",
+      "C28.2",
+      "C228.2",
+      "U41.2",
+      "C41.2",
+      "U42.2",
+      "C42.2",
+      "U43.2",
+      "C43.2",
+      "U44.2",
+      "C44.2",
+      "U31.2",
+      "R312.2",
+      "C311.2",
+      "C312.2",
+      "U32.2",
+      "R322.2",
+      "C321.2",
+      "C322.2",
+      "U45.3",
+      "U46.3",
+      "R451.2",
+      "C450.2",
+      "R452.2",
+      "C451.2",
+      "R460.2",
+      "C460.2",
+      "C707.2",
+      "C708.2",
+      "C709.2",
+      "R703.2",
+      "R705.2",
+      "C710.2",
+      "TH1.2",
+      "C711.2",
+      "JDA.4",
+      "JUA.3",
+      "C807.2",
+      "C808.2",
+      "C809.2",
+      "R803.2",
+      "R805.2",
+      "C810.2",
+      "TH2.2",
+      "C811.2",
+      "JDB.4",
+      "JUB.3",
+      "R101.2",
+      "R102.2",
+      "R103.2",
+      "R104.2",
+      "R201.2",
+      "R202.2",
+      "R203.2",
+      "R204.2",
+      "R301.2",
+      "R302.2",
+      "R303.2",
+      "R304.2",
+      "R401.2",
+      "R402.2",
+      "R403.2",
+      "R404.2"
+    ],
+    "M1_DRV3V3": [
+      "U11.15",
+      "C106.1"
+    ],
+    "M1_RESET_N": [
+      "U11.16",
+      "U1.28",
+      "R104.1"
+    ],
+    "M1_SLEEP_N": [
+      "U11.17",
+      "U1.27",
+      "R103.1"
+    ],
+    "M1_FAULT_N": [
+      "U11.18",
+      "U1.26",
+      "U41.6",
+      "R105.1"
+    ],
+    "M1_EN": [
+      "U11.22",
+      "U11.24",
+      "U11.26",
+      "R41.2",
+      "R102.1"
+    ],
+    "M1_PWM_W": [
+      "U11.23",
+      "U1.32"
+    ],
+    "M1_PWM_V": [
+      "U11.25",
+      "U1.31"
+    ],
+    "M1_PWM_U": [
+      "U11.27",
+      "U1.30"
+    ],
+    "M2_CPL": [
+      "U12.1",
+      "C204.2"
+    ],
+    "M2_CPH": [
+      "U12.2",
+      "C204.1"
+    ],
+    "M2_VCP": [
+      "U12.3",
+      "C205.1"
+    ],
+    "M2_U": [
+      "U12.5",
+      "JM2.1"
+    ],
+    "M2_SU": [
+      "U12.6",
+      "RS21.1",
+      "U23.3"
+    ],
+    "M2_SV": [
+      "U12.7",
+      "RS22.1",
+      "U24.3"
+    ],
+    "M2_V": [
+      "U12.8",
+      "JM2.2"
+    ],
+    "M2_W": [
+      "U12.9",
+      "JM2.3"
+    ],
+    "M2_DRV3V3": [
+      "U12.15",
+      "C206.1"
+    ],
+    "M2_RESET_N": [
+      "U12.16",
+      "U1.18",
+      "R204.1"
+    ],
+    "M2_SLEEP_N": [
+      "U12.17",
+      "U1.29",
+      "R203.1"
+    ],
+    "M2_FAULT_N": [
+      "U12.18",
+      "U1.44",
+      "U42.6",
+      "R205.1"
+    ],
+    "M2_EN": [
+      "U12.22",
+      "U12.24",
+      "U12.26",
+      "R42.2",
+      "R202.1"
+    ],
+    "M2_PWM_W": [
+      "U12.23",
+      "U1.46"
+    ],
+    "M2_PWM_V": [
+      "U12.25",
+      "U1.45",
+      "R703.1"
+    ],
+    "M2_PWM_U": [
+      "U12.27",
+      "U1.39"
+    ],
+    "M3_CPL": [
+      "U13.1",
+      "C304.2"
+    ],
+    "M3_CPH": [
+      "U13.2",
+      "C304.1"
+    ],
+    "M3_VCP": [
+      "U13.3",
+      "C305.1"
+    ],
+    "M3_U": [
+      "U13.5",
+      "JM3.1"
+    ],
+    "M3_SU": [
+      "U13.6",
+      "RS31.1",
+      "U25.3"
+    ],
+    "M3_SV": [
+      "U13.7",
+      "RS32.1",
+      "U26.3"
+    ],
+    "M3_V": [
+      "U13.8",
+      "JM3.2"
+    ],
+    "M3_W": [
+      "U13.9",
+      "JM3.3"
+    ],
+    "M3_DRV3V3": [
+      "U13.15",
+      "C306.1"
+    ],
+    "M3_RESET_N": [
+      "U13.16",
+      "U2.28",
+      "R304.1"
+    ],
+    "M3_SLEEP_N": [
+      "U13.17",
+      "U2.27",
+      "R303.1"
+    ],
+    "M3_FAULT_N": [
+      "U13.18",
+      "U2.26",
+      "U43.6",
+      "R305.1"
+    ],
+    "M3_EN": [
+      "U13.22",
+      "U13.24",
+      "U13.26",
+      "R43.2",
+      "R302.1"
+    ],
+    "M3_PWM_W": [
+      "U13.23",
+      "U2.32"
+    ],
+    "M3_PWM_V": [
+      "U13.25",
+      "U2.31"
+    ],
+    "M3_PWM_U": [
+      "U13.27",
+      "U2.30"
+    ],
+    "M4_CPL": [
+      "U14.1",
+      "C404.2"
+    ],
+    "M4_CPH": [
+      "U14.2",
+      "C404.1"
+    ],
+    "M4_VCP": [
+      "U14.3",
+      "C405.1"
+    ],
+    "M4_U": [
+      "U14.5",
+      "JM4.1"
+    ],
+    "M4_SU": [
+      "U14.6",
+      "RS41.1",
+      "U27.3"
+    ],
+    "M4_SV": [
+      "U14.7",
+      "RS42.1",
+      "U28.3"
+    ],
+    "M4_V": [
+      "U14.8",
+      "JM4.2"
+    ],
+    "M4_W": [
+      "U14.9",
+      "JM4.3"
+    ],
+    "M4_DRV3V3": [
+      "U14.15",
+      "C406.1"
+    ],
+    "M4_RESET_N": [
+      "U14.16",
+      "U2.18",
+      "R404.1"
+    ],
+    "M4_SLEEP_N": [
+      "U14.17",
+      "U2.29",
+      "R403.1"
+    ],
+    "M4_FAULT_N": [
+      "U14.18",
+      "U2.44",
+      "U44.6",
+      "R405.1"
+    ],
+    "M4_EN": [
+      "U14.22",
+      "U14.24",
+      "U14.26",
+      "R44.2",
+      "R402.1"
+    ],
+    "M4_PWM_W": [
+      "U14.23",
+      "U2.46"
+    ],
+    "M4_PWM_V": [
+      "U14.25",
+      "U2.45",
+      "R803.1"
+    ],
+    "M4_PWM_U": [
+      "U14.27",
+      "U2.39"
+    ],
+    "+3V3_A": [
+      "U1.1",
+      "U1.24",
+      "U1.36",
+      "U1.48",
+      "C701.1",
+      "C702.1",
+      "C703.1",
+      "C704.1",
+      "R701.1",
+      "U51.5",
+      "R510.2",
+      "C512.1",
+      "U62.5",
+      "C622.1",
+      "U21.6",
+      "C221.1",
+      "U22.6",
+      "C222.1",
+      "U23.6",
+      "C223.1",
+      "U24.6",
+      "C224.1",
+      "U41.5",
+      "C41.1",
+      "U42.5",
+      "C42.1",
+      "U31.5",
+      "R311.1",
+      "C312.1",
+      "U45.5",
+      "C451.1",
+      "R702.1",
+      "R706.1",
+      "JDA.1",
+      "R105.2",
+      "R205.2"
+    ],
+    "ARM_SAFE": [
+      "U1.2",
+      "U41.1",
+      "U42.1",
+      "U43.1",
+      "U44.1",
+      "U45.4",
+      "U46.2",
+      "R452.1"
+    ],
+    "A_OSC_IN": [
+      "U1.5",
+      "Y1.1",
+      "C707.1"
+    ],
+    "A_OSC_OUT": [
+      "U1.6",
+      "Y1.2",
+      "C708.1"
+    ],
+    "A_NRST": [
+      "U1.7",
+      "R702.2",
+      "C709.1",
+      "JDA.5"
+    ],
+    "M1_IU": [
+      "U1.8",
+      "R21.2",
+      "C21.1"
+    ],
+    "M1_IV": [
+      "U1.9",
+      "R22.2",
+      "C22.1"
+    ],
+    "A_UART_TX": [
+      "U1.10",
+      "JUA.1"
+    ],
+    "A_UART_RX": [
+      "U1.11",
+      "JUA.2"
+    ],
+    "A_VBUS": [
+      "U1.12",
+      "R704.2",
+      "R705.1",
+      "C710.1"
+    ],
+    "A_NTC": [
+      "U1.13",
+      "R706.2",
+      "TH1.1",
+      "C711.1"
+    ],
+    "M2_IV": [
+      "U1.14",
+      "R24.2",
+      "C24.1"
+    ],
+    "M2_IU": [
+      "U1.16",
+      "R23.2",
+      "C23.1"
+    ],
+    "A_VDDA": [
+      "U1.20",
+      "U1.21",
+      "R701.2",
+      "C705.1",
+      "C706.1"
+    ],
+    "M1_RUN": [
+      "U1.22",
+      "U41.3",
+      "R101.1"
+    ],
+    "M2_RUN": [
+      "U1.25",
+      "U42.3",
+      "R201.1"
+    ],
+    "A_CAN_RX": [
+      "U1.33",
+      "U51.4"
+    ],
+    "A_CAN_TX": [
+      "U1.34",
+      "U51.1",
+      "R510.1"
+    ],
+    "A_SWDIO": [
+      "U1.37",
+      "JDA.2"
+    ],
+    "A_SWCLK": [
+      "U1.38",
+      "JDA.3"
+    ],
+    "+3V3_B": [
+      "U2.1",
+      "U2.24",
+      "U2.36",
+      "U2.48",
+      "C801.1",
+      "C802.1",
+      "C803.1",
+      "C804.1",
+      "R801.1",
+      "U52.5",
+      "R520.2",
+      "C522.1",
+      "U63.5",
+      "C632.1",
+      "U25.6",
+      "C225.1",
+      "U26.6",
+      "C226.1",
+      "U27.6",
+      "C227.1",
+      "U28.6",
+      "C228.1",
+      "U43.5",
+      "C43.1",
+      "U44.5",
+      "C44.1",
+      "U32.5",
+      "R321.1",
+      "C322.1",
+      "U46.5",
+      "C460.1",
+      "R802.1",
+      "R806.1",
+      "JDB.1",
+      "R305.2",
+      "R405.2"
+    ],
+    "B_ARM_FB": [
+      "U2.2",
+      "U46.4",
+      "R460.1"
+    ],
+    "B_OSC_IN": [
+      "U2.5",
+      "Y2.1",
+      "C807.1"
+    ],
+    "B_OSC_OUT": [
+      "U2.6",
+      "Y2.2",
+      "C808.1"
+    ],
+    "B_NRST": [
+      "U2.7",
+      "R802.2",
+      "C809.1",
+      "JDB.5"
+    ],
+    "M3_IU": [
+      "U2.8",
+      "R25.2",
+      "C25.1"
+    ],
+    "M3_IV": [
+      "U2.9",
+      "R26.2",
+      "C26.1"
+    ],
+    "B_UART_TX": [
+      "U2.10",
+      "JUB.1"
+    ],
+    "B_UART_RX": [
+      "U2.11",
+      "JUB.2"
+    ],
+    "B_VBUS": [
+      "U2.12",
+      "R804.2",
+      "R805.1",
+      "C810.1"
+    ],
+    "B_NTC": [
+      "U2.13",
+      "R806.2",
+      "TH2.1",
+      "C811.1"
+    ],
+    "M4_IV": [
+      "U2.14",
+      "R28.2",
+      "C28.1"
+    ],
+    "M4_IU": [
+      "U2.16",
+      "R27.2",
+      "C27.1"
+    ],
+    "B_VDDA": [
+      "U2.20",
+      "U2.21",
+      "R801.2",
+      "C805.1",
+      "C806.1"
+    ],
+    "M3_RUN": [
+      "U2.22",
+      "U43.3",
+      "R301.1"
+    ],
+    "M4_RUN": [
+      "U2.25",
+      "U44.3",
+      "R401.1"
+    ],
+    "B_CAN_RX": [
+      "U2.33",
+      "U52.4"
+    ],
+    "B_CAN_TX": [
+      "U2.34",
+      "U52.1",
+      "R520.1"
+    ],
+    "B_SWDIO": [
+      "U2.37",
+      "JDB.2"
+    ],
+    "B_SWCLK": [
+      "U2.38",
+      "JDB.3"
+    ],
+    "+5V": [
+      "U51.3",
+      "U52.3",
+      "C511.1",
+      "C521.1",
+      "SJ2.1",
+      "L1.2",
+      "C614.1",
+      "C615.1",
+      "R611.1",
+      "C616.1",
+      "U62.1",
+      "U62.3",
+      "U63.1",
+      "U63.3",
+      "C621.1",
+      "C631.1"
+    ],
+    "CANL": [
+      "U51.6",
+      "U52.6",
+      "SJ1.2",
+      "D3.2",
+      "J2.2"
+    ],
+    "CANH": [
+      "U51.7",
+      "U52.7",
+      "R530.1",
+      "D3.1",
+      "J2.1"
+    ],
+    "TERM_L": [
+      "R530.2",
+      "SJ1.1"
+    ],
+    "ARM_EXT": [
+      "J2.4",
+      "R450.1"
+    ],
+    "5V_OUT": [
+      "J2.5",
+      "SJ2.2"
+    ],
+    "BAT+": [
+      "J1.1",
+      "F1.1"
+    ],
+    "RP_GATE": [
+      "Q1.4",
+      "D2.A",
+      "R610.1"
+    ],
+    "BAT_FUSED": [
+      "Q1.5,6,7,8",
+      "F1.2"
+    ],
+    "SW5": [
+      "U61.2",
+      "C613.2",
+      "L1.1"
+    ],
+    "FB5": [
+      "U61.4",
+      "R611.2",
+      "R612.1",
+      "C616.2"
+    ],
+    "BUCK_EN": [
+      "U61.5",
+      "R613.2",
+      "R614.1"
+    ],
+    "BST5": [
+      "U61.6",
+      "C613.1"
+    ],
+    "M1_OU": [
+      "U21.1",
+      "R21.1"
+    ],
+    "A_MID": [
+      "U21.5",
+      "U22.5",
+      "U23.5",
+      "U24.5",
+      "U31.1",
+      "U31.4"
+    ],
+    "M1_OV": [
+      "U22.1",
+      "R22.1"
+    ],
+    "M2_OU": [
+      "U23.1",
+      "R23.1"
+    ],
+    "M2_OV": [
+      "U24.1",
+      "R24.1"
+    ],
+    "M3_OU": [
+      "U25.1",
+      "R25.1"
+    ],
+    "B_MID": [
+      "U25.5",
+      "U26.5",
+      "U27.5",
+      "U28.5",
+      "U32.1",
+      "U32.4"
+    ],
+    "M3_OV": [
+      "U26.1",
+      "R26.1"
+    ],
+    "M4_OU": [
+      "U27.1",
+      "R27.1"
+    ],
+    "M4_OV": [
+      "U28.1",
+      "R28.1"
+    ],
+    "M1_GATE": [
+      "U41.4",
+      "R41.1"
+    ],
+    "M2_GATE": [
+      "U42.4",
+      "R42.1"
+    ],
+    "M3_GATE": [
+      "U43.4",
+      "R43.1"
+    ],
+    "M4_GATE": [
+      "U44.4",
+      "R44.1"
+    ],
+    "A_DIV": [
+      "U31.3",
+      "R311.2",
+      "R312.1",
+      "C311.1"
+    ],
+    "B_DIV": [
+      "U32.3",
+      "R321.2",
+      "R322.1",
+      "C321.1"
+    ],
+    "ARM_F": [
+      "U45.2",
+      "R450.2",
+      "R451.1",
+      "C450.1"
+    ]
+  }
+}
