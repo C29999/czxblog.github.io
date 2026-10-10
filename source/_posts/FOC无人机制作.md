@@ -1,5 +1,5 @@
 ---
-title: 无感 FOC 无人机制作记录：开环驱动验证与四合一电调设计
+title: 无感 FOC 无人机制作记录
 description: 四轴飞控
 categories: 四轴飞控
 sticky: 4
