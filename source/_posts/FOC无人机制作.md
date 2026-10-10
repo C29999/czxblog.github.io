@@ -15,6 +15,7 @@ date: 2025-08-17 12:00:00
 目标是自制一台约 2 英寸机架、采用 1104/4300KV 无刷电机的四轴无人机，逐步完成四合一无感 FOC 电调与飞控。当前已使用 TC264D 开发板配合 SimpleFOC Mini（DRV8313）验证单电机开环转动，并完成双 STM32G431 四合一电调的 Rev E 原理图审查稿；ESP32-S3 飞控、PCB、无感闭环和整机飞行仍属后续计划。
 
 > **代码仓库**：[FOC-Study](https://github.com/C29999/FOC-Study) — 纯开环强拖验证代码
+> **上位机**：[host-computer](https://github.com/C29999/host-computer) — 串口调试上位机
 
 ## FOC驱动的第一步
 
