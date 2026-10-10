@@ -1,6 +1,6 @@
 ---
 title: 这是我第一篇博客，关于我
-date: ' 2025.2.16'
+date: 2025-01-01 00:00:00
 description: 'my first blog,Welcome to visit'
 sticky: 1
 categories: 关于我
