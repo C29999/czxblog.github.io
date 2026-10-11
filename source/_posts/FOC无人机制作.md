@@ -197,6 +197,24 @@ static void latch_fault(void)
 | 供电 | TPS54302 降压、两路 TLV75533 | 产生约 5V 和两组 3.3V |
 | 辅助测量与调试 | 母线分压、NTC、独立 SWD/UART | 电压温度监测、下载及调试 |
 
+#### 电源模块解释
+
+#### 主控模块解释
+
+#### 电机驱动模块解释
+
+#### CAN接口模块解释
+
+![CAN 总线接口原理图](/images/can-interface.png)
+
+<p align="center">CAN 总线接口：双收发器 + ESD 保护 + 安全信号电平转换</p>
+
+CAN 模块按功能可以分为三部分：
+
+- **总线接口（ZP1 + D2）**：ZP1 是 5 pin 对外接插件，引出 CANH、CANL、ARM_EXT 和 GND。D2 为 PESD2CAN 双向 ESD 保护管，直接跨接在 CANH/CANL 上，防止插拔线缆或静电把收发器打坏。
+- **双 CAN 收发器**：板上有两路 CAN 收发器（3.3V 供电，配 10uF 去耦），分别服务不同的 CAN 通道，收发器把 MCU 的 TX/RX 逻辑电平转换成总线上的差分信号。
+- **安全信号电平转换（U7/U8）**：ARM_EXT、ARM_SAFE、B_ARM_FB 等安全使能信号由 SN74AVC1T17DBVR 单通道电平转换器隔离，配合 R4/R5/R6/R7 上拉与 100nF 滤波，保证两套供电域之间安全信号可靠传递。
+
 ### 48 引脚如何安排双电机控制
 
 每颗 G431 使用 TIM1 和 TIM8 各输出一组三相 PWM。DRV8313 内部已经集成功率 MOSFET 及其驱动逻辑，因此这里给每台电机提供三路 IN 信号，并单独控制 EN、nSLEEP 和 nRESET。
