@@ -30,6 +30,7 @@ code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
   - open_loop_foc_visualizer.html
+  - sensorless_vs_openloop.html
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -199,5 +200,6 @@ aplayer:
 # 贡献度热力图插件 https://github.com/Barry-Flynn/hexo-github-calendar
 # hexo-github-canlendar
 # 贡献度热力图插件 https://github.com/Barry-Flynn/hexo-github-calendar
+
 
 

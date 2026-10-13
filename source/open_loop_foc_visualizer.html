@@ -413,7 +413,8 @@
         targetFreq: 5, targetAmp: .05,
         en: false, pwm: false, awake: false,
         nFaultHigh: true, faultLatched: false,
-        lastTs: performance.now(), samples: [], logClock: 0
+        lastTs: performance.now(), samples: [], logClock: 0,
+        rotorTheta: 0, observerTheta: 0, sensorSpeed: 0
       };
       sim.manual = true;
 
@@ -583,6 +584,17 @@
             }
             break;
         }
+        // 对比通道：电机 1 是开环命令；电机 2 用简化观测器追踪模拟转子。
+        if (sim.pwm && sim.en && sim.state !== "FAULT") {
+          sim.rotorTheta = (sim.rotorTheta + TAU * sim.freq * dt * (0.94 - Math.min(.12, Math.abs(sim.freq) * .002))) % TAU;
+          const observerGain = sim.freq > 1 ? .18 : .03;
+          let err = ((sim.rotorTheta - sim.observerTheta + Math.PI) % TAU) - Math.PI;
+          sim.observerTheta = (sim.observerTheta + err * observerGain) % TAU;
+          sim.sensorSpeed = sim.freq * 60 / 7;
+        } else {
+          sim.rotorTheta = sim.observerTheta = 0;
+          sim.sensorSpeed = 0;
+        }
       }
 
       function duties() {
@@ -608,6 +620,13 @@
         $("stateText").textContent = stateText[sim.state];
         $("stateText").style.color = sim.state === "FAULT" ? "var(--red)" : "var(--text)";
         $("stateHint").textContent = stateHint[sim.state];
+        $("openAngle").textContent = `${(sim.theta * 180 / Math.PI).toFixed(1)}°`;
+        $("sensorAngle").textContent = `${(sim.observerTheta * 180 / Math.PI).toFixed(1)}°`;
+        $("openSpeed").textContent = `${Math.round(sim.freq * 60 / 7)} rpm*`;
+        $("sensorSpeed").textContent = `${Math.round(sim.sensorSpeed)} rpm`;
+        $("compareExplain").textContent = sim.state === "FAULT"
+          ? "两台电机都已停机：故障中断先关闭 EN。无感 FOC 还需要在重新启动后重新建立观测器状态。"
+          : `开环角度误差无法被程序知道；无感观测器当前用约 ${(Math.abs(((sim.rotorTheta - sim.observerTheta + Math.PI) % TAU) - Math.PI) * 180 / Math.PI).toFixed(1)}° 的误差追踪模拟转子。*转速按 7 对极示例换算，仅用于解释。`;
         const logic = codeHint[sim.state] || codeHint.STOPPED;
         $("codeLine").textContent = logic[0];
         $("codeExplain").textContent = logic[1];
@@ -720,3 +739,4 @@
   </script>
 </body>
 </html>
+

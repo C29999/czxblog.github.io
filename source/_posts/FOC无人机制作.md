@@ -65,6 +65,13 @@ SimpleFOC Mini 正好满足这个最低需求。核心芯片 DRV8313PWPR 内部�
 如果主题或部署环境不允许嵌入页面，也可以[单独打开动态演示](/open_loop_foc_visualizer.html)。
 
 
+#### 无感 FOC 和纯开环的动态对比
+
+下面单独对比两种控制方式：左侧是纯开环，电角度由程序直接生成；右侧是无感 FOC，先根据反电动势和电流模型估算转子角度，再用反馈修正电压矢量。页面中的无感通道是算法流程演示，实际闭环仍需要电流采样、观测器参数和示波器验证。
+
+<div style="width:100%; margin:16px 0 24px; overflow:hidden;">
+<iframe src="/sensorless_vs_openloop.html" title="无感 FOC 与纯开环动态对比" style="display:block; width:100%; height:calc(100vh - 90px); min-height:900px; border:0; border-radius:12px;" loading="eager"></iframe>
+</div>
 #### 软件实现
 
 > **代码仓库**：[FOC-Study](https://github.com/C29999/FOC-Study) — 基于 TC264D 的 DRV8313 开环三相正弦驱动实验工程
@@ -359,7 +366,10 @@ DRV8313 的 2.5A 是峰值能力，持续电流受封装散热、铜皮和环境
 
 目前完成的是“开环驱动跑通”和“四合一硬件方案形成”。无感 FOC 闭环、四路满负载运行及实际飞行，仍是后续需要分别验证的阶段。
 
-## 无感FOC软件设计
+## 无感FOC软件设计、
+
+### 无感FOC和和纯开环的动态对比
+
 
 
 
