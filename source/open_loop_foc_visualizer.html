@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TC264 + DRV8313 开环三相驱动演示</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07111f;
+      --panel: rgba(15, 29, 48, .82);
+      --panel-2: rgba(21, 40, 64, .78);
+      --line: rgba(153, 183, 218, .16);
+      --text: #eef6ff;
+      --muted: #91a7bd;
+      --cyan: #35d4e8;
+      --blue: #5c8cff;
+      --amber: #ffbd59;
+      --red: #ff647c;
+      --green: #51dc98;
+      --phase-a: #ff667d;
+      --phase-b: #54d6e9;
+      --phase-c: #ffbf59;
+      --radius: 18px;
+      --shadow: 0 22px 70px rgba(0, 0, 0, .28);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: Inter, "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 12% -8%, rgba(53, 212, 232, .18), transparent 30%),
+        radial-gradient(circle at 92% 0%, rgba(92, 140, 255, .18), transparent 34%),
+        linear-gradient(145deg, #06101d, #091728 56%, #07121f);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .22;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: linear-gradient(to bottom, black, transparent 82%);
+    }
+
+    button, input { font: inherit; }
+    .app { width: min(1460px, calc(100% - 32px)); margin: 0 auto; padding: 30px 0 46px; }
+
+    header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+    .eyebrow { color: var(--cyan); font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+    h1 { margin: 7px 0 7px; font-size: clamp(28px, 4vw, 50px); line-height: 1.02; letter-spacing: -.035em; }
+    .subtitle { margin: 0; color: var(--muted); max-width: 780px; line-height: 1.65; }
+    .top-badges { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+    .badge { padding: 8px 11px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.035); color: #cfe3f5; font-size: 12px; white-space: nowrap; }
+
+    .notice {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 13px 16px;
+      color: #c9d7e5;
+      background: linear-gradient(90deg, rgba(255,189,89,.11), rgba(255,189,89,.035));
+      border: 1px solid rgba(255,189,89,.24);
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .notice strong { color: var(--amber); }
+
+    .grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(310px, .75fr); gap: 18px; }
+    .stack { display: grid; gap: 18px; align-content: start; }
+    .card {
+      position: relative;
+      overflow: hidden;
+      padding: 18px;
+      background: linear-gradient(150deg, var(--panel), rgba(10, 23, 39, .88));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+    .card::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; box-shadow: inset 0 1px rgba(255,255,255,.035); }
+    .card-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
+    .card-title h2 { margin: 0; font-size: 15px; letter-spacing: .02em; }
+    .hint { color: var(--muted); font-size: 11px; }
+
+    .controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .control { padding: 13px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.025); }
+    .control label { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px; color: var(--muted); font-size: 12px; }
+    .control output { color: var(--text); font-variant-numeric: tabular-nums; }
+    input[type="range"] { width: 100%; accent-color: var(--cyan); cursor: pointer; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 13px; }
+    button {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      padding: 10px 15px;
+      color: var(--text);
+      background: rgba(255,255,255,.055);
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    button:hover { transform: translateY(-1px); border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.09); }
+    button:active { transform: translateY(0); }
+    button.primary { color: #05141b; background: var(--cyan); border-color: transparent; font-weight: 800; }
+    button.stop { color: #ffdce2; border-color: rgba(255,100,124,.38); background: rgba(255,100,124,.11); }
+    button.fault { color: #ffe1e6; border-color: rgba(255,100,124,.48); background: rgba(255,100,124,.17); }
+    button.clear { color: #dfffee; border-color: rgba(81,220,152,.35); background: rgba(81,220,152,.1); }
+
+    .state-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+    .state-node { position: relative; min-height: 72px; padding: 11px 9px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.025); transition: .22s ease; }
+    .state-node:not(:last-child)::after { content: "›"; position: absolute; right: -8px; top: 22px; z-index: 2; color: #536b82; font-size: 20px; }
+    .state-node small { display: block; margin-bottom: 6px; color: #718aa1; font-size: 9px; letter-spacing: .1em; }
+    .state-node b { font-size: 11px; }
+    .state-node.active { transform: translateY(-2px); border-color: rgba(53,212,232,.55); background: rgba(53,212,232,.1); box-shadow: 0 8px 28px rgba(53,212,232,.12); }
+    .state-node.active small, .state-node.active b { color: #d9fbff; }
+    .state-node.faulted { border-color: rgba(255,100,124,.65); background: rgba(255,100,124,.14); }
+
+    .viz-layout { display: grid; grid-template-columns: minmax(250px, .8fr) minmax(0, 1.2fr); gap: 18px; align-items: center; }
+    .motor-wrap { display: grid; place-items: center; min-height: 310px; }
+    .motor { position: relative; width: 270px; aspect-ratio: 1; border: 1px solid rgba(153,183,218,.2); border-radius: 50%; background: radial-gradient(circle, rgba(32,61,91,.55) 0 34%, rgba(8,20,35,.9) 35% 62%, rgba(23,45,70,.55) 63% 100%); box-shadow: inset 0 0 50px rgba(0,0,0,.5), 0 0 45px rgba(53,212,232,.07); }
+    .motor::before { content: ""; position: absolute; inset: 17%; border: 1px dashed rgba(153,183,218,.18); border-radius: 50%; }
+    .coil { position: absolute; left: 50%; top: 50%; width: 48px; height: 25px; margin: -12px 0 0 -24px; display: grid; place-items: center; border-radius: 8px; font-size: 11px; font-weight: 900; transform: rotate(var(--r)) translateY(-113px) rotate(calc(-1 * var(--r))); border: 1px solid currentColor; box-shadow: 0 0 calc(6px + var(--glow, 0) * 18px) currentColor; opacity: calc(.48 + var(--glow, 0) * .52); }
+    .coil.a { --r: 0deg; color: var(--phase-a); }
+    .coil.b { --r: 120deg; color: var(--phase-b); }
+    .coil.c { --r: 240deg; color: var(--phase-c); }
+    .shaft { position: absolute; left: 50%; top: 50%; width: 74px; aspect-ratio: 1; transform: translate(-50%,-50%); border-radius: 50%; background: radial-gradient(circle at 36% 32%, #52677c, #162536 66%); border: 1px solid rgba(255,255,255,.18); box-shadow: 0 8px 20px rgba(0,0,0,.45); }
+    .vector { position: absolute; left: 50%; top: 50%; width: 4px; height: 103px; transform-origin: 50% 100%; transform: translate(-50%, -100%) rotate(var(--angle)); border-radius: 999px; background: linear-gradient(to top, rgba(53,212,232,.12), var(--cyan)); box-shadow: 0 0 14px rgba(53,212,232,.5); }
+    .vector::before { content: ""; position: absolute; left: 50%; top: -2px; width: 14px; height: 14px; transform: translateX(-50%) rotate(45deg); border-left: 3px solid var(--cyan); border-top: 3px solid var(--cyan); }
+    .vector-label { position: absolute; left: 50%; top: 18px; transform: translateX(-50%); padding: 4px 7px; color: #baf7ff; background: rgba(6,17,30,.72); border-radius: 7px; font-size: 10px; white-space: nowrap; }
+    .unknown-rotor { position: absolute; left: 50%; top: 50%; width: 96px; height: 96px; transform: translate(-50%,-50%); border: 1px dashed rgba(255,189,89,.35); border-radius: 50%; }
+    .unknown-rotor span { position: absolute; left: 50%; bottom: -27px; transform: translateX(-50%); color: #a79678; font-size: 10px; white-space: nowrap; }
+
+    .telemetry { display: grid; gap: 12px; }
+    .big-state { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px; border: 1px solid var(--line); background: rgba(255,255,255,.025); border-radius: 14px; }
+    .big-state span { color: var(--muted); font-size: 11px; }
+    .big-state strong { font-size: 22px; letter-spacing: .03em; }
+    .metric-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; }
+    .metric { padding: 12px; background: rgba(255,255,255,.025); border: 1px solid var(--line); border-radius: 12px; }
+    .metric span { display: block; margin-bottom: 6px; color: var(--muted); font-size: 10px; }
+    .metric b { font-size: 16px; font-variant-numeric: tabular-nums; }
+    .phase-bars { display: grid; gap: 10px; }
+    .phase-line { display: grid; grid-template-columns: 18px 1fr 50px; align-items: center; gap: 8px; font-size: 11px; }
+    .phase-line > b { color: var(--p); }
+    .bar { height: 11px; overflow: hidden; border-radius: 99px; background: rgba(255,255,255,.06); }
+    .bar i { display: block; width: var(--d); height: 100%; border-radius: inherit; background: var(--p); box-shadow: 0 0 12px var(--p); transition: width .05s linear; }
+    .phase-line output { text-align: right; color: #cfe0ef; font-variant-numeric: tabular-nums; }
+
+    canvas { display: block; width: 100%; height: 230px; border-radius: 12px; background: rgba(3,12,22,.62); border: 1px solid rgba(153,183,218,.1); }
+    .legend { display: flex; flex-wrap: wrap; gap: 14px; color: var(--muted); font-size: 11px; }
+    .legend i { display: inline-block; width: 16px; height: 3px; margin-right: 6px; vertical-align: middle; border-radius: 9px; background: var(--p); }
+
+    .io-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .io { display: grid; grid-template-columns: 10px 1fr auto; align-items: center; gap: 9px; padding: 10px; border: 1px solid var(--line); border-radius: 11px; background: rgba(255,255,255,.025); font-size: 11px; }
+    .lamp { width: 9px; height: 9px; border-radius: 50%; background: #31455a; box-shadow: none; }
+    .io.high .lamp { background: var(--green); box-shadow: 0 0 12px rgba(81,220,152,.75); }
+    .io.fault-low .lamp { background: var(--red); box-shadow: 0 0 12px rgba(255,100,124,.75); }
+    .io span { color: var(--muted); }
+    .io b { font-variant-numeric: tabular-nums; }
+
+    .pin-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+    .pin-table th, .pin-table td { padding: 9px 5px; text-align: left; border-bottom: 1px solid var(--line); }
+    .pin-table th { color: var(--muted); font-weight: 600; }
+    .pin-table td:last-child { color: #cde2f4; }
+
+    .log { height: 162px; overflow: auto; padding-right: 4px; font-family: "Cascadia Mono", Consolas, monospace; font-size: 10px; color: #9fb6cb; }
+    .log-entry { display: grid; grid-template-columns: 62px 1fr; gap: 8px; padding: 6px 0; border-bottom: 1px dashed rgba(153,183,218,.09); }
+    .log-entry time { color: #5e7890; }
+    .log-entry.fault-msg span { color: #ff9bab; }
+    .log-entry.ok span { color: #85eab4; }
+
+    .code-card { background: linear-gradient(150deg, rgba(7,18,31,.95), rgba(12,28,46,.9)); }
+    .code-line { margin: 0; padding: 13px 15px; overflow-x: auto; border: 1px solid rgba(53,212,232,.16); border-radius: 12px; background: #06101b; color: #cfe5f5; font: 12px/1.75 "Cascadia Code", Consolas, monospace; white-space: pre-wrap; }
+    .code-line .kw { color: #7bdcff; } .code-line .fn { color: #85eab4; } .code-line .num { color: #ffbf75; }
+    .explain { margin: 11px 0 0; color: #a9bfd1; font-size: 12px; line-height: 1.65; }
+
+    footer { margin-top: 18px; color: #71879b; font-size: 11px; text-align: center; line-height: 1.6; }
+
+    @media (max-width: 1040px) {
+      .grid { grid-template-columns: 1fr; }
+      .stack.side { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 780px) {
+      .app { width: min(100% - 20px, 680px); padding-top: 20px; }
+      header { align-items: flex-start; flex-direction: column; }
+      .top-badges { justify-content: flex-start; }
+      .controls, .viz-layout { grid-template-columns: 1fr; }
+      .state-row { grid-template-columns: repeat(3, 1fr); }
+      .state-node:nth-child(3)::after { display: none; }
+      .stack.side { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .state-row { grid-template-columns: repeat(2, 1fr); }
+      .state-node:nth-child(2n)::after { display: none; }
+      .motor { width: 235px; }
+      .coil { transform: rotate(var(--r)) translateY(-98px) rotate(calc(-1 * var(--r))); }
+      .io-grid, .metric-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div>
+        <div class="eyebrow">TC264 · DRV8313 · 3PWM</div>
+        <h1>开环三相驱动过程</h1>
+        <p class="subtitle">按照工程中的复位、唤醒、PWM 预装载、低幅定位和缓慢斜坡流程，观察电角度命令如何生成三相正弦占空比。</p>
+      </div>
+      <div class="top-badges">
+        <span class="badge">20 kHz 中央对齐 PWM</span>
+        <span class="badge">100 µs 控制周期</span>
+        <span class="badge">无编码器 / 无电流采样</span>
+      </div>
+    </header>
+
+    <div class="notice">
+      <strong>关键区别</strong>
+      <span>动画中的箭头是<strong>指令电压矢量</strong>，并非实测转子位置。电机转子是否同步跟随无法由本程序得知；这里实现的是电压开环三相正弦驱动。</span>
+    </div>
+
+    <section class="grid">
+      <div class="stack">
+        <article class="card">
+          <div class="card-title"><h2>控制台</h2><span class="hint">毫秒级启动阶段已延长显示；斜坡与调制仍按固件参数计算</span></div>
+          <div class="controls">
+            <div class="control">
+              <label><span>目标电频率 FREQ</span><output id="freqOut">5.0 Hz</output></label>
+              <input id="freq" type="range" min="0.1" max="30" step="0.1" value="5">
+            </div>
+            <div class="control">
+              <label><span>目标调制系数 AMP</span><output id="ampOut">0.050</output></label>
+              <input id="amp" type="range" min="0.01" max="0.15" step="0.005" value="0.05">
+            </div>
+            <div class="control">
+              <label><span>演示速度</span><output id="speedOut">4×</output></label>
+              <input id="speed" type="range" min="1" max="40" step="1" value="4">
+            </div>
+          </div>
+          <div class="buttons">
+            <button class="primary" id="startBtn">START</button>
+            <button id="stepBtn">单步推进</button>
+            <button id="autoBtn">自动播放：关</button>
+            <button class="stop" id="stopBtn">STOP</button>
+            <button class="fault" id="faultBtn">拉低 nFAULT</button>
+            <button class="clear" id="clearBtn">CLEAR_FAULT</button>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-title"><h2>给小白的原理导览</h2><span class="hint">跟着当前状态理解</span></div>
+          <p class="explain" id="principleText" style="margin:0"></p>
+        </article>
+
+        <article class="card">
+          <div class="card-title"><h2>启动状态机</h2><span class="hint" id="stateHint">等待 START</span></div>
+          <div class="state-row" id="stateRow">
+            <div class="state-node active" data-state="STOPPED"><small>EN=0</small><b>停止</b></div>
+            <div class="state-node" data-state="RESET_WAIT"><small>2 ms</small><b>复位 / 睡眠</b></div>
+            <div class="state-node" data-state="WAKE_WAIT"><small>5 ms</small><b>唤醒检查</b></div>
+            <div class="state-node" data-state="PWM_WAIT"><small>1 ms</small><b>PWM 预装载</b></div>
+            <div class="state-node" data-state="ALIGN"><small>200 ms</small><b>低幅定位</b></div>
+            <div class="state-node" data-state="RAMP"><small>限斜率</small><b>斜坡 / 运行</b></div>
+          </div>
+        </article>
+
+        <article class="card code-card">
+          <div class="card-title"><h2>运行中的固件逻辑</h2><span class="hint">页面状态 ↔ 工程代码</span></div>
+          <pre class="code-line" id="codeLine"></pre>
+          <p class="explain" id="codeExplain"></p>
+        </article>
+
+        <article class="card">
+          <div class="card-title"><h2>旋转电压矢量与三相占空比</h2><span class="hint">d = 0.5 + 0.5·m·sin(θ)</span></div>
+          <div class="viz-layout">
+            <div class="motor-wrap">
+              <div class="motor">
+                <div class="coil a" id="coilA">A</div>
+                <div class="coil b" id="coilB">B</div>
+                <div class="coil c" id="coilC">C</div>
+                <div class="unknown-rotor"><span>转子实际角度未知</span></div>
+                <div class="vector" id="vector"><span class="vector-label">θe 指令</span></div>
+                <div class="shaft"></div>
+              </div>
+            </div>
+            <div class="telemetry">
+              <div class="big-state"><span>当前状态</span><strong id="stateText">STOPPED</strong></div>
+              <div class="metric-grid">
+                <div class="metric"><span>实际电频率</span><b id="actualFreq">0.00 Hz</b></div>
+                <div class="metric"><span>实际调制系数</span><b id="actualAmp">0.000</b></div>
+                <div class="metric"><span>电角度 θe</span><b id="angleText">0.0°</b></div>
+                <div class="metric"><span>EN / PWM</span><b id="enableText">0 / OFF</b></div>
+              </div>
+              <div class="phase-bars">
+                <div class="phase-line" style="--p:var(--phase-a)"><b>A</b><div class="bar"><i id="barA"></i></div><output id="dutyA">50.0%</output></div>
+                <div class="phase-line" style="--p:var(--phase-b)"><b>B</b><div class="bar"><i id="barB"></i></div><output id="dutyB">50.0%</output></div>
+                <div class="phase-line" style="--p:var(--phase-c)"><b>C</b><div class="bar"><i id="barC"></i></div><output id="dutyC">50.0%</output></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-title"><h2>三相正弦调制波形</h2><div class="legend"><span><i style="--p:var(--phase-a)"></i>A</span><span><i style="--p:var(--phase-b)"></i>B</span><span><i style="--p:var(--phase-c)"></i>C</span></div></div>
+          <canvas id="scope" aria-label="三相占空比波形"></canvas>
+        </article>
+      </div>
+
+      <aside class="stack side">
+        <article class="card">
+          <div class="card-title"><h2>实时 I/O</h2><span class="hint">绿=高，红=nFAULT 有效</span></div>
+          <div class="io-grid">
+            <div class="io" id="ioSleep"><i class="lamp"></i><span>nSLEEP</span><b>0</b></div>
+            <div class="io" id="ioReset"><i class="lamp"></i><span>nRESET</span><b>0</b></div>
+            <div class="io" id="ioEn"><i class="lamp"></i><span>EN</span><b>0</b></div>
+            <div class="io high" id="ioFault"><i class="lamp"></i><span>nFAULT</span><b>1</b></div>
+            <div class="io" id="ioPwm"><i class="lamp"></i><span>三路 PWM</span><b>OFF</b></div>
+            <div class="io high" id="ioSupply"><i class="lamp"></i><span>VM</span><b>9 V</b></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-title"><h2>当前工程接线</h2><span class="hint">TC264 V3.1 主板</span></div>
+          <table class="pin-table">
+            <thead><tr><th>信号</th><th>TC264 / 接口</th><th>Mini</th></tr></thead>
+            <tbody>
+              <tr><td>PWM A</td><td>P02.4 / P7-2</td><td>H1-3</td></tr>
+              <tr><td>PWM B</td><td>P02.5 / P7-6</td><td>H1-5</td></tr>
+              <tr><td>PWM C</td><td>P02.6 / P7-1</td><td>H1-7</td></tr>
+              <tr><td>nSLEEP</td><td>P23.1 / P12-8</td><td>H1-8</td></tr>
+              <tr><td>nRESET</td><td>P15.8 / P12-4</td><td>H1-6</td></tr>
+              <tr><td>EN</td><td>P22.1 / P12-1</td><td>H1-9</td></tr>
+              <tr><td>nFAULT</td><td>P22.3 / P12-3</td><td>H1-10</td></tr>
+              <tr><td>GND</td><td>P12-6 / P12-7</td><td>H1-1 / H1-4</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="card">
+          <div class="card-title"><h2>保护逻辑</h2><span class="hint">软件锁存，不自动恢复</span></div>
+          <div class="notice" style="margin:0; grid-template-columns:1fr;">
+            <span>nFAULT 拉低 → GTM TIM0 CH4 中断 → <strong>先 EN=0</strong> → 锁存 FAULT → 停止 PWM。恢复 nFAULT 后仍需 CLEAR_FAULT，再重新 START。</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-title"><h2>事件记录</h2><button id="resetDemo" style="padding:6px 9px;font-size:10px">重置演示</button></div>
+          <div class="log" id="log"></div>
+        </article>
+      </aside>
+    </section>
+
+    <footer>首次实机测试请拆桨，使用 9 V 限流电源，从低 AMP 与低 FREQ 开始。本动画不能替代示波器、电源限流或实际故障关断测试。</footer>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+      const $ = id => document.getElementById(id);
+      const TAU = Math.PI * 2;
+      const SHIFT = TAU / 3;
+      const cfg = {
+        alignAmp: .03,
+        alignTime: .2,
+        resetTime: .002,
+        wakeTime: .005,
+        pwmWait: .001,
+        freqRamp: 2,
+        ampRamp: .02,
+        dutyMin: .05,
+        dutyMax: .95,
+        // Millisecond hardware waits are lengthened only so each state is visible.
+        demoResetTime: .6,
+        demoWakeTime: .8,
+        demoPwmWait: .6,
+        demoAlignTime: 1
+      };
+
+      const sim = {
+        state: "STOPPED", elapsed: 0, total: 0,
+        theta: 0, freq: 0, amp: 0,
+        targetFreq: 5, targetAmp: .05,
+        en: false, pwm: false, awake: false,
+        nFaultHigh: true, faultLatched: false,
+        lastTs: performance.now(), samples: [], logClock: 0
+      };
+      sim.manual = true;
+
+      const stateText = {
+        STOPPED: "STOPPED", RESET_WAIT: "RESET_WAIT", WAKE_WAIT: "WAKE_WAIT",
+        PWM_WAIT: "PWM_WAIT", ALIGN: "ALIGN", RAMP: "RAMP", RUNNING: "RUNNING",
+        FAULT: "FAULT", CLEAR_RESET: "CLEAR_RESET", CLEAR_WAKE: "CLEAR_WAKE"
+      };
+      const stateHint = {
+        STOPPED: "等待 START；EN、PWM、nRESET、nSLEEP 均为低",
+        RESET_WAIT: "EN=0，保持复位和睡眠 2 ms",
+        WAKE_WAIT: "释放 nRESET / nSLEEP，等待驱动器稳定 5 ms",
+        PWM_WAIT: "装载三相初始占空比并等待同步生效，EN 仍为低",
+        ALIGN: "以低幅固定电角度定位 200 ms",
+        RAMP: "电频率 2 Hz/s、调制系数 0.02/s 缓慢逼近目标",
+        RUNNING: "按目标电频率持续旋转指令电压矢量",
+        FAULT: "故障已锁存；释放 nFAULT 后执行 CLEAR_FAULT",
+        CLEAR_RESET: "清故障流程：EN=0，重新复位",
+        CLEAR_WAKE: "清故障流程：重新唤醒并复核 nFAULT"
+      };
+      const codeHint = {
+        STOPPED: ["foc_port_set_en(false);\nfoc_port_stop_pwm();", "先让 EN=0，再关闭 PWM。这样驱动器不会因为 IN=0 而误使下管持续导通。"],
+        RESET_WAIT: ["foc_port_set_en(false);\nfoc_port_set_reset(false);\nfoc_port_set_sleep(false);", "START 后先保持功率级禁止，复位和睡眠脚处于安全状态，等待计时完成。"],
+        WAKE_WAIT: ["foc_port_set_reset(true);\nfoc_port_set_sleep(true);\nif (!foc_port_fault_high()) fault_latch();", "释放 nRESET、nSLEEP 后等待 DRV8313 唤醒，并确认 nFAULT 仍为高。"],
+        PWM_WAIT: ["foc_port_start_pwm();\nfoc_port_update_duties(0.5f, 0.5f, 0.5f);\n/* EN 仍为 0 */", "三路 PWM 先预装载并同步生效；此时 EN 还没有打开，所以电机不会突然受力。"],
+        ALIGN: ["foc_port_set_en(true);\nmotor.amp = ALIGN_AMP;\nmotor.theta_e = 0.0f;", "使能后用很小的 AMP 把定子磁场固定在一个角度，给未知转子一个温和的初始定位。"],
+        RAMP: ["motor.freq_hz = approach(motor.freq_hz, target_hz, FREQ_RAMP * dt);\nmotor.amp = approach(motor.amp, target_amp, AMP_RAMP * dt);\nmotor.theta_e += TWO_PI * motor.freq_hz * dt;", "每个控制周期只增加一点频率和幅值，避免直接满幅启动；theta_e 使用电频率积分。"],
+        RUNNING: ["motor.theta_e = wrap_0_2pi(motor.theta_e);\nfoc_port_update_duties(\n  0.5f + 0.5f*motor.amp*sinf(motor.theta_e), ...);", "三相相差 120° 的正弦值变成 CCR 占空比。FREQ 是电频率，不等于机械转速。"],
+        FAULT: ["foc_port_set_en(false);\nfoc_port_stop_pwm();\nfault_latched = true;", "nFAULT 触发时中断先拉低 EN，再停 PWM 并锁存故障；即使 nFAULT 恢复，也不会自动重启。"],
+        CLEAR_RESET: ["foc_port_set_en(false);\nfoc_port_set_reset(false);", "CLEAR_FAULT 只在 nFAULT 已经回高时生效，并重新从安全的复位阶段开始。"],
+        CLEAR_WAKE: ["foc_port_set_reset(true);\nfoc_port_set_sleep(true);\nverify_fault_high();", "再次唤醒并复核硬件状态；清除锁存后仍必须重新点击 START。"]
+      };
+      const principle = {
+        STOPPED: "电机驱动有三个层次：MCU 产生 PWM，DRV8313 把 PWM 变成功率开关，电机线圈得到三相电压。停止时必须先关闭 EN，再关 PWM，保证功率级进入安全状态。",
+        RESET_WAIT: "nRESET 和 nSLEEP 是驱动芯片的安全门。上电后先关门，避免 MCU 刚复位时的未知电平让电机突然动作。",
+        WAKE_WAIT: "释放复位和睡眠后，DRV8313 才开始工作。nFAULT 为高表示当前没有报告故障；如果为低，程序会立即停机。",
+        PWM_WAIT: "PWM 是快速开关信号，不是直接输出模拟电压。三路先准备好相同的 50% 占空比，再打开 EN，避免启动瞬间出现跳变。",
+        ALIGN: "没有编码器时，程序不知道转子在哪里，所以先用很小的电压矢量把转子轻轻吸到一个已知方向。这个过程叫定位。",
+        RAMP: "定位后让电压矢量慢慢旋转。AMP 决定电压幅值，FREQ 决定磁场每秒转多少个电周期；它们都通过斜坡逐渐增加。",
+        RUNNING: "三相相位相差 120°：A 用 sin(θ)，B 用 sin(θ−120°)，C 用 sin(θ+120°)。占空比中心在 50%，所以 PWM 可以表示正负方向的相电压。",
+        FAULT: "nFAULT 拉低代表驱动器发现过流、过温或欠压等问题。中断先关闭 EN，再停 PWM 并锁存；故障消失后也不会自动重启。",
+        CLEAR_RESET: "CLEAR_FAULT 不是强行忽略故障，而是确认 nFAULT 已恢复后重新走安全复位流程。",
+        CLEAR_WAKE: "重新唤醒并再次检查 nFAULT。通过后回到停止状态，必须由新的 START 明确启动。"
+      };
+
+      const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+      const approach = (v, target, step) => v < target ? Math.min(v + step, target) : Math.max(v - step, target);
+      const stamp = () => `${sim.logClock.toFixed(3).padStart(7, " ")} s`;
+
+      function log(message, cls = "") {
+        const row = document.createElement("div");
+        row.className = `log-entry ${cls}`;
+        row.innerHTML = `<time>${stamp()}</time><span>${message}</span>`;
+        $("log").prepend(row);
+        while ($("log").children.length > 28) $("log").lastElementChild.remove();
+      }
+
+      function setState(next, message) {
+        sim.state = next;
+        sim.elapsed = 0;
+        if (message) log(message, next === "FAULT" ? "fault-msg" : "ok");
+      }
+
+      function stop(reason = "STOP：先拉低 EN，再关闭 PWM 和驱动唤醒") {
+        sim.en = false;
+        sim.pwm = false;
+        sim.awake = false;
+        sim.freq = 0;
+        sim.amp = 0;
+        sim.theta = 0;
+        setState(sim.faultLatched ? "FAULT" : "STOPPED", reason);
+      }
+
+      function latchFault(reason) {
+        if (sim.state === "FAULT") return;
+        sim.en = false;
+        sim.faultLatched = true;
+        sim.pwm = false;
+        sim.freq = 0;
+        sim.amp = 0;
+        setState("FAULT", `${reason}：ISR 首先 EN=0，随后停止 PWM 并锁存`);
+      }
+
+      function start() {
+        sim.targetFreq = +$("freq").value;
+        sim.targetAmp = +$("amp").value;
+        if (sim.faultLatched) return log("START 被拒绝：FAULT 仍处于锁存状态", "fault-msg");
+        if (sim.state !== "STOPPED") return log("START 被拒绝：当前状态不是 STOPPED");
+        sim.en = false; sim.pwm = false; sim.awake = false;
+        sim.freq = 0; sim.amp = 0; sim.theta = 0;
+        setState("RESET_WAIT", "START：EN 保持低，进入复位/睡眠等待");
+      }
+
+      function toggleFault() {
+        sim.nFaultHigh = !sim.nFaultHigh;
+        if (!sim.nFaultHigh) {
+          log("外部 nFAULT 被拉低", "fault-msg");
+          if (["WAKE_WAIT", "PWM_WAIT", "ALIGN", "RAMP", "RUNNING", "CLEAR_WAKE"].includes(sim.state)) latchFault("检测到 nFAULT 下降沿");
+        } else {
+          log("nFAULT 已释放为高；故障锁存不会自动清除");
+        }
+      }
+
+      function clearFault() {
+        if (!sim.faultLatched || sim.state !== "FAULT") return log("CLEAR_FAULT 无动作：当前没有已锁存故障");
+        if (!sim.nFaultHigh) return log("CLEAR_FAULT 被拒绝：nFAULT 仍为低", "fault-msg");
+        sim.en = false; sim.pwm = false; sim.awake = false;
+        setState("CLEAR_RESET", "CLEAR_FAULT：保持 EN=0，重新执行复位/唤醒检查");
+      }
+
+      function updateState(dt) {
+        sim.elapsed += dt;
+        sim.total += dt;
+        if (sim.state !== "STOPPED") sim.logClock += dt;
+
+        switch (sim.state) {
+          case "RESET_WAIT":
+            if (sim.elapsed >= cfg.demoResetTime) {
+              sim.awake = true;
+              setState("WAKE_WAIT", "nRESET=1、nSLEEP=1，等待驱动器唤醒");
+            }
+            break;
+          case "WAKE_WAIT":
+            if (!sim.nFaultHigh) { latchFault("唤醒期间 nFAULT 为低"); break; }
+            if (sim.elapsed >= cfg.demoWakeTime) {
+              sim.pwm = true;
+              sim.amp = Math.min(sim.targetAmp, cfg.alignAmp);
+              sim.theta = 0;
+              setState("PWM_WAIT", "三路中央对齐 PWM 启动并同步装载；EN 仍为低");
+            }
+            break;
+          case "PWM_WAIT":
+            if (!sim.nFaultHigh) { latchFault("使能前复核发现 nFAULT 为低"); break; }
+            if (sim.elapsed >= cfg.demoPwmWait) {
+              sim.en = true;
+              setState("ALIGN", "复核 nFAULT 为高，EN=1，开始低幅固定角度定位");
+            }
+            break;
+          case "ALIGN":
+            if (!sim.nFaultHigh) { latchFault("定位阶段检测到 nFAULT"); break; }
+            sim.theta = 0;
+            sim.amp = Math.min(sim.targetAmp, cfg.alignAmp);
+            if (sim.elapsed >= cfg.demoAlignTime) setState("RAMP", "定位完成，开始频率与幅值斜坡");
+            break;
+          case "RAMP":
+          case "RUNNING":
+            if (!sim.nFaultHigh) { latchFault("运行阶段检测到 nFAULT"); break; }
+            sim.freq = approach(sim.freq, sim.targetFreq, cfg.freqRamp * dt);
+            sim.amp = approach(sim.amp, sim.targetAmp, cfg.ampRamp * dt);
+            sim.theta = (sim.theta + TAU * sim.freq * dt) % TAU;
+            if (Math.abs(sim.freq - sim.targetFreq) < 1e-5 && Math.abs(sim.amp - sim.targetAmp) < 1e-5 && sim.state !== "RUNNING") {
+              setState("RUNNING", "斜坡完成，进入稳定开环运行");
+            }
+            break;
+          case "CLEAR_RESET":
+            if (sim.elapsed >= cfg.demoResetTime) {
+              sim.awake = true;
+              setState("CLEAR_WAKE", "清故障：释放 nRESET / nSLEEP，再次等待并检查 nFAULT");
+            }
+            break;
+          case "CLEAR_WAKE":
+            if (!sim.nFaultHigh) { latchFault("清故障失败，nFAULT 再次为低"); break; }
+            if (sim.elapsed >= cfg.demoWakeTime) {
+              sim.faultLatched = false;
+              sim.awake = false;
+              setState("STOPPED", "故障锁存已清除，返回 STOPPED；仍需新的 START");
+            }
+            break;
+        }
+      }
+
+      function duties() {
+        if (!sim.pwm) return [.5, .5, .5];
+        const m = sim.amp;
+        return [
+          clamp(.5 + .5 * m * Math.sin(sim.theta), cfg.dutyMin, cfg.dutyMax),
+          clamp(.5 + .5 * m * Math.sin(sim.theta - SHIFT), cfg.dutyMin, cfg.dutyMax),
+          clamp(.5 + .5 * m * Math.sin(sim.theta + SHIFT), cfg.dutyMin, cfg.dutyMax)
+        ];
+      }
+
+      function setIo(id, high, text, fault = false) {
+        const el = $(id);
+        el.classList.toggle("high", high && !fault);
+        el.classList.toggle("fault-low", fault);
+        el.querySelector("b").textContent = text;
+      }
+
+      function updateUi() {
+        const d = duties();
+        const deg = sim.theta * 180 / Math.PI;
+        $("stateText").textContent = stateText[sim.state];
+        $("stateText").style.color = sim.state === "FAULT" ? "var(--red)" : "var(--text)";
+        $("stateHint").textContent = stateHint[sim.state];
+        const logic = codeHint[sim.state] || codeHint.STOPPED;
+        $("codeLine").textContent = logic[0];
+        $("codeExplain").textContent = logic[1];
+        $("principleText").textContent = principle[sim.state] || principle.STOPPED;
+        $("actualFreq").textContent = `${sim.freq.toFixed(2)} Hz`;
+        $("actualAmp").textContent = sim.amp.toFixed(3);
+        $("angleText").textContent = `${deg.toFixed(1)}°`;
+        $("enableText").textContent = `${sim.en ? 1 : 0} / ${sim.pwm ? "ON" : "OFF"}`;
+        $("vector").style.setProperty("--angle", `${deg}deg`);
+        ["A","B","C"].forEach((p, i) => {
+          $(`bar${p}`).style.setProperty("--d", `${d[i] * 100}%`);
+          $(`duty${p}`).textContent = `${(d[i] * 100).toFixed(1)}%`;
+          $(`coil${p}`).style.setProperty("--glow", Math.abs(d[i] - .5) / .075);
+        });
+
+        document.querySelectorAll(".state-node").forEach(el => {
+          const matches = el.dataset.state === sim.state || (el.dataset.state === "RAMP" && sim.state === "RUNNING");
+          el.classList.toggle("active", matches);
+          el.classList.toggle("faulted", sim.state === "FAULT" && el.dataset.state === "STOPPED");
+        });
+
+        setIo("ioSleep", sim.awake, sim.awake ? "1" : "0");
+        setIo("ioReset", sim.awake, sim.awake ? "1" : "0");
+        setIo("ioEn", sim.en, sim.en ? "1" : "0");
+        setIo("ioFault", sim.nFaultHigh, sim.nFaultHigh ? "1" : "0", !sim.nFaultHigh);
+        setIo("ioPwm", sim.pwm, sim.pwm ? "20 kHz" : "OFF");
+        $("faultBtn").textContent = sim.nFaultHigh ? "拉低 nFAULT" : "释放 nFAULT";
+
+        sim.samples.push(d);
+        if (sim.samples.length > 260) sim.samples.shift();
+        drawScope();
+      }
+
+      function drawScope() {
+        const canvas = $("scope");
+        const rect = canvas.getBoundingClientRect();
+        const dpr = Math.min(devicePixelRatio || 1, 2);
+        const w = Math.max(10, Math.round(rect.width * dpr));
+        const h = Math.max(10, Math.round(rect.height * dpr));
+        if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0,0,w,h);
+        ctx.save(); ctx.scale(dpr,dpr);
+        const cw = rect.width, ch = rect.height, pad = 28;
+        ctx.strokeStyle = "rgba(153,183,218,.1)"; ctx.lineWidth = 1;
+        for (let i=0;i<=4;i++) {
+          const y = pad + (ch - pad*2) * i / 4;
+          ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(cw-pad,y); ctx.stroke();
+        }
+        for (let i=0;i<=8;i++) {
+          const x = pad + (cw - pad*2) * i / 8;
+          ctx.beginPath(); ctx.moveTo(x,pad); ctx.lineTo(x,ch-pad); ctx.stroke();
+        }
+        ctx.fillStyle = "#6f879d"; ctx.font = "10px Segoe UI";
+        ctx.fillText("95%", 4, pad + 3); ctx.fillText("50%", 4, ch/2 + 3); ctx.fillText("5%", 9, ch-pad+3);
+        const colors = ["#ff667d", "#54d6e9", "#ffbf59"];
+        colors.forEach((color, phase) => {
+          ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
+          sim.samples.forEach((v,i) => {
+            const x = pad + (cw-pad*2) * i / Math.max(259, sim.samples.length-1);
+            const y = pad + (ch-pad*2) * (1 - (v[phase]-.05)/.9);
+            i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+          });
+          ctx.stroke();
+        });
+        ctx.restore();
+      }
+
+      function resetDemo() {
+        Object.assign(sim, { state:"STOPPED", elapsed:0, total:0, theta:0, freq:0, amp:0, en:false, pwm:false, awake:false, nFaultHigh:true, faultLatched:false, samples:[], logClock:0 });
+        $("log").innerHTML = "";
+        log("演示已复位；等待 START");
+      }
+
+      $("freq").addEventListener("input", e => { sim.targetFreq = +e.target.value; $("freqOut").textContent = `${sim.targetFreq.toFixed(1)} Hz`; });
+      $("amp").addEventListener("input", e => { sim.targetAmp = +e.target.value; $("ampOut").textContent = sim.targetAmp.toFixed(3); });
+      $("speed").addEventListener("input", e => $("speedOut").textContent = `${e.target.value}×`);
+      $("startBtn").addEventListener("click", start);
+      $("stepBtn").addEventListener("click", () => {
+        if (sim.state === "STOPPED") start();
+        else if (sim.state !== "FAULT") {
+          const stepTime = { RESET_WAIT:.7, WAKE_WAIT:.9, PWM_WAIT:.7, ALIGN:1.1, RAMP:.35, CLEAR_RESET:.7, CLEAR_WAKE:.9 };
+          updateState(stepTime[sim.state] || .25);
+        }
+        updateUi();
+      });
+      $("autoBtn").addEventListener("click", () => {
+        sim.manual = !sim.manual;
+        $("autoBtn").textContent = `自动播放：${sim.manual ? "关" : "开"}`;
+      });
+      $("stopBtn").addEventListener("click", () => stop());
+      $("faultBtn").addEventListener("click", toggleFault);
+      $("clearBtn").addEventListener("click", clearFault);
+      $("resetDemo").addEventListener("click", resetDemo);
+      addEventListener("resize", drawScope);
+
+      function frame(ts) {
+        const realDt = Math.min((ts - sim.lastTs) / 1000, .05);
+        sim.lastTs = ts;
+        const scaled = realDt * +$("speed").value;
+        const steps = Math.max(1, Math.ceil(scaled / .002));
+        if (!sim.manual) for (let i=0;i<steps;i++) updateState(scaled / steps);
+        updateUi();
+        requestAnimationFrame(frame);
+      }
+
+      resetDemo();
+      requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>

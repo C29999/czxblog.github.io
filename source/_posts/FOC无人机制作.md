@@ -55,14 +55,14 @@ SimpleFOC Mini 正好满足这个最低需求。核心芯片 DRV8313PWPR 内部�
 <summary><strong>展开观看：TC264 + DRV8313 开环三相驱动演示</strong></summary>
 
 <div style="margin:16px 0 22px; padding:8px; border:1px solid rgba(128,160,190,.28); border-radius:14px; background:rgba(12,28,46,.35);">
-<iframe src="/docs/open_loop_foc_visualizer.html" title="TC264 与 DRV8313 开环三相驱动动态演示" loading="lazy" style="display:block; width:100%; min-height:1120px; border:0; border-radius:10px; background:#07111f;"></iframe>
+<iframe src="/open_loop_foc_visualizer.html" title="TC264 与 DRV8313 开环三相驱动动态演示" loading="lazy" style="display:block; width:100%; min-height:1120px; border:0; border-radius:10px; background:#07111f;"></iframe>
 </div>
 
 </details>
 
 这个演示对应工程中的实际控制思路：程序先保持 `EN=0`，完成 DRV8313 复位和唤醒，再预装载三路 PWM；确认 `nFAULT=1` 后才使能功率级。随后用低幅值固定电角度完成定位，再逐渐增加电频率和调制系数。三相占空比由相差 120° 的正弦量计算得到，但开环程序不知道转子实际位置，因此动画里的箭头表示“指令电压矢量”，不代表实测转子角度。
 
-如果主题或部署环境不允许嵌入页面，也可以[单独打开动态演示](/docs/open_loop_foc_visualizer.html)。
+如果主题或部署环境不允许嵌入页面，也可以[单独打开动态演示](/open_loop_foc_visualizer.html)。
 
 
 #### 软件实现
@@ -358,6 +358,7 @@ DRV8313 的 2.5A 是峰值能力，持续电流受封装散热、铜皮和环境
 6. 四路联合运行，验证 CAN 超时、复位与故障恢复、母线扰动和温升，之后再做有防护的目标负载测试。
 
 目前完成的是“开环驱动跑通”和“四合一硬件方案形成”。无感 FOC 闭环、四路满负载运行及实际飞行，仍是后续需要分别验证的阶段。
+
 
 
 
