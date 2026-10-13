@@ -47,6 +47,24 @@ SimpleFOC Mini 正好满足这个最低需求。核心芯片 DRV8313PWPR 内部�
 
 > **局限**：原版 SimpleFOC Mini 不带相电流采样电路，后续若要实现电流闭环或无感 FOC，必须外接采样电阻和运放。
 
+#### 纯开环驱动无感FOC的动态实现
+
+为了把开环驱动的过程讲清楚，这里直接嵌入一个可交互的演示。点击 `START` 可以观看完整启动流程；打开“自动播放”后会连续运行，关闭后可以使用“单步推进”逐阶段观察。页面中的代码窗口、I/O 状态、三相占空比和原理解释会随状态机同步变化。
+
+<details open>
+<summary><strong>展开观看：TC264 + DRV8313 开环三相驱动演示</strong></summary>
+
+<div style="margin:16px 0 22px; padding:8px; border:1px solid rgba(128,160,190,.28); border-radius:14px; background:rgba(12,28,46,.35);">
+<iframe src="/docs/open_loop_foc_visualizer.html" title="TC264 与 DRV8313 开环三相驱动动态演示" loading="lazy" style="display:block; width:100%; min-height:1120px; border:0; border-radius:10px; background:#07111f;"></iframe>
+</div>
+
+</details>
+
+这个演示对应工程中的实际控制思路：程序先保持 `EN=0`，完成 DRV8313 复位和唤醒，再预装载三路 PWM；确认 `nFAULT=1` 后才使能功率级。随后用低幅值固定电角度完成定位，再逐渐增加电频率和调制系数。三相占空比由相差 120° 的正弦量计算得到，但开环程序不知道转子实际位置，因此动画里的箭头表示“指令电压矢量”，不代表实测转子角度。
+
+如果主题或部署环境不允许嵌入页面，也可以[单独打开动态演示](/docs/open_loop_foc_visualizer.html)。
+
+
 #### 软件实现
 
 > **代码仓库**：[FOC-Study](https://github.com/C29999/FOC-Study) — 基于 TC264D 的 DRV8313 开环三相正弦驱动实验工程
