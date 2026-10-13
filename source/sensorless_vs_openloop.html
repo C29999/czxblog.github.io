@@ -166,6 +166,23 @@
 
     /* ===== 双电机对比 ===== */
     .compare-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .load-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px; }
+    .load-row button { padding: 8px 14px; border: 1px solid var(--line-strong); border-radius: 9px; background: rgba(91,141,239,.12); color: var(--text); font-size: 12px; cursor: pointer; }
+    .load-row button:hover { background: rgba(91,141,239,.24); }
+    .load-row button.on { background: rgba(245,176,76,.22); border-color: rgba(245,176,76,.55); color: var(--amber); }
+    .load-row .load-state { font-size: 12px; color: var(--muted); }
+    .load-row .load-state b { color: var(--amber); font-variant-numeric: tabular-nums; }
+    #rpmScope { margin-top: 12px; height: 210px; }
+    .rpm-legend { display: flex; gap: 16px; margin-top: 8px; font-size: 11px; color: var(--muted); }
+    .rpm-legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+    .rpm-note { margin: 8px 0 0; font-size: 11px; color: var(--faint); line-height: 1.6; }
+    .pros-table { width: 100%; margin-top: 14px; border-collapse: collapse; font-size: 12px; }
+    .pros-table th, .pros-table td { padding: 9px 12px; border: 1px solid var(--line); text-align: left; vertical-align: top; line-height: 1.55; }
+    .pros-table th { background: rgba(255,255,255,.03); color: var(--text); font-weight: 600; white-space: nowrap; }
+    .pros-table td { color: var(--muted); }
+    .pros-table td.good { color: var(--green); }
+    .pros-table td.bad { color: var(--red); }
+    .pros-table td.mid { color: var(--amber); }
     .compare-panel { padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255, 255, 255, .02); }
     .compare-panel h3 { margin: 0 0 10px; font-size: 14px; font-weight: 600; color: var(--text); }
     .compare-panel p { margin: 8px 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
@@ -386,6 +403,35 @@
             <div class="compare-panel"><h3>电机 2 · 无感 FOC</h3><p>根据反电动势和电流模型估算转子角度，再修正控制角。</p><code>angle_error = rotor_angle - observer_angle; observer_angle += observer_gain × angle_error; current_pi_correct();</code><p>估算角：<b id="sensorAngle">0.0°</b>　反馈转速：<b id="sensorSpeed">0 rpm</b></p></div>
           </div>
           <p class="explain" id="compareExplain">开环电机只执行预先生成的电角度；无感 FOC 电机用反电动势和电流模型估算转子角度，再用角度误差修正驱动。</p>
+
+          <div class="load-row">
+            <button id="loadBtn">施加负载扰动</button>
+            <span class="load-state" id="loadState">负载：空载</span>
+          </div>
+          <canvas id="rpmScope" aria-label="两种算法的转速响应对比"></canvas>
+          <div class="rpm-legend">
+            <span><i style="background:#ff667d"></i>电机 1 · 开环转速</span>
+            <span><i style="background:#54d6e9"></i>电机 2 · 无感 FOC 转速</span>
+            <span><i style="background:rgba(148,178,214,.4)"></i>目标转速</span>
+          </div>
+          <p class="rpm-note">教学模型：扰动后开环没有反馈，转速跌落后停在新平衡点无法恢复；无感 FOC 检测到转速偏差，由电流环自动补偿并拉回目标。数值仅用于对比趋势。</p>
+
+          <table class="pros-table">
+            <thead>
+              <tr><th style="width:14%">对比项</th><th style="width:43%">纯开环强拖</th><th>无感 FOC 闭环</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>转子位置</th><td class="bad">不测量，指令角按固定频率递增，转子是否跟上无从得知</td><td class="good">观测器根据电流/反电动势实时估算，磁场始终锁定转子</td></tr>
+              <tr><th>电流</th><td class="bad">幅值只是占空比系数，实际电流未知，易过流或出力不足</td><td class="good">d/q 轴电流分别闭环，q 轴电流直接对应转矩</td></tr>
+              <tr><th>抗负载扰动</th><td class="bad">无任何补偿，负载稍大即失步</td><td class="good">检测到偏差后 PI 自动纠偏</td></tr>
+              <tr><th>效率与发热</th><td class="mid">磁场角度不匹配，大量电流变为发热</td><td class="good">磁场始终垂直于转子，电流利用率高</td></tr>
+              <tr><th>低速 / 启动</th><td class="good">不依赖反电动势，零速即可强拖启动</td><td class="bad">低速反电动势太弱，观测器难以收敛，通常仍需开环强拖启动再切入</td></tr>
+              <tr><th>实现复杂度</th><td class="good">无需采样与坐标变换，几十行代码即可转动</td><td class="bad">需要相电流采样、Clarke/Park 变换、观测器和 PI 整定</td></tr>
+              <tr><th>硬件要求</th><td class="good">一块三相驱动板 + 三路 PWM 即可</td><td class="bad">需要相电流采样链路（分流电阻 + 放大器 + ADC 同步触发）</td></tr>
+              <tr><th>适用阶段</th><td class="mid">功率链路验证、启动瞬间</td><td class="mid">稳定运行、带载调速</td></tr>
+            </tbody>
+          </table>
+          <p class="explain">这也是为什么工程流程是「开环定位强拖 → 中速后切入无感闭环」：两种算法各管一段，而不是互相替代。</p>
         </article>
 
         <article class="card">
@@ -525,7 +571,8 @@
         en: false, pwm: false, awake: false,
         nFaultHigh: true, faultLatched: false,
         lastTs: performance.now(), samples: [], logClock: 0,
-        rotorTheta: 0, observerTheta: 0, sensorSpeed: 0
+        rotorTheta: 0, observerTheta: 0, sensorSpeed: 0,
+        loadOn: false, openRpm: 0, rpmSamples: [], rpmClock: 0
       };
       sim.manual = true;
 
@@ -701,10 +748,27 @@
           const observerGain = sim.freq > 1 ? .18 : .03;
           let err = ((sim.rotorTheta - sim.observerTheta + Math.PI) % TAU) - Math.PI;
           sim.observerTheta = (sim.observerTheta + err * observerGain) % TAU;
-          sim.sensorSpeed = sim.freq * 60 / 7;
+
+          // 转速响应教学模型（7 对极换算 rpm）：开环无反馈，负载扰动后停在新平衡点；
+          // 闭环由简化 PI 把转速拉回目标。
+          const targetRpm = sim.freq * 60 / 7;
+          const loadDrop = sim.loadOn ? Math.min(.45, targetRpm * .006 + .18) : 0;
+          const openGoal = targetRpm * (1 - loadDrop);
+          sim.openRpm += (openGoal - sim.openRpm) * Math.min(1, dt * 5);
+          const sErr = targetRpm - sim.sensorSpeed;
+          sim.sensorSpeed += sErr * Math.min(1, dt * (sim.loadOn ? 6 : 10));
+          if (!sim.loadOn) sim.sensorSpeed += (targetRpm - sim.sensorSpeed) * Math.min(1, dt * 10);
+
+          sim.rpmClock += dt;
+          if (sim.rpmClock >= .05) {
+            sim.rpmClock = 0;
+            sim.rpmSamples.push([sim.openRpm, sim.sensorSpeed, targetRpm]);
+            if (sim.rpmSamples.length > 260) sim.rpmSamples.shift();
+          }
         } else {
           sim.rotorTheta = sim.observerTheta = 0;
           sim.sensorSpeed = 0;
+          sim.openRpm = 0;
         }
       }
 
@@ -733,8 +797,11 @@
         $("stateHint").textContent = stateHint[sim.state];
         $("openAngle").textContent = `${(sim.theta * 180 / Math.PI).toFixed(1)}°`;
         $("sensorAngle").textContent = `${(sim.observerTheta * 180 / Math.PI).toFixed(1)}°`;
-        $("openSpeed").textContent = `${Math.round(sim.freq * 60 / 7)} rpm*`;
+        $("openSpeed").textContent = `${Math.round(sim.openRpm)} rpm*`;
         $("sensorSpeed").textContent = `${Math.round(sim.sensorSpeed)} rpm`;
+        $("loadState").innerHTML = sim.loadOn ? "负载：<b>已加载</b>" : "负载：空载";
+        $("loadBtn").textContent = sim.loadOn ? "移除负载扰动" : "施加负载扰动";
+        $("loadBtn").classList.toggle("on", sim.loadOn);
         $("compareExplain").textContent = sim.state === "FAULT"
           ? "两台电机都已停机：故障中断先关闭 EN。无感 FOC 还需要在重新启动后重新建立观测器状态。"
           : `开环角度误差无法被程序知道；无感观测器当前用约 ${(Math.abs(((sim.rotorTheta - sim.observerTheta + Math.PI) % TAU) - Math.PI) * 180 / Math.PI).toFixed(1)}° 的误差追踪模拟转子。*转速按 7 对极示例换算，仅用于解释。`;
@@ -769,6 +836,46 @@
         sim.samples.push(d);
         if (sim.samples.length > 260) sim.samples.shift();
         drawScope();
+        drawRpmScope();
+      }
+
+      function drawRpmScope() {
+        const canvas = $("rpmScope");
+        if (!canvas) return;
+        const rect = canvas.getBoundingClientRect();
+        const dpr = Math.min(devicePixelRatio || 1, 2);
+        const w = Math.max(10, Math.round(rect.width * dpr));
+        const h = Math.max(10, Math.round(rect.height * dpr));
+        if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, w, h);
+        ctx.save(); ctx.scale(dpr, dpr);
+        const cw = rect.width, ch = rect.height, pad = 30;
+        ctx.strokeStyle = "rgba(153,183,218,.1)"; ctx.lineWidth = 1;
+        for (let i = 0; i <= 4; i++) {
+          const y = pad + (ch - pad * 2) * i / 4;
+          ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(cw - pad, y); ctx.stroke();
+        }
+        const maxRpm = Math.max(10, ...sim.rpmSamples.map(v => Math.max(v[0], v[1], v[2]))) * 1.15;
+        ctx.fillStyle = "#6f879d"; ctx.font = "10px Segoe UI";
+        ctx.fillText(`${Math.round(maxRpm)}`, 2, pad + 3);
+        ctx.fillText("rpm", 4, ch / 2 + 3);
+        ctx.fillText("0", 8, ch - pad + 3);
+        const plot = (idx, color, dash) => {
+          if (sim.rpmSamples.length < 2) return;
+          ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
+          ctx.setLineDash(dash || []);
+          sim.rpmSamples.forEach((v, i) => {
+            const x = pad + (cw - pad * 2) * i / 259;
+            const y = pad + (ch - pad * 2) * (1 - v[idx] / maxRpm);
+            i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+          });
+          ctx.stroke(); ctx.setLineDash([]);
+        };
+        plot(2, "rgba(148,178,214,.4)", [5, 5]);
+        plot(0, "#ff667d");
+        plot(1, "#54d6e9");
+        ctx.restore();
       }
 
       function drawScope() {
@@ -807,7 +914,7 @@
       }
 
       function resetDemo() {
-        Object.assign(sim, { state:"STOPPED", elapsed:0, total:0, theta:0, freq:0, amp:0, en:false, pwm:false, awake:false, nFaultHigh:true, faultLatched:false, samples:[], logClock:0 });
+        Object.assign(sim, { state:"STOPPED", elapsed:0, total:0, theta:0, freq:0, amp:0, en:false, pwm:false, awake:false, nFaultHigh:true, faultLatched:false, samples:[], logClock:0, loadOn:false, openRpm:0, rpmSamples:[], rpmClock:0 });
         $("log").innerHTML = "";
         log("演示已复位；等待 START");
       }
@@ -832,7 +939,11 @@
       $("faultBtn").addEventListener("click", toggleFault);
       $("clearBtn").addEventListener("click", clearFault);
       $("resetDemo").addEventListener("click", resetDemo);
-      addEventListener("resize", drawScope);
+      $("loadBtn").addEventListener("click", () => {
+        sim.loadOn = !sim.loadOn;
+        log(sim.loadOn ? "已施加负载扰动：开环转速跌落且无法恢复，闭环由电流环拉回目标" : "已移除负载，回到空载");
+      });
+      addEventListener("resize", () => { drawScope(); drawRpmScope(); });
 
       function frame(ts) {
         const realDt = Math.min((ts - sim.lastTs) / 1000, .05);
