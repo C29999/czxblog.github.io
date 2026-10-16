@@ -97,9 +97,9 @@ CAN 控制器自动做 CRC 校验、错误重发和故障隔离：一个节点�
 
 ##### 工程中的CAN代码实现
 
-dgm 驱动器的固件（GD32C10x）在 `can.c` 中实现了一个简洁但完整的 CAN 应用层，核心设计值得参考。
+dgm 驱动器的固件（GD32C10x）在 `can.c` 中实现了一个简洁但完整的 CAN 应用层。下面按调用顺序从底层到上层，逐行拆解每个函数。
 
-**1. 帧 ID 编码：节点 + 命令**
+###### 帧 ID 编码：节点 + 命令
 
 11 位标准 ID 被拆成两段：高 5 位是节点地址（nodeID，1~31，0 为广播），低 6 位是命令号。一帧报文同时表达"发给谁"和"做什么"：
 
@@ -111,7 +111,7 @@ dgm 驱动器的固件（GD32C10x）在 `can.c` 中实现了一个简洁但完�
 tx_frame.id = (mNodeID << 6) | CAN_CMD_HEARTBEAT;
 ```
 
-**2. 命令集：覆盖电机控制全流程**
+###### 命令集：覆盖电机控制全流程
 
 命令枚举按功能分组，共 30+ 条：
 
@@ -127,53 +127,360 @@ tx_frame.id = (mNodeID << 6) | CAN_CMD_HEARTBEAT;
 | 固件 | `WRITE_APP_BACK` / `DFU_START` | CAN 远程升级固件 |
 | 心跳 | `HEARTBEAT`（CMD=63） | 链路保活 |
 
-**3. 接收与解析：过滤器 + switch 分发**
-
-中断里收帧后，`parse_frame` 先做地址过滤（不是本节点也不是广播就丢弃），再按命令号 switch 分发：
+###### `can_tx` — 发送一帧
 
 ```c
-uint8_t nodeID = (frame->id & NODE_ID_BIT) >> 6;
-if(nodeID != mNodeID && nodeID != 0){ return; }   // 不是发给我的
-
-switch(frame->id & CMD_BIT){
-    case CAN_CMD_SET_VELOCITY:
-        Controller.input_velocity_buffer = data_to_float(&frame->data[0]);
-        if(!UsrConfig.sync_target_enable){ CONTROLLER_sync_callback(); }
-        break;
-    // ...
+static bool can_tx(CanFrame *tx_frame)
+{
+    uint8_t mailbox_number;
+    
+    // 检查三个发送邮箱哪个是空的（TME = Transmit Mailbox Empty）
+    if(CAN_TSTAT_TME0 == (CAN_TSTAT(CAN0)&CAN_TSTAT_TME0)){
+        mailbox_number = CAN_MAILBOX0;       // 邮箱0空，用它
+    }else if(CAN_TSTAT_TME1 == (CAN_TSTAT(CAN0)&CAN_TSTAT_TME1)){
+        mailbox_number = CAN_MAILBOX1;       // 邮箱1空，用它
+    }else if(CAN_TSTAT_TME2 == (CAN_TSTAT(CAN0)&CAN_TSTAT_TME2)){
+        mailbox_number = CAN_MAILBOX2;       // 邮箱2空，用它
+    }else{
+        mailbox_number = CAN_NOMAILBOX;      // 三个都忙，没空位
+    }
+    if(CAN_NOMAILBOX == mailbox_number){
+        return false;                        // 发不了，返回失败
+    }
+    
+    // 写入 11 位标准帧 ID
+    // TMI = Transmit Mailbox Identifier 寄存器
+    // SFID = Standard Frame ID，取低 11 位
+    CAN_TMI(CAN0, mailbox_number) = (uint32_t)(TMI_SFID(tx_frame->id & 0x7FF));
+    
+    // 写入 DLC（数据长度码），同时清掉 CAN FD 相关位
+    // TMP = Transmit Mailbox Property 寄存器
+    CAN_TMP(CAN0, mailbox_number) &= ~(CAN_TMP_DLENC|CAN_TMP_ESI|CAN_TMP_BRS|CAN_TMP_FDF);
+    CAN_TMP(CAN0, mailbox_number) |= tx_frame->dlc & 0x0F;   // DLC 4 位，0~8
+    
+    // 写入 8 字节数据，分两个 32 位寄存器
+    // TMDATA0 存 data[3:0]，TMDATA1 存 data[7:4]
+    CAN_TMDATA0(CAN0, mailbox_number) = TMDATA0_DB3(tx_frame->data[3]) | \
+                                        TMDATA0_DB2(tx_frame->data[2]) | \
+                                        TMDATA0_DB1(tx_frame->data[1]) | \
+                                        TMDATA0_DB0(tx_frame->data[0]);
+    CAN_TMDATA1(CAN0, mailbox_number) = TMDATA1_DB7(tx_frame->data[7]) | \
+                                        TMDATA1_DB6(tx_frame->data[6]) | \
+                                        TMDATA1_DB5(tx_frame->data[5]) | \
+                                        TMDATA1_DB4(tx_frame->data[4]);
+    
+    // 拉高 TEN 位（Transmit Enable）→ 硬件开始发送
+    // 之后仲裁、CRC、位填充、ACK 等待全部由 CAN 控制器自动完成
+    CAN_TMI(CAN0, mailbox_number) |= CAN_TMI_TEN;
+    
+    CAN_reset_tx_timeout();    // 记录本次发送时间戳，用于心跳超时判断
+    
+    return true;
 }
-if(echo){ can_tx(frame); }   // 需要应答的命令统一回显
 ```
 
-几个细节：目标值先写入 `input_*_buffer` 缓冲，非同步模式下立即触发 `sync_callback` 生效；需要应答的命令设置 `echo = true`，在 switch 结束后统一回发，避免每条命令重复写发送代码。
+> 核心流程：找空邮箱 → 填 ID、DLC、数据 → 拉高 TEN → 返回。发送过程软件不参与，仲裁、CRC、位填充全是 CAN 控制器硬件做的。
 
-**4. 心跳超时保护：断了就停机**
-
-接收和发送各有一个超时计时。主循环里检查：上位机超过 `heartbeat_consumer_ms` 没发任何帧，说明链路断了，强制回到 IDLE 停机；自身超过 `heartbeat_producer_ms` 没发过帧，就主动发一帧心跳证明还活着：
+###### `can_rx` — 读一帧
 
 ```c
-if(get_ms_since(mRxTick) > UsrConfig.heartbeat_consumer_ms){
-    MCT_set_state(IDLE);   // 上位机失联，停机
-}
-if(get_ms_since(mTxTick) > UsrConfig.heartbeat_producer_ms){
-    can_tx(&tx_frame);      // 主动发心跳
+static bool can_rx(CanFrame *rx_frame)
+{
+    // RFL = Receive FIFO Length，检查 FIFO0 里有没有帧
+    if ((CAN_RFIFO0(CAN0) & CAN_RFIF_RFL_MASK) != 0) {
+        
+        // 从 FIFO 读 ID（标准帧）
+        rx_frame->id = GET_RFIFOMI_SFID(CAN_RFIFOMI(CAN0, 0));
+        
+        // 读 DLC（数据长度）
+        rx_frame->dlc = (uint8_t)(GET_RFIFOMP_DLENC(CAN_RFIFOMP(CAN0, 0)));
+        
+        // 读 8 字节数据，同样分两个 32 位寄存器
+        rx_frame->data[0] = (uint8_t)(GET_RFIFOMDATA0_DB0(CAN_RFIFOMDATA0(CAN0, 0)));
+        rx_frame->data[1] = (uint8_t)(GET_RFIFOMDATA0_DB1(CAN_RFIFOMDATA0(CAN0, 0)));
+        rx_frame->data[2] = (uint8_t)(GET_RFIFOMDATA0_DB2(CAN_RFIFOMDATA0(CAN0, 0)));
+        rx_frame->data[3] = (uint8_t)(GET_RFIFOMDATA0_DB3(CAN_RFIFOMDATA0(CAN0, 0)));
+        rx_frame->data[4] = (uint8_t)(GET_RFIFOMDATA1_DB4(CAN_RFIFOMDATA1(CAN0, 0)));
+        rx_frame->data[5] = (uint8_t)(GET_RFIFOMDATA1_DB5(CAN_RFIFOMDATA1(CAN0, 0)));
+        rx_frame->data[6] = (uint8_t)(GET_RFIFOMDATA1_DB6(CAN_RFIFOMDATA1(CAN0, 0)));
+        rx_frame->data[7] = (uint8_t)(GET_RFIFOMDATA1_DB7(CAN_RFIFOMDATA1(CAN0, 0)));
+        
+        // RFD = Release FIFO Depth，释放 FIFO 让硬件收下一帧
+        // 不释放的话 FIFO 满了之后新帧会被丢弃
+        CAN_RFIFO0(CAN0) |= CAN_RFIFO0_RFD0;
+        
+        return true;
+    } else {
+        return false;    // FIFO 空，没帧可读
+    }
 }
 ```
 
-这就是"CAN 断了不能让电机继续转"的固件级实现，和四合一电调方案里"10ms 未收到新序号控制帧就停机"是同一思路。
+> 核心流程：检查 FIFO 非空 → 读 ID、DLC、数据 → 释放 FIFO → 返回。不释放 FIFO 的话新帧会被丢弃。
 
-**5. 错误处理：被动错误和 Bus-off 都清 FIFO**
+###### `parse_frame` — 收到帧后干什么
 
-定期检查 CAN 控制器错误寄存器，一旦进入被动错误或 Bus-off 状态，清空三个发送邮箱和接收 FIFO，等总线恢复后重新收发，避免错误状态下堆积脏数据：
+这是应用层核心，每收到一帧就调用一次。
 
 ```c
-if(mCanBusErrNew & CAN_ERR_PERR || mCanBusErrNew & CAN_ERR_BOERR){
-    can_transmission_stop(CAN0, CAN_MAILBOX0);
-    can_transmission_stop(CAN0, CAN_MAILBOX1);
-    can_transmission_stop(CAN0, CAN_MAILBOX2);
-    CAN_RFIFO0(CAN0) |= CAN_RFIFO0_RFD0;   // 释放接收FIFO
+static void parse_frame(CanFrame *frame)
+{
+    int ret;
+    bool echo = false;    // 标记本帧是否需要应答
+    
+    // 从 11 位 ID 里提取 nodeID（高 5 位）
+    uint8_t nodeID = (frame->id & NODE_ID_BIT) >> 6;
+    
+    // 地址过滤：不是发给我的、也不是广播（nodeID=0），直接丢
+    if(nodeID != mNodeID && nodeID != 0){
+        return;
+    }
+    
+    CAN_reset_rx_timeout();    // 收到有效帧，重置心跳超时计时
+    
+    // 提取命令号（低 6 位），switch 分发
+    switch(frame->id & CMD_BIT){
+```
+
+挑几个有代表性的 case：
+
+```c
+        // ===== 状态切换类：dlc=0，无数据，只改状态 =====
+        case CAN_CMD_MOTOR_ENABLE:
+            if(frame->dlc == 0){                    // 使能命令不带数据
+                ret = MCT_set_state(RUN);           // 切到 RUN 状态
+                int32_to_data(ret, &frame->data[0]); // 把结果写进 data[0..3]
+                frame->dlc = 4;                     // 应答带 4 字节返回值
+                echo = true;                        // 标记要回发
+            }
+            break;
+```
+
+```c
+        // ===== 目标下发类：dlc=4，带一个 float =====
+        case CAN_CMD_SET_VELOCITY:
+            if(frame->dlc == 4){                              // 必须带 4 字节 float
+                if(UsrConfig.invert_motor_dir){
+                    // 反向安装：取负
+                    Controller.input_velocity_buffer = -data_to_float(&frame->data[0]);
+                }else{
+                    Controller.input_velocity_buffer = +data_to_float(&frame->data[0]);
+                }
+                // 非同步模式：立即生效
+                if(!UsrConfig.sync_target_enable){
+                    CONTROLLER_sync_callback();
+                }
+                // 同步模式：只写缓冲，等 SYNC 命令统一触发
+            }
+            break;
+```
+
+```c
+        // ===== 遥测读取类：dlc=0，回发 float =====
+        case CAN_CMD_GET_VELOCITY:
+            if(frame->dlc == 0){                     // 读取命令不带数据
+                if(UsrConfig.invert_motor_dir){
+                    float_to_data(-Encoder.vel, &frame->data[0]);
+                }else{
+                    float_to_data(+Encoder.vel, &frame->data[0]);
+                }
+                frame->dlc = 4;                      // 应答带 4 字节
+                echo = true;
+            }
+            break;
+```
+
+```c
+        // ===== 同步触发 =====
+        case CAN_CMD_SYNC:
+            if(frame->dlc == 0){
+                if(UsrConfig.sync_target_enable){
+                    CONTROLLER_sync_callback();    // 所有缓冲的目标值同时生效
+                }
+            }
+            break;
+```
+
+```c
+        // ===== 配置读写：dlc=8（4字节索引 + 4字节值） =====
+        case CAN_CMD_SET_CONFIG:
+            if(frame->dlc == 8){
+                config_callback(frame->data, true);   // isSet=true
+                frame->dlc = 8;
+                echo = true;
+            }
+            break;
+        
+        case CAN_CMD_GET_CONFIG:
+            if(frame->dlc == 4){                      // 只带索引
+                config_callback(frame->data, false);  // isSet=false
+                frame->dlc = 8;                       // 回发 索引+值
+                echo = true;
+            }
+            break;
+```
+
+```c
+        // ===== 固件升级：dlc=0~8，写入 Flash 备份区 =====
+        case CAN_CMD_WRITE_APP_BACK:
+            DFU_write_app_back(&frame->data[0], frame->dlc);  // 不带回显，连续写
+            break;
+        
+        case CAN_CMD_DFU_START:
+            if(frame->dlc == 0){
+                watch_dog_feed();          // 先喂狗，防止跳转时复位
+                DFU_jump_bootloader();     // 跳到 bootloader
+            }
+            break;
+    }
+    
+    // switch 结束后统一处理应答
+    if(echo){
+        can_tx(frame);    // 把原帧的数据区填上返回值，ID 不变，发回去
+    }
 }
 ```
+
+> 设计亮点：`echo` 标志把所有需要应答的命令统一在函数末尾回发，不用每个 case 都写一遍 `can_tx`。
+
+###### `CAN_comm_loop` — 主循环里跑的后台任务
+
+```c
+void CAN_comm_loop(void)
+{
+    // 接收心跳超时检查：上位机多久没发任何帧了？
+    if(UsrConfig.heartbeat_consumer_ms){
+        if(get_ms_since(mRxTick) > UsrConfig.heartbeat_consumer_ms){
+            MCT_set_state(IDLE);    // 超时 → 停机，回到 IDLE
+        }
+    }
+    
+    // 发送心跳超时检查：我多久没发过帧了？
+    if(UsrConfig.heartbeat_producer_ms){
+        if(get_ms_since(mTxTick) > UsrConfig.heartbeat_producer_ms){
+            CanFrame tx_frame;
+            tx_frame.id = (mNodeID << 6) | CAN_CMD_HEARTBEAT;  // CMD=63
+            tx_frame.dlc = 0;        // 心跳不带数据
+            can_tx(&tx_frame);       // 发出去证明还活着
+        }
+    }
+    
+    // CAN 总线错误检查
+    can_error_check();
+}
+```
+
+> 每次主循环都跑一遍——上位机失联就停机，自己太久没说话就发心跳，同时检查总线有没有出错。这就是"CAN 断了不能让电机继续转"的固件级实现。
+
+###### `config_callback` — 配置项读写
+
+```c
+static void config_callback(uint8_t *data, bool isSet)
+{
+    // data[0..3] = 配置项索引（从 1 开始），data[4..7] = 值
+    int32_t idx = data_to_int32(data) - 1;    // 转成 0 起始
+    int32_t config_number = sizeof(tUsrConfig)/4 - 132;  // 可在线改的参数个数
+    
+    // 索引越界检查
+    if(idx >= config_number){
+        int32_to_data(-1, &data[0]);   // 返回错误
+        int32_to_data( 0, &data[4]);
+        return;
+    }
+    
+    // 把 UsrConfig 结构体当 uint32_t 数组，按索引访问
+    uint32_t *pConfig = &(((uint32_t*)(&UsrConfig))[idx]);
+    
+    if(isSet){
+        // 写配置：只能在 IDLE 状态下改，RUN 中拒绝
+        if(MCT_get_state() != IDLE){
+            int32_to_data(-1, &data[0]);
+            int32_to_data( 0, &data[4]);
+            return;
+        }
+        memcpy(pConfig, &data[4], 4);    // 写入新值
+        
+        // 改了带宽参数要立刻更新 PI 增益
+        FOC_update_current_ctrl_gain(UsrConfig.current_ctrl_bw);
+        CONTROLLER_update_input_pos_filter_gain(UsrConfig.position_filter_bw);
+    }else{
+        // 读配置：把当前值拷到 data[4..7] 回发
+        memcpy(&data[4], pConfig, 4);
+    }
+}
+```
+
+> 设计亮点：把 `UsrConfig` 结构体直接当 `uint32_t` 数组按索引访问，上位机只需要发"第几个参数 + 新值"，不需要为每个参数定义单独的命令号。
+
+###### `can_error_check` — 总线错误处理
+
+```c
+static void can_error_check(void)
+{
+    mCanBusErrNew = CAN_ERR(CAN0);       // 读错误寄存器
+    if(mCanBusErrOld != mCanBusErrNew){  // 状态有变化才处理
+        mCanBusErrOld = mCanBusErrNew;
+        
+        if(mCanBusErrNew & CAN_ERR_WERR){
+            // 警告错误（错误计数器接近阈值），暂不处理
+        }
+        
+        if(mCanBusErrNew & CAN_ERR_PERR){
+            // 被动错误：本节点出错太多，先清空发送邮箱和接收 FIFO
+            can_transmission_stop(CAN0, CAN_MAILBOX0);
+            can_transmission_stop(CAN0, CAN_MAILBOX1);
+            can_transmission_stop(CAN0, CAN_MAILBOX2);
+            CAN_RFIFO0(CAN0) |= CAN_RFIFO0_RFD0;
+        }
+        
+        if(mCanBusErrNew & CAN_ERR_BOERR){
+            // Bus-off：彻底离线，同样清空所有邮箱和 FIFO
+            can_transmission_stop(CAN0, CAN_MAILBOX0);
+            can_transmission_stop(CAN0, CAN_MAILBOX1);
+            can_transmission_stop(CAN0, CAN_MAILBOX2);
+            CAN_RFIFO0(CAN0) |= CAN_RFIFO0_RFD0;
+        }
+        
+        // 错误类型分类（fill/format/ack/bit/crc），目前只记录不处理
+        switch (can_error_get(CAN0)) { ... }
+        
+        CAN_ERR(CAN0) = CAN_ERR_ERRN;    // 清错误标志位
+    }
+}
+```
+
+> 出错了就把发送邮箱和接收 FIFO 全清掉，防止脏数据堆积，等总线恢复后重新开始。
+
+###### 辅助函数
+
+```c
+// 收到任何发给我的帧 → 重置接收超时计时
+void CAN_reset_rx_timeout(void) { mRxTick = SystickCount; }
+
+// 发出任何帧 → 重置发送超时计时
+void CAN_reset_tx_timeout(void) { mTxTick = SystickCount; }
+
+// 上电时设置本节点地址（从 Flash 读的配置）
+void CAN_set_node_id(uint8_t nodeID) { mNodeID = nodeID; }
+```
+
+###### 调用关系总结
+
+```
+中断触发（FIFO0 非空）
+  └─ CAN_receive_callback()
+       └─ while(can_rx())        ← 把 FIFO 里的帧全读完
+            └─ parse_frame()      ← 逐帧分发
+                 └─ can_tx()      ← 需要应答的回发
+
+主循环
+  └─ CAN_comm_loop()
+       ├─ 心跳超时检查 → 可能调 MCT_set_state(IDLE)
+       ├─ 心跳发送     → can_tx(HEARTBEAT)
+       └─ can_error_check()
+```
+
+> **对本项目的参考意义**：这套 ID 编码（nodeID+CMD）、心跳超时停机、目标缓冲+sync 触发的模式，可以直接移植到四合一电调的 G431 固件上。区别只是四合一板有两颗 MCU，每颗要过滤出自己负责的两个电机 ID，dgm 是单节点所以只需匹配一个 nodeID。
 
 
 ## 飞控部分
