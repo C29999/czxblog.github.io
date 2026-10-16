@@ -12,17 +12,17 @@ date: 2025-08-17 12:00:00
 
 ## 项目说明
 
-目标是自制一台约 2 英寸机架、采用 1104/4300KV 无刷电机的四轴无人机，逐步完成四合一无感 FOC 电调与飞控。当前已使用 TC264D 开发板配合 SimpleFOC Mini（DRV8313）验证单电机开环转动，并在嘉立创 EDA 中完成双 STM32G431 四合一电调的 Rev E 原理图绘制；ESP32-S3 飞控、PCB、无感闭环和整机飞行仍属后续计划。
+ 有两个项目1.无刷电机控制驱动的学习2.四轴无人机的制作
 
 ## FOC驱动学习
 
-## 项目开源
+### 项目开源
 
-### 软件开源
+#### 软件开源
 
 本项目软件部分基于开源工程[FOC-Study](https://github.com/mielnicz/dgm_BLDC)，并对其进行修改。
 
-### 硬件原理图
+#### 硬件原理图
 
 ![FOC 硬件原理图](/images/foc-hardware-schematic.png)
 
@@ -73,7 +73,107 @@ date: 2025-08-17 12:00:00
 
 </details>
 
-### CAN协议的使用
+#### CAN协议的使用
+
+##### 什么是 CAN协议？
+
+CAN（Controller Area Network，控制器局域网）是博世 1986 年为汽车电子设计的串行总线协议，让多个控制器挂在一对双绞线上互相通信，不需要主机逐一询问。后来凭借抗干扰强、可靠性高的特点，广泛用于工业设备、机器人和无人机。
+
+**物理层：差分信号抗干扰**
+
+CAN 用 CANH 和 CANL 一对双绞线传输，靠两条线的**电压差**表示 0/1（显性/隐性电平），而不是单根线对地的高低。电机、电调产生的大电流干扰会同时耦合到两根线上，但差值基本不变，所以总线在强电磁环境里依然可靠。收发器负责把 MCU 的逻辑电平转成差分信号，MCU 的 CAN 控制器只处理数据帧。总线两个物理末端各放一颗 120Ω 终端电阻吸收反射。
+
+**总线仲裁：ID 越小优先级越高**
+
+CAN 是**多主**结构，任何节点想发就发。两个节点同时发时，靠"非破坏性仲裁"解决：逐位比较各自的报文 ID，ID 里出现 0（显性）的一方继续，出现 1（隐性）的一方自动退出发送、改作接收。所以 ID 越小的报文优先级越高，且高优先级报文不会因为冲突而延迟或丢失——这对电机控制这种实时性场景非常关键。
+
+**报文结构**
+
+一帧标准 CAN 报文包含：ID（11 位或扩展 29 位）、DLC（数据长度）、最多 8 字节数据、CRC 校验和 ACK 应答位。没有源地址和目的地址——节点靠 ID 过滤器自己决定收哪些帧。经典 CAN 一帧最多 8 字节，常用波特率 125k ~ 1Mbit/s。
+
+**错误处理**
+
+CAN 控制器自动做 CRC 校验、错误重发和故障隔离：一个节点出错次数太多会被强制"离线"（Bus-off），防止它拖垮整条总线。这是 CAN 在可靠性要求高的场景胜出的原因之一。
+
+##### 工程中的CAN代码实现
+
+dgm 驱动器的固件（GD32C10x）在 `can.c` 中实现了一个简洁但完整的 CAN 应用层，核心设计值得参考。
+
+**1. 帧 ID 编码：节点 + 命令**
+
+11 位标准 ID 被拆成两段：高 5 位是节点地址（nodeID，1~31，0 为广播），低 6 位是命令号。一帧报文同时表达"发给谁"和"做什么"：
+
+```c
+#define NODE_ID_BIT  0x7C0U   // 高5位
+#define CMD_BIT      0x03FU   // 低6位
+
+// 发送时拼接 ID
+tx_frame.id = (mNodeID << 6) | CAN_CMD_HEARTBEAT;
+```
+
+**2. 命令集：覆盖电机控制全流程**
+
+命令枚举按功能分组，共 30+ 条：
+
+| 分组 | 命令 | 作用 |
+|------|------|------|
+| 状态切换 | `MOTOR_ENABLE` / `MOTOR_DISABLE` | 进入 RUN / IDLE |
+| 目标下发 | `SET_TORQUE` / `SET_VELOCITY` / `SET_POSITION` | 写入目标值到控制器缓冲 |
+| 同步 | `SYNC` | 开启同步模式后，统一触发多轴同时执行 |
+| 校准 | `CALIB_START` / `CALIB_REPORT` / `CALIB_ABORT` | 编码器零偏校准 |
+| 消齿槽 | `ANTICOGGING_START/REPORT/ABORT` | 齿槽转矩补偿表标定 |
+| 状态读取 | `GET_STATUSWORD` / `GET_TORQUE` / `GET_VELOCITY` / `GET_POSITION` / `GET_I_Q` / `GET_VBUS` / `GET_IBUS` / `GET_POWER` | 遥测 |
+| 配置 | `SET_CONFIG` / `GET_CONFIG` / `SAVE_ALL_CONFIG` / `RESET_ALL_CONFIG` | 在线调参和保存 |
+| 固件 | `WRITE_APP_BACK` / `DFU_START` | CAN 远程升级固件 |
+| 心跳 | `HEARTBEAT`（CMD=63） | 链路保活 |
+
+**3. 接收与解析：过滤器 + switch 分发**
+
+中断里收帧后，`parse_frame` 先做地址过滤（不是本节点也不是广播就丢弃），再按命令号 switch 分发：
+
+```c
+uint8_t nodeID = (frame->id & NODE_ID_BIT) >> 6;
+if(nodeID != mNodeID && nodeID != 0){ return; }   // 不是发给我的
+
+switch(frame->id & CMD_BIT){
+    case CAN_CMD_SET_VELOCITY:
+        Controller.input_velocity_buffer = data_to_float(&frame->data[0]);
+        if(!UsrConfig.sync_target_enable){ CONTROLLER_sync_callback(); }
+        break;
+    // ...
+}
+if(echo){ can_tx(frame); }   // 需要应答的命令统一回显
+```
+
+几个细节：目标值先写入 `input_*_buffer` 缓冲，非同步模式下立即触发 `sync_callback` 生效；需要应答的命令设置 `echo = true`，在 switch 结束后统一回发，避免每条命令重复写发送代码。
+
+**4. 心跳超时保护：断了就停机**
+
+接收和发送各有一个超时计时。主循环里检查：上位机超过 `heartbeat_consumer_ms` 没发任何帧，说明链路断了，强制回到 IDLE 停机；自身超过 `heartbeat_producer_ms` 没发过帧，就主动发一帧心跳证明还活着：
+
+```c
+if(get_ms_since(mRxTick) > UsrConfig.heartbeat_consumer_ms){
+    MCT_set_state(IDLE);   // 上位机失联，停机
+}
+if(get_ms_since(mTxTick) > UsrConfig.heartbeat_producer_ms){
+    can_tx(&tx_frame);      // 主动发心跳
+}
+```
+
+这就是"CAN 断了不能让电机继续转"的固件级实现，和四合一电调方案里"10ms 未收到新序号控制帧就停机"是同一思路。
+
+**5. 错误处理：被动错误和 Bus-off 都清 FIFO**
+
+定期检查 CAN 控制器错误寄存器，一旦进入被动错误或 Bus-off 状态，清空三个发送邮箱和接收 FIFO，等总线恢复后重新收发，避免错误状态下堆积脏数据：
+
+```c
+if(mCanBusErrNew & CAN_ERR_PERR || mCanBusErrNew & CAN_ERR_BOERR){
+    can_transmission_stop(CAN0, CAN_MAILBOX0);
+    can_transmission_stop(CAN0, CAN_MAILBOX1);
+    can_transmission_stop(CAN0, CAN_MAILBOX2);
+    CAN_RFIFO0(CAN0) |= CAN_RFIFO0_RFD0;   // 释放接收FIFO
+}
+```
 
 
 ## 飞控部分
