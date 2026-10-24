@@ -25,16 +25,15 @@ date: 2026-10-24 12:00:00
 
 ## linux 基础命令
 
-```  c++
-man ls //manual手册 `man ls` 的意思：查看 ls 命令的使用方法
-例如还有
-man cd //manual手册 `man cd` 的意思：查看 cd 命令的使用方法
-man mkdir //manual手册 `man mkdir` 的意思：查看 mkdir 命令的使用方法
-man rm //manual手册 `man rm` 的意思：查看 rm 命令的使用方法
-```
-``` bash
+**man：查看命令手册**
 
-ls -l //查看当前目录下的文件和目录，显示详细信息
+`man` 是 manual 的缩写，用来查任何命令的用法。`man ls` 就是查看 `ls` 命令的说明，同样可以 `man cd`、`man mkdir`、`man rm`。
+
+**ls -l：查看目录详情**
+
+```bash
+ls -l    # 查看当前目录下的文件和目录，显示详细信息
+
 seekfree@seekfree:~/Desktop$ ls -l
 总计 48
 -rw-rw-r-- 1 seekfree seekfree    58  1月 30  2026 使用gitee拉取开源库.txt
@@ -42,9 +41,35 @@ seekfree@seekfree:~/Desktop$ ls -l
 -rw-rw-r-- 1 seekfree seekfree 39744  9月  5 16:33 install.sh
 ```
 
-每一行开头的 `-rw-rw-r--` 就是文件类型和权限位，拆开看：
+每一行开头的 `-rw-rw-r--` 就是文件类型和权限位，分两部分看：
 
-![ls -l 权限位解读](/images/linux-ls-l-permission.png)
+1. **第一个字符 `-`**：普通文件，不是目录、不是链接（`d` 表示目录，`l` 表示链接）
+2. **后面 9 位分三组**：`rw-` / `rw-` / `r--`
+   - 属主（seekfree）：可读、可写，不能执行
+   - 同组用户（seekfree 组）：可读、可写，不能执行
+   - 其他人：**只能读**，不能写、不能执行
 
-- **第一个字符 `-`**：普通文件（`d` 表示目录，`l` 表示链接）
-- **后面 9 位分三组**：`rw-`（属主）、`rw-`（同组用户）、`r--`（其他人），分别表示可读（r）、可写（w）、可执行（x），`-` 表示没有该权限
+### mkdir / cp / mv：建目录、复制、移动
+
+- `mkdir 文件夹名`：新建目录，加 `-p` 可一次创建多级嵌套（`mkdir -p a/b/c`）
+- `cp 源文件 目标`：复制，拷目录要加 `-r`
+- `mv 源 目标`：移动或重命名
+
+用 `ls -l` 验证，新建的目录会以 `d` 开头显示。
+
+**实操案例**：建一个 `linux-demo` 文件夹，把脚本复制进去，再建嵌套目录并移动文件：
+
+```bash
+# 1. 创建文件夹
+mkdir linux-demo
+# 2. 复制脚本进去
+cp install.sh linux-demo/
+# 3. 新建嵌套目录
+mkdir -p linux-demo/code/app
+# 4. 把密码文本移动进去
+mv "用户密码.txt" linux-demo/
+# 5. 查看文件夹里面内容
+ls linux-demo
+```
+
+这 5 步把 `mkdir`、`cp`、`mv` 三个命令串成了一个完整流程：先建容器（`mkdir`），再往里面放东西（`cp` 复制文件、`mv` 移动文件），最后用 `ls` 验证结果。
