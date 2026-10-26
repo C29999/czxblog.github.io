@@ -365,7 +365,7 @@
 
     <div class="notice">
       <strong>关键区别</strong>
-      <span>动画中的箭头是<strong>指令电压矢量</strong>，并非实测转子位置。电机转子是否同步跟随无法由本程序得知；这里实现的是电压开环三相正弦驱动。</span>
+      <span><strong>核心区别：</strong>纯开环只输出预设三相电压，不需要电流采样；无感 FOC 不使用编码器或霍尔，但必须采样相电流，结合电压和电机模型估算转子角度，并通过电流环闭环调节。</span>
     </div>
 
     <section class="grid">
@@ -402,7 +402,7 @@
             <div class="compare-panel"><h3>电机 1 · 纯开环</h3><p>程序直接积分电角度，不读取转子位置。</p><code>theta_e += 2π × FREQ × dt; duty = 0.5 + 0.5 × AMP × sin(theta_e);</code><p>指令角：<b id="openAngle">0.0°</b>　估算转速：<b id="openSpeed">0 rpm</b></p></div>
             <div class="compare-panel"><h3>电机 2 · 无感 FOC</h3><p>根据反电动势和电流模型估算转子角度，再修正控制角。</p><code>angle_error = rotor_angle - observer_angle; observer_angle += observer_gain × angle_error; current_pi_correct();</code><p>估算角：<b id="sensorAngle">0.0°</b>　反馈转速：<b id="sensorSpeed">0 rpm</b></p></div>
           </div>
-          <p class="explain" id="compareExplain">开环电机只执行预先生成的电角度；无感 FOC 电机用反电动势和电流模型估算转子角度，再用角度误差修正驱动。</p>
+          <p class="explain" id="compareExplain">开环电机只执行预先生成的电角度；无感 FOC 电机读取相电流，估算转子角度，再用电流环修正驱动电压。</p>
 
           <div class="load-row">
             <button id="loadBtn">施加负载扰动</button>

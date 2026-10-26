@@ -482,7 +482,7 @@ void CAN_set_node_id(uint8_t nodeID) { mNodeID = nodeID; }
 
 > **对本项目的参考意义**：这套 ID 编码（nodeID+CMD）、心跳超时停机、目标缓冲+sync 触发的模式，可以直接移植到四合一电调的 G431 固件上。区别只是四合一板有两颗 MCU，每颗要过滤出自己负责的两个电机 ID，dgm 是单节点所以只需匹配一个 nodeID。
 
-
+#### 有感FOC
 ## 飞控部分
 > **代码仓库**：[FOC-Study](https://github.com/C29999/FOC-Study) — 纯开环强拖验证代码
 > **上位机**：[host-computer](https://github.com/C29999/host-computer) — 串口调试上位机
