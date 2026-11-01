@@ -35,6 +35,7 @@
     .concept-code { display:inline-flex; min-height:25px; align-items:center; padding:3px 9px; border-radius:999px; color:var(--blue); background:var(--blue-pale); font:800 11px ui-monospace,monospace; letter-spacing:.06em; } .concept h3 { margin:12px 0 0; font-size:20px; letter-spacing:-.025em; } .concept p { margin:8px 0 0; color:#566980; font-size:14px; }
     .codebox { min-height:107px; margin-top:13px; padding:12px; overflow:hidden; border-radius:11px; color:#cfe2ff; background:#1e2b42; font:12px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace; white-space:pre-wrap; } .codebox b { color:#7ed9d2; } .codebox i { color:#f5c272; font-style:normal; }
     .checklist { padding:0; margin:13px 0 0; list-style:none; } .checklist li { position:relative; padding-left:16px; color:#52667e; font-size:13px; } .checklist li::before { position:absolute; top:.72em; left:1px; width:7px; height:7px; border-radius:50%; background:var(--blue); content:""; }
+    .dma-flow { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:9px; align-items:center; margin-top:16px; padding:15px; border:1px solid #dce7f0; border-radius:14px; background:linear-gradient(135deg,#fff,#eaf2ff); } .dma-node { padding:10px; border:1px solid #b8cfef; border-radius:10px; color:#3569c8; background:#fff; font:800 11px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace; text-align:center; } .dma-node span { display:block; margin-top:3px; color:#71849b; font:700 10px Inter,"PingFang SC",sans-serif; } .dma-arrow { width:31px; height:3px; border-radius:99px; background:repeating-linear-gradient(90deg,#326ddd 0 7px,transparent 7px 12px); animation:dash 1.35s linear infinite; } .dma-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:13px; } .dma-grid div { padding:11px; border:1px solid #e0eaf3; border-radius:11px; background:#f8fbfe; } .dma-grid b { display:block; color:#3569c8; font:800 11px ui-monospace,SFMono-Regular,Consolas,monospace; } .dma-grid span { display:block; margin-top:4px; color:#556a82; font-size:12px; line-height:1.5; }
     .protocol-grid { display:grid; grid-template-columns:1fr; gap:18px; } .protocol { --accent:var(--blue); --pale:var(--blue-pale); padding:22px; border:1px solid #dce6f0; border-radius:21px; background:var(--card); box-shadow:0 8px 23px rgba(29,60,98,.06); } .protocol.can { --accent:var(--teal); --pale:var(--teal-pale); order:4; } .protocol.i2c { --accent:var(--violet); --pale:var(--violet-pale); order:3; } .protocol.spi { --accent:var(--orange); --pale:var(--orange-pale); order:2; } #uart { order:1; }
     .protocol-head { display:flex; justify-content:space-between; gap:10px; align-items:start; } .badge { display:inline-flex; min-height:26px; align-items:center; padding:3px 10px; border-radius:99px; color:var(--accent); background:var(--pale); font:800 12px ui-monospace,monospace; letter-spacing:.06em; } .kind { color:#8292a4; font-size:11px; text-align:right; }
     .protocol h3 { margin:13px 0 0; font-size:23px; letter-spacing:-.03em; } .protocol>p { min-height:65px; margin:8px 0 0; color:#53677f; font-size:14px; }
@@ -50,7 +51,7 @@
     .side-nav p { margin:0 0 8px; color:#718298; font:800 11px ui-monospace,monospace; letter-spacing:.07em; } .side-nav a { display:block; padding:8px 9px; border-radius:8px; color:#526780; font-size:13px; font-weight:750; text-decoration:none; } .side-nav a:hover,.side-nav a:focus-visible { color:#2d66d0; background:#edf4ff; outline:none; } .side-nav .nav-group { display:block; margin:9px 0 2px; padding:6px 9px 3px; border-top:1px solid #e7eef5; color:#718299; font-size:11px; font-weight:850; letter-spacing:.04em; } .side-nav a.nav-sub { padding:6px 9px 6px 22px; color:#61748c; font-size:12px; font-weight:650; } .side-nav a.nav-sub::before { content:"·"; display:inline-block; width:11px; margin-left:-13px; color:#2d66d0; font-size:16px; line-height:0; } .side-nav a.back-nav { margin-top:8px; border-top:1px solid #e1eaf3; border-radius:0; color:#2d66d0; }
     footer { padding:0 20px 34px; color:#8392a6; text-align:center; font-size:12px; }
     @keyframes dash { to { stroke-dashoffset:-26; } } @keyframes go { 0% { offset-distance:0%; opacity:0; } 14%,80% { opacity:1; } 100% { offset-distance:100%; opacity:0; } } @keyframes blink { 50% { opacity:.25; } } @keyframes spin { to { transform:rotate(360deg); } }
-    @media (max-width:980px) { .learning-layout { grid-template-columns:1fr; width:min(100% - 40px,1130px); } .side-nav { position:static; display:flex; flex-wrap:wrap; gap:4px; margin:0; } .side-nav p,.side-nav .nav-group { flex-basis:100%; } .side-nav a { display:inline-block; } .side-nav a.nav-sub { padding-left:10px; } .side-nav a.nav-sub::before { display:none; } .side-nav a.back-nav { margin-top:0; border-top:0; } } @media (max-width:820px) { .hero-grid { grid-template-columns:1fr; gap:28px; } .c-grid { grid-template-columns:1fr; } .heading { display:block; } .heading p { margin-top:10px; } } @media (max-width:620px) { .wrap,.learning-layout { width:min(100% - 28px,1130px); } .protocol-grid { grid-template-columns:1fr; } .practice-controls { grid-template-columns:1fr 1fr; } .practice-toggle { grid-column:1 / -1; } .answer-flow { grid-template-columns:1fr 1fr; } .hero { padding-bottom:37px; } }
+    @media (max-width:980px) { .learning-layout { grid-template-columns:1fr; width:min(100% - 40px,1130px); } .side-nav { position:static; display:flex; flex-wrap:wrap; gap:4px; margin:0; } .side-nav p,.side-nav .nav-group { flex-basis:100%; } .side-nav a { display:inline-block; } .side-nav a.nav-sub { padding-left:10px; } .side-nav a.nav-sub::before { display:none; } .side-nav a.back-nav { margin-top:0; border-top:0; } } @media (max-width:820px) { .hero-grid { grid-template-columns:1fr; gap:28px; } .c-grid { grid-template-columns:1fr; } .heading { display:block; } .heading p { margin-top:10px; } } @media (max-width:620px) { .wrap,.learning-layout { width:min(100% - 28px,1130px); } .protocol-grid { grid-template-columns:1fr; } .dma-flow { grid-template-columns:1fr; } .dma-arrow { width:3px; height:23px; justify-self:center; } .dma-grid,.practice-controls { grid-template-columns:1fr 1fr; } .practice-toggle { grid-column:1 / -1; } .answer-flow { grid-template-columns:1fr 1fr; } .hero { padding-bottom:37px; } }
     @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; } }
   </style>
 </head>
@@ -70,6 +71,7 @@
       <a class="nav-sub" href="#register">位操作与寄存器</a>
       <a class="nav-sub" href="#concurrency">volatile 与中断协作</a>
       <span class="nav-group">02 · 嵌入式基础</span>
+      <a class="nav-sub" href="#dma">DMA 数据搬运</a>
       <a class="nav-sub" href="#uart">UART</a>
       <a class="nav-sub" href="#spi">SPI</a>
       <a class="nav-sub" href="#i2c">IIC</a>
@@ -85,7 +87,7 @@
           <p class="eyebrow">Module 01 / interview basics</p>
           <h1>C语言基础 /<br><span>嵌入式基础</span></h1>
           <p class="lede">面试中不只要会调用库函数，更要说清变量在哪里、并发为什么出错、数据怎样从 MCU 到外设。本页按“C 语言 → 通信协议”建立基础回答框架。</p>
-          <nav class="anchors" aria-label="页内导航"><a href="#c-language">C 语言底层</a><a href="#embedded-comms">嵌入式通信</a><a href="#answer-structure">答题结构</a></nav>
+          <nav class="anchors" aria-label="页内导航"><a href="#c-language">C 语言底层</a><a href="#dma">DMA 数据搬运</a><a href="#embedded-comms">嵌入式通信</a><a href="#answer-structure">答题结构</a></nav>
         </div>
         <aside class="hero-board" aria-label="学习路径">
           <h2>把知识点串成可解释的链路</h2>
@@ -133,6 +135,26 @@ ready = 1;
             <ul class="checklist"><li>多字节共享数据要考虑读写撕裂。</li><li>从 ISR 到任务常使用队列或环形缓冲解耦。</li></ul>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="dma-title">
+      <div class="wrap">
+        <div class="heading"><h2 id="dma-title">DMA：不经过 CPU 的数据搬运</h2><p>DMA（Direct Memory Access）由专用硬件在外设与内存之间搬运数据。CPU 负责配置和收尾，不必逐字节执行读写。</p></div>
+        <article class="concept" id="dma">
+          <span class="concept-code">DMA</span><h3>谁在搬？搬到哪里？什么时候通知 CPU？</h3>
+          <p>外设产生请求后，DMA 控制器可按配置在“外设寄存器 ↔ 内存”或“内存 ↔ 内存”之间传输。常用于 UART 连续接收、ADC 采样、SPI 大块读写；这样能减少 CPU 中断与搬运开销，但不等于 CPU 从此不需要参与。</p>
+          <div class="dma-flow" aria-label="DMA 数据流"><div class="dma-node">外设请求<span>UART / ADC / SPI</span></div><i class="dma-arrow"></i><div class="dma-node">DMA 控制器<span>地址 · 长度 · 宽度</span></div><i class="dma-arrow"></i><div class="dma-node">内存缓冲区<span>环形 / 双缓冲</span></div></div>
+          <div class="dma-grid"><div><b>CPU 配置</b><span>设置源/目的地址、传输长度、数据宽度、地址是否递增与工作模式。</span></div><div><b>DMA 传输</b><span>由外设请求或软件触发搬运；总线繁忙时仍要考虑仲裁和带宽。</span></div><div><b>完成通知</b><span>半传输、传输完成或错误中断通知 CPU，再解析数据或切换缓冲区。</span></div></div>
+          <pre class="codebox"><i>/* 概念伪代码：UART 不定长接收 */</i>
+DMA.source = USART_RDR;
+DMA.dest = rx_ring;
+DMA.mode = <b>CIRCULAR</b>;
+
+<i>/* IDLE 中断：快照写入位置，再交给任务解析 */</i>
+write_pos = RX_SIZE - DMA.remaining;</pre>
+          <ul class="checklist"><li>普通模式传满即停；环形模式适合连续字节流；双缓冲可在 DMA 填充 A 时由 CPU 处理 B。</li><li>UART 的 IDLE 只提示“出现帧间隙”，不能替代协议的长度、校验或帧尾判断。</li><li>带 D-Cache 的 MCU 需明确缓冲区所有权：DMA 读内存前可能要 clean，DMA 写内存后 CPU 读前可能要 invalidate；或使用非缓存区。</li><li>DMA 与任务/中断并发时要处理写指针快照、缓冲区溢出和读写边界，不能只靠 <code>volatile</code>。</li></ul>
+        </article>
       </div>
     </section>
 
