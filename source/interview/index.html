@@ -159,105 +159,6 @@
       </div>
     </section>
 
-    <section class="intro" aria-labelledby="modules-title">
-      <div class="wrap section-heading">
-        <h2 id="modules-title">四个模块，面试时能讲清边界</h2>
-        <p>每张卡片展示对应的技术边界、典型硬件或系统对象。重点是准确说清做过什么、理解到哪一层，而不是堆叠名词。</p>
-      </div>
-    </section>
-
-    <section class="modules">
-      <div class="wrap module-grid">
-        <article class="module c">
-          <div class="module-top"><span class="badge">MODULE 01</span><span class="stage">基础能力<br>Embedded C</span></div>
-          <h3>C 语言与嵌入式基础</h3>
-          <p class="summary">围绕寄存器访问、指针与内存布局、位操作和模块化接口组织程序；结合中断与缓冲区处理外设数据，关注边界条件、资源占用与可维护性。</p>
-          <figure class="diagram" aria-label="STM32 中 Flash、SRAM 与 GPIO 寄存器之间的数据流动画">
-            <svg viewBox="0 0 320 184" role="img">
-              <rect class="chip" x="24" y="42" width="65" height="101" rx="10"/><rect class="core" x="35" y="61" width="43" height="61" rx="4"/>
-              <text class="chip-label" x="56" y="86" text-anchor="middle">STM32</text><text class="small-label" x="56" y="101" text-anchor="middle">F103C8T6</text>
-              <path class="pin" d="M16 59h8M16 74h8M16 89h8M16 104h8M16 119h8M89 59h8M89 74h8M89 89h8M89 104h8M89 119h8"/>
-              <rect class="chip" x="177" y="43" width="105" height="36" rx="8"/><text class="chip-label" x="229" y="66" text-anchor="middle">FLASH / CODE</text>
-              <rect class="chip" x="177" y="104" width="105" height="36" rx="8"/><text class="chip-label" x="229" y="127" text-anchor="middle">SRAM / BUFFER</text>
-              <path class="wire" d="M89 67H177"/><path class="wire soft" d="M177 122H89"/>
-              <text class="small-label" x="117" y="59">const</text><text class="small-label" x="119" y="137">volatile</text>
-              <circle class="dot memory-dot" cx="0" cy="0" r="4"/>
-            </svg>
-          </figure>
-          <div class="detail-grid"><div class="detail"><span>典型对象</span><strong>STM32F103C8T6<br>寄存器 / 外设库</strong></div><div class="detail"><span>代码关注点</span><strong>Flash · SRAM<br>GPIO · IRQ</strong></div></div>
-          <ul class="ability-list"><li>指针、结构体与内存生命周期管理。</li><li>位掩码、寄存器配置和中断安全缓冲。</li><li>用状态机拆分外设与业务流程。</li></ul>
-          <a class="module-link" href="c-embedded-basics.html">进入 C 语言与嵌入式基础子页 →</a>
-        </article>
-
-        <article class="module rtos">
-          <div class="module-top"><span class="badge">MODULE 02</span><span class="stage">系统协作<br>RTOS / Linux</span></div>
-          <h3>FreeRTOS 与 Linux 系统开发</h3>
-          <p class="summary">FreeRTOS 面向 MCU 的任务、队列、信号量与时序协作；Linux 面向用户态程序、系统调用、驱动接口和设备文件，两者适用于不同资源规模与系统边界。</p>
-          <figure class="diagram" aria-label="FreeRTOS 任务队列与 Linux 用户态到驱动调用链的动画">
-            <svg viewBox="0 0 320 184" role="img">
-              <rect class="chip" x="20" y="42" width="100" height="99" rx="10"/><text class="chip-label" x="70" y="65" text-anchor="middle">STM32 + FreeRTOS</text>
-              <rect class="task-block" x="34" y="76" width="38" height="15" rx="4"/><rect class="task-block two" x="77" y="76" width="27" height="15" rx="4"/>
-              <rect class="core" x="34" y="108" width="70" height="17" rx="4"/><text class="small-label" x="69" y="120" text-anchor="middle">QUEUE / SEM</text>
-              <path class="wire" d="M120 93H151"/>
-              <rect class="chip" x="151" y="42" width="146" height="99" rx="10"/><text class="chip-label" x="224" y="64" text-anchor="middle">Raspberry Pi 4 / Linux</text>
-              <rect class="core" x="166" y="76" width="49" height="17" rx="4"/><rect class="core" x="231" y="76" width="49" height="17" rx="4"/>
-              <text class="small-label" x="190" y="88" text-anchor="middle">APP</text><text class="small-label" x="255" y="88" text-anchor="middle">DRIVER</text>
-              <path class="wire soft" d="M215 84H231"/><path class="wire" d="M166 116H280"/>
-              <text class="small-label" x="223" y="126" text-anchor="middle">syscall → /dev → I²C · GPIO · UART</text>
-            </svg>
-          </figure>
-          <div class="detail-grid"><div class="detail"><span>RTOS 侧</span><strong>Task · Queue<br>Semaphore · Timer</strong></div><div class="detail"><span>Linux 侧</span><strong>Process · syscall<br>/dev · driver API</strong></div></div>
-          <ul class="ability-list"><li>划分任务优先级并使用队列、信号量同步。</li><li>理解用户态到内核驱动接口的调用边界。</li><li>调试串口、I²C、GPIO 等常见设备接口。</li></ul>
-          <a class="module-link" href="rtos-linux.html">进入 RTOS / Linux 子页 →</a>
-        </article>
-
-        <article class="module motor">
-          <div class="module-top"><span class="badge">MODULE 03</span><span class="stage">控制执行<br>Motor control</span></div>
-          <h3>PWM、PID 与 FOC 控制链路</h3>
-          <p class="summary">PWM 用于调节驱动级开关占空比，PID 可构成速度或位置闭环；FOC 还涉及电流采样、坐标变换与电流环控制，应与基础调速或六步换相区分。</p>
-          <figure class="diagram" aria-label="STM32G431 经 DRV8313 驱动无刷电机并通过反馈回到控制器的动画">
-            <svg viewBox="0 0 320 184" role="img">
-              <rect class="chip" x="16" y="52" width="77" height="80" rx="10"/><rect class="core" x="28" y="68" width="53" height="48" rx="4"/>
-              <text class="chip-label" x="54" y="91" text-anchor="middle">STM32</text><text class="small-label" x="54" y="105" text-anchor="middle">G431</text>
-              <rect class="chip" x="123" y="60" width="67" height="64" rx="10"/><text class="chip-label" x="156" y="88" text-anchor="middle">DRV8313</text><text class="small-label" x="156" y="102" text-anchor="middle">3-PHASE</text>
-              <path class="wire" d="M93 75H123M93 92H123M93 109H123"/><text class="small-label" x="99" y="65">PWM A/B/C</text>
-              <circle class="chip" cx="257" cy="93" r="40"/><circle class="core" cx="257" cy="93" r="15"/>
-              <g class="rotor"><path class="pin" d="M257 57v22M288 93h-22M257 129v-22M226 93h22"/><path class="pin" d="M235 71l15 15M279 71l-15 15M279 115l-15-15M235 115l15-15"/></g>
-              <text class="chip-label" x="257" y="98" text-anchor="middle">BLDC</text>
-              <path class="wire" d="M190 82H216M190 93H216M190 104H216"/>
-              <path class="feedback" d="M257 139 C 215 169, 99 164, 54 132"/><text class="small-label" x="137" y="165">Encoder / Hall / ADC feedback</text>
-            </svg>
-          </figure>
-          <div class="detail-grid"><div class="detail"><span>典型链路</span><strong>STM32G431<br>DRV8313 · BLDC</strong></div><div class="detail"><span>控制要点</span><strong>PWM · ADC<br>PID · SVPWM</strong></div></div>
-          <ul class="ability-list"><li>配置 PWM、死区与换相等定时器时序。</li><li>基于编码器或霍尔反馈调试速度/位置 PID。</li><li>理解电流采样、Clarke/Park 与 SVPWM 的 FOC 基础。</li></ul>
-          <a class="module-link" href="motor-control.html">进入电机控制子页 →</a>
-        </article>
-
-        <article class="module ros">
-          <div class="module-top"><span class="badge">MODULE 04</span><span class="stage">机器人系统<br>ROS 2 / SLAM</span></div>
-          <h3>ROS 2 与 SLAM 工程基础</h3>
-          <p class="summary">围绕 ROS 2 的节点、Topic、Service/Action、TF 与 QoS 组织传感器数据链路；理解 SLAM 的前端、后端、回环与建图，并基于已有方案完成集成、记录和调试。</p>
-          <figure class="diagram" aria-label="ROS 2 节点经 TF 坐标树和 SLAM 系统生成地图的动画">
-            <svg viewBox="0 0 320 184" role="img">
-              <rect class="chip" x="18" y="46" width="83" height="89" rx="10"/><rect class="core" x="30" y="63" width="59" height="52" rx="5"/>
-              <text class="chip-label" x="59" y="84" text-anchor="middle">ROS 2</text><text class="small-label" x="59" y="99" text-anchor="middle">NODE / DDS</text>
-              <path class="wire" d="M101 74H142M101 106H142"/><text class="small-label" x="107" y="65">scan / odom</text><text class="small-label" x="108" y="121">TF + time</text>
-              <rect class="chip" x="142" y="47" width="76" height="88" rx="10"/><rect class="core" x="154" y="63" width="52" height="52" rx="5"/>
-              <text class="chip-label" x="180" y="84" text-anchor="middle">SLAM</text><text class="small-label" x="180" y="99" text-anchor="middle">FRONT / BACK</text>
-              <path class="wire soft" d="M218 91H237"/>
-              <rect class="chip" x="237" y="43" width="66" height="97" rx="8"/>
-              <path class="pin" d="M248 60h8M265 60h8M282 60h8M248 77h8M265 77h8M282 77h8M248 94h8M265 94h8M282 94h8M248 111h8M265 111h8M282 111h8"/>
-              <text class="chip-label" x="270" y="132" text-anchor="middle">MAP</text>
-              <circle class="dot memory-dot" cx="0" cy="0" r="4"/>
-            </svg>
-          </figure>
-          <div class="detail-grid"><div class="detail"><span>ROS 2 基础</span><strong>Topic · Service<br>Action · QoS · TF</strong></div><div class="detail"><span>SLAM 理解</span><strong>Odometry · Loop<br>Optimize · Map</strong></div></div>
-          <ul class="ability-list"><li>配置节点参数、Launch、通信模式与 DDS QoS。</li><li>排查时间戳、TF 坐标树、rosbag2 和 RViz2 链路。</li><li>区分现成导航/SLAM 包集成与从零实现算法。</li></ul>
-          <a class="module-link" href="ros-slam.html">进入 ROS / SLAM 子页 →</a>
-        </article>
-      </div>
-    </section>
-
     <section class="coach" aria-labelledby="coach-title">
       <div class="wrap coach-shell">
         <aside class="coach-library" aria-labelledby="library-title">
@@ -568,5 +469,6 @@
   </script>
 </body>
 </html>
+
 
 
