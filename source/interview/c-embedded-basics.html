@@ -36,6 +36,7 @@
     .codebox { min-height:107px; margin-top:13px; padding:12px; overflow:hidden; border-radius:11px; color:#cfe2ff; background:#1e2b42; font:12px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace; white-space:pre-wrap; } .codebox b { color:#7ed9d2; } .codebox i { color:#f5c272; font-style:normal; }
     .checklist { padding:0; margin:13px 0 0; list-style:none; } .checklist li { position:relative; padding-left:16px; color:#52667e; font-size:13px; } .checklist li::before { position:absolute; top:.72em; left:1px; width:7px; height:7px; border-radius:50%; background:var(--blue); content:""; }
     .keyword-matrix { margin-top:14px; overflow:auto; border:1px solid #dce7f0; border-radius:12px; } .keyword-matrix table { width:100%; min-width:620px; border-collapse:collapse; background:#fff; font-size:12px; } .keyword-matrix th,.keyword-matrix td { padding:10px; border-bottom:1px solid #e4edf5; color:#566b83; line-height:1.55; text-align:left; vertical-align:top; } .keyword-matrix th { color:#40566f; background:#f6f9fd; font-size:11px; } .keyword-matrix tr:last-child td { border-bottom:0; } .keyword-matrix code { color:#2f67cd; font:800 11px ui-monospace,SFMono-Regular,Consolas,monospace; } .keyword-example { margin-top:13px; } .keyword-drill { margin-top:13px; border:1px solid #e0eaf3; border-radius:11px; background:#f9fbfe; } .keyword-drill summary { padding:10px 12px; color:#40566f; cursor:pointer; font-size:13px; font-weight:850; } .keyword-drill[open] summary { color:#2d66d0; border-bottom:1px solid #e1eaf3; background:#f1f6ff; } .keyword-drill .checklist { padding:0 12px 11px; margin:10px 0 0; }
+    .m3-shell { display:grid; grid-template-columns:minmax(0,1.42fr) minmax(250px,.58fr); gap:18px; padding:18px; border:1px solid #dce7f0; border-radius:20px; background:linear-gradient(135deg,#fff,#eef5ff); box-shadow:0 8px 23px rgba(29,60,98,.05); } .m3-map { min-width:0; padding:10px; border:1px solid #dce7f0; border-radius:14px; background:#fff; } .m3-map svg { display:block; width:100%; height:auto; } .m3-node,.m3-line { transition:opacity .22s ease,filter .22s ease; } .m3-map.is-focused [data-m3] { opacity:.26; } .m3-map.is-focused [data-m3].is-highlight { opacity:1; filter:drop-shadow(0 3px 3px rgba(39,94,185,.18)); } .m3-box { fill:#fff; stroke:#8fb3e9; stroke-width:1.5; } .m3-core-box { fill:#e8f0ff; stroke:#326ddd; } .m3-peripheral-box { fill:#e1f7f3; stroke:#098d87; } .m3-dma-box { fill:#fff0e6; stroke:#d66f28; } .m3-debug-box { fill:#f0ebff; stroke:#7653d0; } .m3-bus { fill:#f7fafe; stroke:#789fcf; stroke-width:1.4; } .m3-bridge { fill:#f9fcfe; stroke:#7f98b5; stroke-width:1.4; } .m3-line { fill:none; stroke:#638ac0; stroke-width:2; stroke-linecap:round; marker-end:url(#m3-arrow); } .m3-title { fill:#314c6c; font:800 13px Inter,"PingFang SC",sans-serif; text-anchor:middle; } .m3-label { fill:#647b95; font:700 10px Inter,"PingFang SC",sans-serif; text-anchor:middle; } .m3-small { fill:#71869f; font:700 9px ui-monospace,SFMono-Regular,Consolas,monospace; text-anchor:middle; } .m3-side { display:flex; flex-direction:column; } .m3-side h3 { margin:0; color:#344b66; font-size:19px; letter-spacing:-.025em; } .m3-side>p { margin:7px 0 0; color:#60748d; font-size:12px; line-height:1.65; } .m3-controls { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:15px; } .m3-controls button { min-height:39px; padding:0 8px; border:1px solid #cedfed; border-radius:9px; color:#506b8b; background:#fff; cursor:pointer; font:800 12px Inter,"PingFang SC",sans-serif; } .m3-controls button[aria-pressed="true"] { border-color:#326ddd; color:#2d66d0; background:#e8f0ff; } .m3-controls button:focus-visible { outline:3px solid rgba(49,106,216,.28); outline-offset:2px; } .m3-explain { min-height:117px; margin-top:12px; padding:12px; border:1px solid #dce7f0; border-radius:11px; background:rgba(255,255,255,.8); } .m3-explain b { display:block; color:#3268d0; font-size:13px; } .m3-explain p { margin:5px 0 0; color:#536a83; font-size:12px; line-height:1.65; } .m3-footnote { margin-top:auto !important; padding-top:10px; color:#7b8da2 !important; font-size:10px !important; }
     .dma-flow { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:9px; align-items:center; margin-top:16px; padding:15px; border:1px solid #dce7f0; border-radius:14px; background:linear-gradient(135deg,#fff,#eaf2ff); } .dma-node { padding:10px; border:1px solid #b8cfef; border-radius:10px; color:#3569c8; background:#fff; font:800 11px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace; text-align:center; } .dma-node span { display:block; margin-top:3px; color:#71849b; font:700 10px Inter,"PingFang SC",sans-serif; } .dma-arrow { width:31px; height:3px; border-radius:99px; background:repeating-linear-gradient(90deg,#326ddd 0 7px,transparent 7px 12px); animation:dash 1.35s linear infinite; } .dma-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:13px; } .dma-grid div { padding:11px; border:1px solid #e0eaf3; border-radius:11px; background:#f8fbfe; } .dma-grid b { display:block; color:#3569c8; font:800 11px ui-monospace,SFMono-Regular,Consolas,monospace; } .dma-grid span { display:block; margin-top:4px; color:#556a82; font-size:12px; line-height:1.5; }
     .protocol-grid { display:grid; grid-template-columns:1fr; gap:18px; } .protocol { --accent:var(--blue); --pale:var(--blue-pale); padding:22px; border:1px solid #dce6f0; border-radius:21px; background:var(--card); box-shadow:0 8px 23px rgba(29,60,98,.06); } .protocol.can { --accent:var(--teal); --pale:var(--teal-pale); order:4; } .protocol.i2c { --accent:var(--violet); --pale:var(--violet-pale); order:3; } .protocol.spi { --accent:var(--orange); --pale:var(--orange-pale); order:2; } #uart { order:1; }
     .protocol-head { display:flex; justify-content:space-between; gap:10px; align-items:start; } .badge { display:inline-flex; min-height:26px; align-items:center; padding:3px 10px; border-radius:99px; color:var(--accent); background:var(--pale); font:800 12px ui-monospace,monospace; letter-spacing:.06em; } .kind { color:#8292a4; font-size:11px; text-align:right; }
@@ -54,7 +55,7 @@
     .side-nav p { margin:0 0 8px; color:#718298; font:800 11px ui-monospace,monospace; letter-spacing:.07em; } .side-nav a { display:block; padding:8px 9px; border-radius:8px; color:#526780; font-size:13px; font-weight:750; text-decoration:none; } .side-nav a:hover,.side-nav a:focus-visible { color:#2d66d0; background:#edf4ff; outline:none; } .side-nav .nav-group { display:block; margin:9px 0 2px; padding:6px 9px 3px; border-top:1px solid #e7eef5; color:#718299; font-size:11px; font-weight:850; letter-spacing:.04em; } .side-nav a.nav-sub { padding:6px 9px 6px 22px; color:#61748c; font-size:12px; font-weight:650; } .side-nav a.nav-sub::before { content:"·"; display:inline-block; width:11px; margin-left:-13px; color:#2d66d0; font-size:16px; line-height:0; } .side-nav a.back-nav { margin-top:8px; border-top:1px solid #e1eaf3; border-radius:0; color:#2d66d0; }
     footer { padding:0 20px 34px; color:#8392a6; text-align:center; font-size:12px; }
     @keyframes dash { to { stroke-dashoffset:-26; } } @keyframes go { 0% { offset-distance:0%; opacity:0; } 14%,80% { opacity:1; } 100% { offset-distance:100%; opacity:0; } } @keyframes blink { 50% { opacity:.25; } } @keyframes spin { to { transform:rotate(360deg); } }
-    @media (max-width:980px) { .learning-layout { grid-template-columns:1fr; width:min(100% - 40px,1130px); } .side-nav { position:static; display:flex; flex-wrap:wrap; gap:4px; margin:0; } .side-nav p,.side-nav .nav-group { flex-basis:100%; } .side-nav a { display:inline-block; } .side-nav a.nav-sub { padding-left:10px; } .side-nav a.nav-sub::before { display:none; } .side-nav a.back-nav { margin-top:0; border-top:0; } } @media (max-width:820px) { .hero-grid { grid-template-columns:1fr; gap:28px; } .c-grid { grid-template-columns:1fr; } .heading { display:block; } .heading p { margin-top:10px; } } @media (max-width:620px) { .wrap,.learning-layout { width:min(100% - 28px,1130px); } .protocol-grid { grid-template-columns:1fr; } .dma-flow { grid-template-columns:1fr; } .dma-arrow { width:3px; height:23px; justify-self:center; } .dma-grid,.practice-controls,.io-grid,.deep-columns { grid-template-columns:1fr; } .practice-toggle { grid-column:1 / -1; } .answer-flow { grid-template-columns:1fr 1fr; } .hero { padding-bottom:37px; } }
+    @media (max-width:980px) { .learning-layout { grid-template-columns:1fr; width:min(100% - 40px,1130px); } .side-nav { position:static; display:flex; flex-wrap:wrap; gap:4px; margin:0; } .side-nav p,.side-nav .nav-group { flex-basis:100%; } .side-nav a { display:inline-block; } .side-nav a.nav-sub { padding-left:10px; } .side-nav a.nav-sub::before { display:none; } .side-nav a.back-nav { margin-top:0; border-top:0; } } @media (max-width:820px) { .hero-grid,.m3-shell { grid-template-columns:1fr; gap:28px; } .c-grid { grid-template-columns:1fr; } .heading { display:block; } .heading p { margin-top:10px; } } @media (max-width:620px) { .wrap,.learning-layout { width:min(100% - 28px,1130px); } .protocol-grid { grid-template-columns:1fr; } .dma-flow { grid-template-columns:1fr; } .dma-arrow { width:3px; height:23px; justify-self:center; } .dma-grid,.practice-controls,.io-grid,.deep-columns { grid-template-columns:1fr; } .practice-toggle { grid-column:1 / -1; } .m3-controls { grid-template-columns:1fr; } .answer-flow { grid-template-columns:1fr 1fr; } .hero { padding-bottom:37px; } }
     @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; } }
   </style>
 </head>
@@ -75,6 +76,7 @@
       <a class="nav-sub" href="#concurrency">volatile 与中断协作</a>
       <a class="nav-sub" href="#keywords">const / static / volatile</a>
       <span class="nav-group">02 · 嵌入式基础</span>
+      <a class="nav-sub" href="#cortex-m3">Cortex-M3 架构</a>
       <a class="nav-sub" href="#dma">DMA 数据搬运</a>
       <a class="nav-sub" href="#uart">UART</a>
       <a class="nav-sub" href="#spi">SPI</a>
@@ -91,7 +93,7 @@
           <p class="eyebrow">Module 01 / interview basics</p>
           <h1>C语言基础 /<br><span>嵌入式基础</span></h1>
           <p class="lede">面试中不只要会调用库函数，更要说清变量在哪里、并发为什么出错、数据怎样从 MCU 到外设。本页按“C 语言 → 通信协议”建立基础回答框架。</p>
-          <nav class="anchors" aria-label="页内导航"><a href="#c-language">C 语言底层</a><a href="#dma">DMA 数据搬运</a><a href="#embedded-comms">嵌入式通信</a><a href="#answer-structure">答题结构</a></nav>
+          <nav class="anchors" aria-label="页内导航"><a href="#c-language">C 语言底层</a><a href="#cortex-m3">Cortex-M3 架构</a><a href="#dma">DMA 数据搬运</a><a href="#embedded-comms">嵌入式通信</a><a href="#answer-structure">答题结构</a></nav>
         </div>
         <aside class="hero-board" aria-label="学习路径">
           <h2>把知识点串成可解释的链路</h2>
@@ -157,6 +159,35 @@ uint8_t * <b>const</b> p2 = rx; <i>/* p2 不可改指向，数据可改 */</i>
 <b>static volatile</b> uint8_t rx_ready;</pre>
             <details class="keyword-drill"><summary>面试中最容易答错的四点</summary><ul class="checklist"><li><code>volatile</code> 不是锁：32 位 MCU 读写 64 位变量、读改写操作、多个变量组成状态时仍可能发生撕裂或竞态。</li><li>给一个对象加 <code>const</code> 后再强转去写：若该对象本身真是 const，对它写入是未定义行为；寄存器场景应使用正确的读写限定符。</li><li>函数内 <code>static</code> 变量不在栈上，每次调用不会重新初始化；因此递归、重入函数和多任务共享状态要特别小心。</li><li><code>const volatile</code> 常用于只读状态寄存器；<code>volatile const</code> 与其含义相同。DMA 缓冲是否需要 cache clean/invalidate 与是否写了 <code>volatile</code> 是两回事。</li></ul></details>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cortex-m3" aria-labelledby="m3-title">
+      <div class="wrap">
+        <div class="heading"><h2 id="m3-title">Cortex‑M3：先建立一张整体结构图</h2><p>把代码、DMA、外设和中断放进同一条数据路径，才能理解“寄存器访问”和“中断响应”实际发生在哪里。</p></div>
+        <div class="m3-shell">
+          <div class="m3-map" id="m3Map" role="img" aria-label="以 STM32F1 类 Cortex-M3 微控制器为例的核心、总线、存储器、DMA、外设和调试接口结构图">
+            <svg viewBox="0 0 920 500" aria-hidden="true">
+              <defs><marker id="m3-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#638ac0"/></marker></defs>
+              <g class="m3-node" data-m3="execution peripheral dma"><rect class="m3-box" x="25" y="58" width="150" height="78" rx="12"/><text class="m3-title" x="100" y="88">Flash / Code</text><text class="m3-label" x="100" y="108">程序与只读常量</text><text class="m3-small" x="100" y="123">0x0800_0000...</text></g>
+              <g class="m3-node" data-m3="execution peripheral dma"><rect class="m3-box" x="25" y="204" width="150" height="78" rx="12"/><text class="m3-title" x="100" y="234">SRAM</text><text class="m3-label" x="100" y="254">栈 · 全局 · 缓冲区</text><text class="m3-small" x="100" y="269">0x2000_0000...</text></g>
+              <g class="m3-node" data-m3="dma peripheral"><rect class="m3-dma-box" x="25" y="350" width="150" height="82" rx="12"/><text class="m3-title" x="100" y="380">DMA Controller</text><text class="m3-label" x="100" y="400">外设 ↔ SRAM 搬运</text><text class="m3-small" x="100" y="416">通道 · 长度 · 中断</text></g>
+              <g class="m3-node" data-m3="execution peripheral interrupt dma"><rect class="m3-core-box" x="340" y="48" width="225" height="164" rx="16"/><text class="m3-title" x="452" y="79">Cortex‑M3 Core</text><rect class="m3-box" x="362" y="94" width="82" height="42" rx="8"/><text class="m3-label" x="403" y="119">CPU / ALU</text><rect class="m3-box" x="459" y="94" width="82" height="42" rx="8"/><text class="m3-label" x="500" y="119">寄存器组</text><rect class="m3-box" x="362" y="150" width="82" height="42" rx="8"/><text class="m3-label" x="403" y="175">NVIC</text><rect class="m3-box" x="459" y="150" width="82" height="42" rx="8"/><text class="m3-label" x="500" y="175">SysTick</text></g>
+              <g class="m3-node" data-m3="execution peripheral interrupt dma"><rect class="m3-bus" x="280" y="252" width="345" height="56" rx="13"/><text class="m3-title" x="452" y="278">AHB-Lite System Bus</text><text class="m3-label" x="452" y="296">取指 / 数据访问 / DMA 仲裁</text></g>
+              <g class="m3-node" data-m3="peripheral interrupt dma"><rect class="m3-bridge" x="662" y="252" width="104" height="56" rx="13"/><text class="m3-title" x="714" y="276">AHB ↔ APB</text><text class="m3-label" x="714" y="294">Bridge</text></g>
+              <g class="m3-node" data-m3="peripheral interrupt dma"><rect class="m3-peripheral-box" x="795" y="162" width="103" height="220" rx="14"/><text class="m3-title" x="846" y="190">外设寄存器</text><text class="m3-label" x="846" y="220">GPIO · RCC</text><text class="m3-label" x="846" y="245">USART · SPI</text><text class="m3-label" x="846" y="270">IIC · CAN</text><text class="m3-label" x="846" y="295">TIM · ADC</text><text class="m3-small" x="846" y="335">0x4000_0000...</text></g>
+              <g class="m3-node" data-m3="execution interrupt"><rect class="m3-debug-box" x="670" y="55" width="180" height="66" rx="12"/><text class="m3-title" x="760" y="82">SWD / Debug</text><text class="m3-label" x="760" y="102">断点 · 寄存器 · Trace</text></g>
+              <path class="m3-line" data-m3="execution" d="M175 97 H290 Q310 97 340 112"/><path class="m3-line" data-m3="execution dma" d="M175 243 H280"/><path class="m3-line" data-m3="dma" d="M175 391 H245 Q260 391 280 300"/><path class="m3-line" data-m3="execution peripheral interrupt dma" d="M452 212 V252"/><path class="m3-line" data-m3="peripheral dma" d="M625 280 H662"/><path class="m3-line" data-m3="peripheral interrupt" d="M766 280 H795"/><path class="m3-line" data-m3="interrupt" d="M795 185 Q700 190 565 170"/><path class="m3-line" data-m3="execution interrupt" d="M565 82 H670"/>
+              <text class="m3-small" x="250" y="83">I-Code</text><text class="m3-small" x="210" y="232">D-Code / System</text><text class="m3-small" x="555" y="241">系统访问</text><text class="m3-small" x="816" y="148">IRQ / DMA request</text>
+            </svg>
+          </div>
+          <aside class="m3-side" aria-labelledby="m3-lesson-title">
+            <h3 id="m3-lesson-title">点一条学习路径</h3><p>点击按钮，高亮相关模块并把抽象结构对应到你正在写的代码。</p>
+            <div class="m3-controls" role="group" aria-label="Cortex-M3 学习路径"><button type="button" data-m3-focus="execution" aria-pressed="true">取指与执行</button><button type="button" data-m3-focus="peripheral" aria-pressed="false">外设访问</button><button type="button" data-m3-focus="interrupt" aria-pressed="false">中断响应</button><button type="button" data-m3-focus="dma" aria-pressed="false">DMA 搬运</button></div>
+            <div class="m3-explain" aria-live="polite"><b id="m3ExplainTitle">取指与执行</b><p id="m3ExplainText">CPU 通过 I-Code 访问 Flash 取指，通过总线访问 SRAM 中的栈、全局变量和缓冲区；这解释了为什么局部变量通常在栈上，而固件代码常在 Flash 中执行。</p></div>
+            <p class="m3-footnote">图为学习用抽象结构：Cortex‑M3 是内核，GPIO、DMA、AHB/APB、Flash/SRAM 的具体数量、映射和总线实现由芯片厂商决定；地址仅为 STM32 类 MCU 的常见示意。</p>
+          </aside>
         </div>
       </div>
     </section>
@@ -320,6 +351,28 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
           ['过滤后进入 Rx FIFO', '接收端通过过滤器决定报文是否进入 FIFO；FIFO 新消息中断后读取 ID/DLC/数据，及时消费并记录时间戳或错误现场。']
         ]
       };
+
+      const m3Lessons = {
+        execution: ['取指与执行', 'CPU 通过 I-Code 访问 Flash 取指，通过系统总线访问 SRAM 中的栈、全局变量和缓冲区；这解释了为什么局部变量通常在栈上，而固件代码常在 Flash 中执行。'],
+        peripheral: ['外设访问', '代码访问 USART、GPIO、定时器等寄存器，本质是通过系统总线写入 0x4000_0000 一类的外设地址空间；AHB/APB Bridge 再把访问送到对应外设。'],
+        interrupt: ['中断响应', '外设事件先形成 IRQ 请求，NVIC 按优先级决定是否打断当前执行流，并从向量表取 ISR 入口。ISR 应尽量短，把耗时工作交给任务或主循环。'],
+        dma: ['DMA 搬运', 'DMA 也是总线主设备：外设请求到来时，它可直接在外设寄存器和 SRAM 之间搬数据。CPU 只负责配置、处理半传输/完成/错误中断及缓存一致性。']
+      };
+      const m3Map = document.querySelector('#m3Map');
+      const m3Title = document.querySelector('#m3ExplainTitle');
+      const m3Text = document.querySelector('#m3ExplainText');
+      const m3Buttons = [...document.querySelectorAll('[data-m3-focus]')];
+      function setM3Focus(focus) {
+        const lesson = m3Lessons[focus];
+        m3Map.classList.add('is-focused');
+        m3Map.querySelectorAll('[data-m3].is-highlight').forEach(element => element.classList.remove('is-highlight'));
+        m3Map.querySelectorAll('[data-m3~="' + focus + '"]').forEach(element => element.classList.add('is-highlight'));
+        m3Buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.m3Focus === focus)));
+        m3Title.textContent = lesson[0];
+        m3Text.textContent = lesson[1];
+      }
+      m3Buttons.forEach(button => button.addEventListener('click', () => setM3Focus(button.dataset.m3Focus)));
+      setM3Focus('execution');
 
       document.querySelectorAll('.transfer-lab').forEach(lab => {
         const steps = transferFlows[lab.dataset.transfer];
