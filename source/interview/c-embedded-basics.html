@@ -35,6 +35,7 @@
     .concept-code { display:inline-flex; min-height:25px; align-items:center; padding:3px 9px; border-radius:999px; color:var(--blue); background:var(--blue-pale); font:800 11px ui-monospace,monospace; letter-spacing:.06em; } .concept h3 { margin:12px 0 0; font-size:20px; letter-spacing:-.025em; } .concept p { margin:8px 0 0; color:#566980; font-size:14px; }
     .codebox { min-height:107px; margin-top:13px; padding:12px; overflow:hidden; border-radius:11px; color:#cfe2ff; background:#1e2b42; font:12px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace; white-space:pre-wrap; } .codebox b { color:#7ed9d2; } .codebox i { color:#f5c272; font-style:normal; }
     .checklist { padding:0; margin:13px 0 0; list-style:none; } .checklist li { position:relative; padding-left:16px; color:#52667e; font-size:13px; } .checklist li::before { position:absolute; top:.72em; left:1px; width:7px; height:7px; border-radius:50%; background:var(--blue); content:""; }
+    .keyword-matrix { margin-top:14px; overflow:auto; border:1px solid #dce7f0; border-radius:12px; } .keyword-matrix table { width:100%; min-width:620px; border-collapse:collapse; background:#fff; font-size:12px; } .keyword-matrix th,.keyword-matrix td { padding:10px; border-bottom:1px solid #e4edf5; color:#566b83; line-height:1.55; text-align:left; vertical-align:top; } .keyword-matrix th { color:#40566f; background:#f6f9fd; font-size:11px; } .keyword-matrix tr:last-child td { border-bottom:0; } .keyword-matrix code { color:#2f67cd; font:800 11px ui-monospace,SFMono-Regular,Consolas,monospace; } .keyword-example { margin-top:13px; } .keyword-drill { margin-top:13px; border:1px solid #e0eaf3; border-radius:11px; background:#f9fbfe; } .keyword-drill summary { padding:10px 12px; color:#40566f; cursor:pointer; font-size:13px; font-weight:850; } .keyword-drill[open] summary { color:#2d66d0; border-bottom:1px solid #e1eaf3; background:#f1f6ff; } .keyword-drill .checklist { padding:0 12px 11px; margin:10px 0 0; }
     .dma-flow { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:9px; align-items:center; margin-top:16px; padding:15px; border:1px solid #dce7f0; border-radius:14px; background:linear-gradient(135deg,#fff,#eaf2ff); } .dma-node { padding:10px; border:1px solid #b8cfef; border-radius:10px; color:#3569c8; background:#fff; font:800 11px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace; text-align:center; } .dma-node span { display:block; margin-top:3px; color:#71849b; font:700 10px Inter,"PingFang SC",sans-serif; } .dma-arrow { width:31px; height:3px; border-radius:99px; background:repeating-linear-gradient(90deg,#326ddd 0 7px,transparent 7px 12px); animation:dash 1.35s linear infinite; } .dma-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:13px; } .dma-grid div { padding:11px; border:1px solid #e0eaf3; border-radius:11px; background:#f8fbfe; } .dma-grid b { display:block; color:#3569c8; font:800 11px ui-monospace,SFMono-Regular,Consolas,monospace; } .dma-grid span { display:block; margin-top:4px; color:#556a82; font-size:12px; line-height:1.5; }
     .protocol-grid { display:grid; grid-template-columns:1fr; gap:18px; } .protocol { --accent:var(--blue); --pale:var(--blue-pale); padding:22px; border:1px solid #dce6f0; border-radius:21px; background:var(--card); box-shadow:0 8px 23px rgba(29,60,98,.06); } .protocol.can { --accent:var(--teal); --pale:var(--teal-pale); order:4; } .protocol.i2c { --accent:var(--violet); --pale:var(--violet-pale); order:3; } .protocol.spi { --accent:var(--orange); --pale:var(--orange-pale); order:2; } #uart { order:1; }
     .protocol-head { display:flex; justify-content:space-between; gap:10px; align-items:start; } .badge { display:inline-flex; min-height:26px; align-items:center; padding:3px 10px; border-radius:99px; color:var(--accent); background:var(--pale); font:800 12px ui-monospace,monospace; letter-spacing:.06em; } .kind { color:#8292a4; font-size:11px; text-align:right; }
@@ -72,6 +73,7 @@
       <a class="nav-sub" href="#memory">指针、对象与存储期</a>
       <a class="nav-sub" href="#register">位操作与寄存器</a>
       <a class="nav-sub" href="#concurrency">volatile 与中断协作</a>
+      <a class="nav-sub" href="#keywords">const / static / volatile</a>
       <span class="nav-group">02 · 嵌入式基础</span>
       <a class="nav-sub" href="#dma">DMA 数据搬运</a>
       <a class="nav-sub" href="#uart">UART</a>
@@ -135,6 +137,25 @@ REG &= ~EN; <i>/* clear */</i>
 ready = 1;
 <b>if</b> (ready) { /* ... */ }</pre>
             <ul class="checklist"><li>多字节共享数据要考虑读写撕裂。</li><li>从 ISR 到任务常使用队列或环形缓冲解耦。</li></ul>
+          </article>
+          <article class="concept" id="keywords">
+            <span class="concept-code">KEYWORDS</span><h3><code>const</code>、<code>static</code>、<code>volatile</code>：约束的不是同一件事</h3>
+            <p>这三个关键字可以组合使用，但各自解决的维度不同：<code>const</code> 限制“能否通过这个名字写”，<code>static</code> 决定“对象活多久/符号能否被其他源文件看到”，<code>volatile</code> 限制“编译器能否把访问优化掉”。</p>
+            <div class="keyword-matrix"><table><thead><tr><th>关键字</th><th>核心作用</th><th>典型嵌入式场景</th><th>它不能保证什么</th></tr></thead><tbody><tr><td><code>const</code></td><td>通过该限定名不可修改对象；是编译期接口约束。</td><td>只读查表、函数只读参数、只读配置接口。</td><td>不等于一定放在 Flash；不阻止硬件、DMA 或其他非 <code>const</code> 别名改变同一地址。</td></tr><tr><td><code>static</code></td><td>文件作用域时是内部链接；函数内时是静态存储期，函数返回后值仍保留。</td><td>模块私有驱动状态、环形缓冲、避免符号冲突、函数内状态机。</td><td>不自动线程安全；多个任务/中断仍可能并发访问同一个静态对象。</td></tr><tr><td><code>volatile</code></td><td>要求每次读写都作为可观察访问发出，不能缓存到寄存器或随意合并/删除。</td><td>外设寄存器、ISR 与主循环共享的标志、会被硬件改变的状态寄存器。</td><td>不保证原子性、互斥、跨核内存顺序，也不能替代 D-Cache 维护或 DMA 缓冲同步。</td></tr></tbody></table></div>
+            <pre class="codebox keyword-example"><i>/* 1) const：指针和“指向的对象”要分别看 */</i>
+<b>const</b> uint8_t *p;       <i>/* 不能通过 p 改数据，p 可改指向 */</i>
+uint8_t * <b>const</b> p2 = rx; <i>/* p2 不可改指向，数据可改 */</i>
+
+<i>/* 2) static：模块私有 + 生命周期贯穿程序运行 */</i>
+<b>static</b> uint8_t rx_ring[128];
+<b>static</b> uint16_t write_pos;
+
+<i>/* 3) const volatile：程序不写，但硬件可能随时改变 */</i>
+<b>const volatile</b> uint32_t *status = STATUS_REG_ADDR;
+
+<i>/* 4) static volatile：文件内共享标志，仍需处理并发 */</i>
+<b>static volatile</b> uint8_t rx_ready;</pre>
+            <details class="keyword-drill"><summary>面试中最容易答错的四点</summary><ul class="checklist"><li><code>volatile</code> 不是锁：32 位 MCU 读写 64 位变量、读改写操作、多个变量组成状态时仍可能发生撕裂或竞态。</li><li>给一个对象加 <code>const</code> 后再强转去写：若该对象本身真是 const，对它写入是未定义行为；寄存器场景应使用正确的读写限定符。</li><li>函数内 <code>static</code> 变量不在栈上，每次调用不会重新初始化；因此递归、重入函数和多任务共享状态要特别小心。</li><li><code>const volatile</code> 常用于只读状态寄存器；<code>volatile const</code> 与其含义相同。DMA 缓冲是否需要 cache clean/invalidate 与是否写了 <code>volatile</code> 是两回事。</li></ul></details>
           </article>
         </div>
       </div>
