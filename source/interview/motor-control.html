@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="电机控制面试基础学习页。">
+  <title>电机控制 | 面试学习库</title>
+  <link rel="stylesheet" href="module-pages.css">
+  <style>:root { --accent:#d66f28; --pale:#fff0e6; }</style>
+</head>
+<body>
+  <header class="topbar"><a class="back" href="index.html">← 返回面试能力总览</a></header>
+  <div class="page-shell">
+    <aside class="side-nav" aria-label="电机控制导航目录">
+      <p>本页目录</p>
+      <a href="#overview">学习总览</a>
+      <a href="#power">功率级与 PWM</a>
+      <a href="#feedback">反馈与 PID</a>
+      <a href="#foc">FOC 控制链路</a>
+      <a href="#protection">保护与调试</a>
+      <a href="#interview">面试追问</a>
+      <a class="back-nav" href="index.html">← 返回能力总览</a>
+    </aside>
+    <main class="content">
+      <section class="hero" id="overview">
+        <p class="eyebrow">Module 03 / motor control</p>
+        <h1>从<span>功率级</span>走到闭环控制</h1>
+        <p class="lede">电机控制不是只会设置 PWM。面试中应能从驱动桥、采样与反馈、控制环和保护时序解释一条完整链路，并明确 FOC 与普通调速的层级差异。</p>
+        <ul class="tags"><li>PWM · Dead Time</li><li>ADC · Current Sense</li><li>Encoder · Hall</li><li>PID · SVPWM</li></ul>
+      </section>
+
+      <section class="section" id="power">
+        <div class="heading"><h2>功率级与 PWM</h2><p>先保证上下桥臂不会直通，再讨论占空比如何影响平均电压和相电流；驱动器、MOSFET 与电机应视作一整条链路。</p></div>
+        <div class="cards">
+          <article class="card"><span class="label">TIMER</span><h3>三相 PWM</h3><p>MCU 定时器生成互补 PWM；频率、对齐方式和更新时刻会影响开关损耗、噪声和电流采样窗口。</p><div class="diagram"><div class="node">STM32<br>PWM A/B/C</div><i class="link"></i><div class="node">Gate<br>Driver</div><i class="pulse"></i></div><ul class="list"><li>比较中心对齐与边沿对齐的采样窗口。</li><li>确认定时器同步和更新中断时机。</li></ul></article>
+          <article class="card"><span class="label">DEAD TIME</span><h3>避免上下桥直通</h3><p>同一桥臂切换时需插入死区。过小可能产生直通电流；过大则造成有效电压损失、电流畸变和低速抖动。</p><div class="diagram"><div class="node">High-side</div><i class="link"></i><div class="node">Dead<br>Time</div><i class="pulse"></i></div><ul class="list"><li>结合驱动器传播延迟和 MOSFET 特性设置。</li><li>用示波器确认栅极波形而非只信软件配置。</li></ul></article>
+          <article class="card"><span class="label">DRIVER</span><h3>驱动与供电</h3><p>以 STM32G431 + DRV8313 为例，控制器输出逻辑 PWM，驱动器再驱动三相功率级；供电、地与故障脚都需纳入设计。</p><div class="diagram"><div class="node">STM32<br>G431</div><i class="link"></i><div class="node">DRV8313<br>BLDC</div><i class="pulse"></i></div><ul class="list"><li>确认逻辑电平和使能/故障引脚。</li><li>分开排查电源、驱动、控制器。</li></ul></article>
+        </div>
+      </section>
+
+      <section class="section" id="feedback">
+        <div class="heading"><h2>反馈与 PID</h2><p>闭环需要可靠的目标值、测量值、采样周期与输出限幅。调参前先验证方向、单位、采样和执行器是否正确。</p></div>
+        <div class="chain"><div><b>REFERENCE</b><span>速度或位置目标，带合理的斜坡限制。</span></div><div><b>SENSOR</b><span>编码器、霍尔或估算器给出反馈。</span></div><div><b>PID</b><span>计算误差并处理限幅、积分饱和。</span></div><div><b>PWM</b><span>输出占空比，再观察实际响应。</span></div></div>
+      </section>
+
+      <section class="section" id="foc">
+        <div class="heading"><h2>FOC 控制链路</h2><p>FOC 不是 PWM 的同义词。完整链路还需要相电流采样、电角度、坐标变换、电流环及 SVPWM。</p></div>
+        <div class="cards">
+          <article class="card"><span class="label">SENSE</span><h3>电流与角度</h3><p>在合适 PWM 时刻采集相电流；电角度来自编码器、霍尔或观测器。错误的零点或相序会直接破坏控制。</p><ul class="list"><li>检查 ADC 偏置、比例与采样同步。</li><li>明确机械角与电角度的换算。</li></ul></article>
+          <article class="card"><span class="label">TRANSFORM</span><h3>Clarke / Park</h3><p>坐标变换把三相量投影到更适合控制的坐标系，通常让 d/q 电流可分别作为磁链和转矩相关分量讨论。</p><ul class="list"><li>回答时说明变换依赖正确角度。</li><li>不必把公式背成结论，重点说作用。</li></ul></article>
+          <article class="card"><span class="label">SVPWM</span><h3>调制与电流环</h3><p>电流环输出电压指令，经逆变换与 SVPWM 转为三相占空比；控制周期和限幅要与功率级能力匹配。</p><ul class="list"><li>区分电流、速度和位置环的带宽。</li><li>过流、欠压等保护优先于控制性能。</li></ul></article>
+        </div>
+      </section>
+
+      <section class="section" id="protection"><div class="qa"><p class="eyebrow">Debug path</p><h2>保护与调试顺序</h2><details><summary>电机不转或抖动，第一步看什么？</summary><p>先断开复杂算法：确认供电、故障脚、PWM 波形、相序、使能逻辑和传感器方向。不要一开始就盲调 PID 或 FOC 参数。</p></details><details><summary>积分饱和如何处理？</summary><p>执行器达到占空比或电流限幅后，积分项仍累积会导致恢复慢和严重超调。可用积分限幅、条件积分或反算抗饱和。</p></details></div></section>
+      <section class="section" id="interview"><div class="qa"><p class="eyebrow">Interview drills</p><h2>高频追问</h2><details><summary>死区为何不能设置得越大越安全？</summary><p>死区过大使有效电压下降并带来波形畸变、低速性能变差；需要在直通风险和控制误差之间结合硬件延迟取平衡。</p></details><details><summary>使用六步换相是否等于实现 FOC？</summary><p>不是。六步换相是一种换相策略；FOC 要有电流采样、坐标变换、角度和电流环等完整闭环链路。</p></details></div></section>
+    </main>
+  </div>
+  <footer>电机控制 · 左侧目录可跳转本页学习章节。</footer>
+</body>
+</html>
+
+

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="RTOS 与 Linux 面试基础学习页。">
+  <title>RTOS / Linux | 面试学习库</title>
+  <link rel="stylesheet" href="module-pages.css">
+  <style>:root { --accent:#0b918b; --pale:#e0f7f4; }</style>
+</head>
+<body>
+  <header class="topbar"><a class="back" href="index.html">← 返回面试能力总览</a></header>
+  <div class="page-shell">
+    <aside class="side-nav" aria-label="RTOS 与 Linux 导航目录">
+      <p>本页目录</p>
+      <a href="#overview">学习总览</a>
+      <a href="#scheduling">任务与调度</a>
+      <a href="#sync">同步与通信</a>
+      <a href="#linux">Linux 系统边界</a>
+      <a href="#interview">面试追问</a>
+      <a class="back-nav" href="index.html">← 返回能力总览</a>
+    </aside>
+    <main class="content">
+      <section class="hero" id="overview">
+        <p class="eyebrow">Module 02 / system coordination</p>
+        <h1>从任务调度到<span>系统边界</span></h1>
+        <p class="lede">FreeRTOS 处理资源受限 MCU 上的任务协作；Linux 通过用户态、系统调用和驱动管理更完整的系统资源。面试重点是明确两者的边界与取舍。</p>
+        <ul class="tags"><li>Task · Priority</li><li>Queue · Semaphore</li><li>ISR to Task</li><li>syscall · /dev · driver</li></ul>
+      </section>
+
+      <section class="section" id="scheduling">
+        <div class="heading"><h2>任务与调度</h2><p>先解释调度器选择谁运行，再讨论任务优先级、周期与实时性；不要将“高优先级”误解为永远占用 CPU。</p></div>
+        <div class="cards">
+          <article class="card"><span class="label">SCHEDULER</span><h3>优先级与阻塞</h3><p>就绪态任务由调度器选择执行；延时、等待队列或信号量的任务处于阻塞态，不应持续轮询占用 CPU。</p><div class="diagram"><div class="node">High<br>Control</div><i class="link"></i><div class="node">Ready<br>Queue</div><i class="pulse"></i></div><ul class="list"><li>用任务周期和截止期解释优先级。</li><li>区分抢占调度与时间片轮转。</li></ul></article>
+          <article class="card"><span class="label">MUTEX</span><h3>优先级反转</h3><p>低优先级任务持有锁时，高优先级任务会阻塞；中优先级任务若持续运行，会放大高优先级任务的等待。</p><div class="diagram"><div class="node">Low<br>holds lock</div><i class="link"></i><div class="node">High<br>blocked</div><i class="pulse"></i></div><ul class="list"><li>互斥锁可使用优先级继承。</li><li>不要把所有同步都替换成 mutex。</li></ul></article>
+          <article class="card"><span class="label">TIMING</span><h3>周期与抖动</h3><p>控制任务关注实际唤醒时间、执行时间和最坏情况延迟。日志输出或复杂计算应避免阻塞关键闭环。</p><div class="diagram"><div class="node">Tick / Timer</div><i class="link"></i><div class="node">Control<br>Task</div><i class="pulse"></i></div><ul class="list"><li>通过 trace 或 GPIO 翻转测量抖动。</li><li>关注优先级与临界区长度。</li></ul></article>
+        </div>
+      </section>
+
+      <section class="section" id="sync">
+        <div class="heading"><h2>同步与数据通信</h2><p>回答时先说明“传数据”还是“通知事件”，再选择队列、信号量、事件组或通知机制。</p></div>
+        <div class="chain"><div><b>ISR</b><span>采集外设事件，不做耗时处理。</span></div><div><b>QUEUE</b><span>传递数据或数据指针，处理满队列策略。</span></div><div><b>TASK</b><span>在任务上下文解析、计算或记录。</span></div><div><b>ACTUATOR</b><span>输出控制结果并监测异常。</span></div></div>
+      </section>
+
+      <section class="section" id="linux">
+        <div class="heading"><h2>Linux 系统边界</h2><p>Linux 用户态程序不是直接操作硬件，而是通过库、系统调用、设备文件或专用框架进入内核驱动。</p></div>
+        <div class="cards">
+          <article class="card"><span class="label">USER SPACE</span><h3>进程与接口</h3><p>应用负责业务、数据处理和错误处理；调用 open/read/write/ioctl 或系统库接口请求内核提供服务。</p><ul class="list"><li>查看返回值、errno 和超时策略。</li><li>用日志定位应用层状态机。</li></ul></article>
+          <article class="card"><span class="label">KERNEL</span><h3>驱动与总线</h3><p>驱动对接 I²C、SPI、UART、GPIO 或网络控制器，并向用户态暴露设备节点、sysfs 或专用 API。</p><ul class="list"><li>理解设备树、驱动匹配与 probe。</li><li>区分内核日志和用户态日志。</li></ul></article>
+          <article class="card"><span class="label">DEBUG</span><h3>分层排错</h3><p>从应用参数、系统调用、驱动日志到电气波形逐层缩小范围，避免一开始把问题归因于“驱动坏了”。</p><ul class="list"><li>先确认设备是否枚举和节点权限。</li><li>再检查总线地址、时序与供电。</li></ul></article>
+        </div>
+      </section>
+
+      <section class="section" id="interview"><div class="qa"><p class="eyebrow">Interview drills</p><h2>高频追问</h2><details><summary>队列、信号量和事件组各适合什么？</summary><p>队列主要传数据；信号量侧重同步或资源计数；事件组表达多个独立标志位。回答要补充任务/ISR 使用限制和超时处理。</p></details><details><summary>Linux 应用读设备文件失败，如何定位？</summary><p>依次确认设备枚举、节点与权限、应用参数和返回值、内核日志、驱动状态，最后再检查硬件连接与总线波形。</p></details></div></section>
+    </main>
+  </div>
+  <footer>RTOS / Linux · 左侧目录可跳转本页学习章节。</footer>
+</body>
+</html>
+
+
