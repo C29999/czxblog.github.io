@@ -150,7 +150,7 @@
         <aside class="system-card" aria-label="能力模块概览">
           <div class="system-top"><span>能力模块 / 04</span><span class="online">ready</span></div>
           <div class="system-lines">
-            <a class="system-line" href="c-embedded-basics.html"><span class="line-no">01</span><span class="line-text"><strong>C 语言基础</strong><span>memory · register · state machine</span></span><i class="line-bar"></i></a>
+            <a class="system-line" href="c-embedded-basics.html"><span class="line-no">01</span><span class="line-text"><strong>C语言基础 / 嵌入式基础</strong><span>memory · register · protocol</span></span><i class="line-bar"></i></a>
             <a class="system-line" href="rtos-linux.html"><span class="line-no">02</span><span class="line-text"><strong>RTOS / Linux</strong><span>task · driver · system call</span></span><i class="line-bar"></i></a>
             <a class="system-line" href="motor-control.html"><span class="line-no">03</span><span class="line-text"><strong>电机控制</strong><span>PWM · PID · current loop</span></span><i class="line-bar"></i></a>
             <a class="system-line" href="ros-slam.html"><span class="line-no">04</span><span class="line-text"><strong>ROS / SLAM</strong><span>TF · QoS · localization</span></span><i class="line-bar"></i></a>
@@ -167,7 +167,7 @@
           <p>先按主题补齐原理、常见错误与验证方法，再到右侧用面试题检查能否讲清楚。</p>
           <div class="library-list">
             <details class="library-item" open>
-              <summary>C 语言与嵌入式基础</summary>
+              <summary>C语言基础 / 嵌入式基础</summary>
               <ul><li>存储期、指针与内存布局</li><li>位操作、寄存器语义与启动过程</li><li>volatile、临界区与中断并发</li></ul>
               <a class="library-link" href="c-embedded-basics.html">打开 C 与通信协议子页 →</a>
             </details>
@@ -195,7 +195,7 @@
           <div class="coach-controls">
             <label for="topicSelect">训练模块</label>
             <select id="topicSelect">
-              <option value="c">C 语言基础</option>
+              <option value="c">C语言基础 / 嵌入式基础</option>
               <option value="rtos">RTOS / Linux</option>
               <option value="motor">电机控制</option>
               <option value="ros">ROS / SLAM</option>
@@ -249,7 +249,7 @@
     (() => {
       const questionBank = {
         c: {
-          label: 'C 语言基础',
+          label: 'C语言基础 / 嵌入式基础',
           questions: [
             { q: 'volatile 解决了什么问题？它能保证多线程或中断共享变量的原子性吗？', keys: ['编译器优化', '内存', '原子', '中断'], hint: '说明它约束的是编译器读写优化；并发正确性仍要考虑原子操作、临界区或同步机制。', follow: '如果主循环和中断同时访问一个多字节计数器，如何避免读到撕裂数据？' },
             { q: '栈、全局/静态区和堆的生命周期有什么差异？嵌入式项目为什么常谨慎使用动态分配？', keys: ['栈', '静态', '堆', '碎片'], hint: '分别说明存储期和分配方式，再谈堆碎片、失败路径、确定性与内存泄漏。', follow: '若必须动态分配，启动阶段和运行阶段的内存策略可以怎样划分？' },
