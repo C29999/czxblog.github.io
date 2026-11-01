@@ -6,7 +6,8 @@
 html { scroll-behavior:smooth; }
 body { min-width:320px; margin:0; color:var(--ink); background:radial-gradient(circle at 8% 0,#e7f1ff 0,transparent 28rem),var(--page); font:16px/1.65 Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif; }
 a { color:inherit; }
-.topbar { width:min(1400px,calc(100% - 40px)); margin:auto; padding:22px 0; }
+.topbar { display:flex; align-items:center; gap:18px; width:min(1400px,calc(100% - 40px)); margin:auto; padding:22px 0; }
+.topbar .back:last-child { margin-left:auto; }
 .back { display:inline-flex; align-items:center; min-height:38px; color:#3268ca; font-size:13px; font-weight:800; text-decoration:none; }
 .back:hover { text-decoration:underline; }
 .page-shell { display:grid; grid-template-columns:210px minmax(0,1fr); gap:26px; width:min(1400px,calc(100% - 40px)); margin:0 auto; }
