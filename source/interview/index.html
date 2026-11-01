@@ -120,6 +120,7 @@
     .remote-fields label { display: grid; gap: 5px; color: #53677e; font-size: 12px; font-weight: 800; }
     .remote-fields label.key-field, .remote-fields label.prompt-field { grid-column: 1 / -1; }
     .remote-fields input { min-width: 0; min-height: 41px; padding: 0 10px; border: 1px solid #cbd9e7; border-radius: 9px; color: #263b55; background: #fff; font: 14px ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .remote-fields .key-memory { grid-column:1 / -1; display:flex; align-items:center; gap:8px; color:#61748a; font-size:12px; font-weight:700; } .remote-fields .key-memory input { flex:none; min-width:16px; min-height:16px; width:16px; height:16px; padding:0; accent-color:#7253ca; }
     .remote-fields textarea { min-height:104px; padding:10px; font-size:13px; line-height:1.5; }
     .remote-warning { margin: 0; padding: 0 14px 13px; color: #7c6d54; font-size: 11px; line-height: 1.5; }
     .coach-library { padding: 20px; border: 1px solid #e0e8f1; border-radius: 17px; background: rgba(255,255,255,.75); }
@@ -213,13 +214,14 @@
                 <input id="modelInput" type="text" value="deepseek-v4-pro" placeholder="模型名称" autocomplete="off">
               </label>
               <label class="key-field" for="apiKeyInput">API Key <span>（Ollama 等无需认证的服务可留空）</span>
-                <input id="apiKeyInput" type="password" placeholder="仅保留在当前页面内存中" autocomplete="off" spellcheck="false">
+                <input id="apiKeyInput" type="password" placeholder="输入一次后，本次浏览会话自动保留" autocomplete="off" spellcheck="false">
               </label>
+              <label class="key-memory" for="rememberKey"><input id="rememberKey" type="checkbox">在这台设备上记住 Key（不要在共享设备勾选）</label>
               <label class="prompt-field" for="systemPromptInput">AI 职责 / 系统提示词
                 <textarea id="systemPromptInput" spellcheck="false">你是一位严谨、诚实的嵌入式软件面试教练。职责：围绕 C 语言、RTOS/Linux、电机控制、ROS/SLAM 追问基础原理；区分概念理解、工程集成和从零实现；指出含糊或不准确的表述；根据候选人的回答提出一个更底层的追问，并给出可在 30 分钟内完成的学习或验证建议。不要虚构候选人的项目经历，不要为了鼓励而忽略技术错误。请用清晰、简洁的中文作答。</textarea>
               </label>
             </div>
-            <p class="remote-warning">点击“让 AI 深度点评”后，当前题目、你的回答和 Key（如填写）会发送到上方 URL。页面不会将 Key 写入文件、localStorage 或服务器；请只填写可信服务地址。静态文件预览可能受浏览器 CORS 限制。</p>
+            <p class="remote-warning">点击“让 AI 深度点评”后，当前题目、你的回答和 Key（如填写）会发送到上方 URL。Key 默认仅保存在当前浏览器会话；勾选“记住”后才保存在本机浏览器。它不会写入网页文件、Git 或服务器；请只填写可信服务地址。静态文件预览可能受浏览器 CORS 限制。</p>
           </details>
           <section class="question-card" aria-labelledby="questionText">
             <div class="question-meta" id="questionMeta" aria-live="polite">加载题目中…</div>
@@ -293,11 +295,41 @@
       const apiUrlInput = document.querySelector('#apiUrlInput');
       const modelInput = document.querySelector('#modelInput');
       const apiKeyInput = document.querySelector('#apiKeyInput');
+      const rememberKey = document.querySelector('#rememberKey');
       const systemPromptInput = document.querySelector('#systemPromptInput');
       const remoteReview = document.querySelector('#remoteReview');
       const drafts = {};
       const current = {};
       let topic = topicSelect.value;
+      const sessionKeyName = 'interview-coach-api-key';
+      const persistentKeyName = 'interview-coach-api-key-remembered';
+
+      function readSavedKey() {
+        try {
+          const persisted = localStorage.getItem(persistentKeyName);
+          const session = sessionStorage.getItem(sessionKeyName);
+          if (persisted) {
+            apiKeyInput.value = persisted;
+            rememberKey.checked = true;
+          } else if (session) {
+            apiKeyInput.value = session;
+          }
+        } catch {
+          /* 浏览器禁止存储时仍可正常使用当次输入。 */
+        }
+      }
+
+      function saveKeyForBrowser() {
+        try {
+          const value = apiKeyInput.value;
+          if (value) sessionStorage.setItem(sessionKeyName, value);
+          else sessionStorage.removeItem(sessionKeyName);
+          if (rememberKey.checked && value) localStorage.setItem(persistentKeyName, value);
+          else localStorage.removeItem(persistentKeyName);
+        } catch {
+          /* 隐私模式或受限环境下忽略存储失败。 */
+        }
+      }
 
       function chooseQuestion(next) {
         const items = questionBank[topic].questions;
@@ -430,7 +462,7 @@
           feedback.replaceChildren();
           appendLine('远程 AI 点评：', content.trim());
         } catch {
-          feedback.textContent = 'AI 请求失败。请检查 URL、模型名、Key 权限和服务的 CORS 设置；页面不会保存本次 Key。';
+          feedback.textContent = 'AI 请求失败。请检查 URL、模型名、Key 权限和服务的 CORS 设置。';
         } finally {
           remoteReview.disabled = false;
           remoteReview.textContent = '让 AI 深度点评';
@@ -453,6 +485,8 @@
         appendLine('追问：', item.follow);
       });
       remoteReview.addEventListener('click', requestRemoteReview);
+      apiKeyInput.addEventListener('input', saveKeyForBrowser);
+      rememberKey.addEventListener('change', saveKeyForBrowser);
       topicSelect.addEventListener('change', () => {
         drafts[topic] = answerInput.value;
         topic = topicSelect.value;
@@ -465,6 +499,7 @@
           assess();
         }
       });
+      readSavedKey();
       renderQuestion();
     })();
   </script>
