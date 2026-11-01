@@ -22,6 +22,9 @@
       font: 16px/1.65 Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
     }
     .wrap { width: min(1180px, calc(100% - 40px)); margin: auto; }
+    .interview-topbar { padding: 16px 0 0; }
+    .interview-topbar a { display: inline-flex; min-height: 36px; align-items: center; color: #3268ca; font-size: 13px; font-weight: 800; text-decoration: none; }
+    .interview-topbar a:hover { text-decoration: underline; }
     .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 14px; color: #3268c8; font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
     .eyebrow::before { width: 23px; height: 2px; background: currentColor; content: ""; }
     .hero { padding: 28px 0 24px; }
@@ -140,6 +143,7 @@
   </style>
 </head>
 <body>
+  <header class="interview-topbar"><div class="wrap"><a href="../">← 返回博客主页</a></div></header>
   <main>
     <section class="hero">
       <div class="wrap hero-grid">
