@@ -371,3 +371,83 @@ body::before {
     border-radius: 20px;
   }
 }
+
+/* 面试学习库入口：位于右侧栏公告之后、最新文章之前 */
+#aside-content .card-interview-hub {
+  border: 1px solid rgba(124, 207, 255, 0.24);
+  background:
+    radial-gradient(circle at 96% 5%, rgba(117, 88, 217, 0.34), transparent 44%),
+    linear-gradient(145deg, rgba(17, 24, 52, 0.96), rgba(10, 15, 35, 0.98));
+}
+
+#aside-content .card-interview-hub .item-headline {
+  color: rgba(245, 248, 255, 0.96);
+}
+
+#aside-content .card-interview-hub .item-headline i {
+  color: #9cd9ff;
+}
+
+#aside-content .interview-hub-link {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+  padding: 13px;
+  border: 1px solid rgba(160, 205, 255, 0.18);
+  border-radius: 14px;
+  color: inherit;
+  background: rgba(136, 177, 255, 0.08);
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+#aside-content .interview-hub-link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(147, 213, 255, 0.56);
+  background: rgba(136, 177, 255, 0.16);
+}
+
+#aside-content .interview-hub-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  color: #e8f5ff;
+  background: linear-gradient(145deg, #3e82e6, #7556d1);
+  box-shadow: 0 8px 20px rgba(43, 103, 208, 0.36);
+}
+
+#aside-content .interview-hub-content {
+  min-width: 0;
+}
+
+#aside-content .interview-hub-content strong,
+#aside-content .interview-hub-content span,
+#aside-content .interview-hub-content em {
+  display: block;
+}
+
+#aside-content .interview-hub-content strong {
+  color: #f7fbff;
+  font-size: 14px;
+}
+
+#aside-content .interview-hub-content span {
+  overflow: hidden;
+  margin-top: 2px;
+  color: rgba(207, 224, 251, 0.8);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#aside-content .interview-hub-content em {
+  margin-top: 5px;
+  color: #9bdcff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+}

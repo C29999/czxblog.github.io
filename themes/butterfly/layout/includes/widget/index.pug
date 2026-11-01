@@ -15,6 +15,7 @@
           include ./card_post_toc.pug
         if page.series
           include ./card_post_series.pug
+        !=partial('includes/widget/card_interview_hub', {}, {cache: true})
         !=partial('includes/widget/card_recent_post', {}, {cache: true})
         !=partial('includes/widget/card_ad', {}, {cache: true})
   else
@@ -26,6 +27,7 @@
     .sticky_layout
       if showToc
         include ./card_post_toc.pug
+      !=partial('includes/widget/card_interview_hub', {}, {cache: true})
       !=partial('includes/widget/card_recent_post', {}, {cache: true})
       !=partial('includes/widget/card_ad', {}, {cache: true})
       !=partial('includes/widget/card_newest_comment', {}, {cache: true})

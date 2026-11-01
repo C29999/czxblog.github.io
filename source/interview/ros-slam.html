@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ROS 2 与 SLAM 面试基础学习页。">
+  <title>ROS / SLAM | 面试学习库</title>
+  <link rel="stylesheet" href="module-pages.css">
+  <style>:root { --accent:#7653d0; --pale:#f0ebff; }</style>
+</head>
+<body>
+  <header class="topbar"><a class="back" href="index.html">← 返回面试能力总览</a></header>
+  <div class="page-shell">
+    <aside class="side-nav" aria-label="ROS 与 SLAM 导航目录">
+      <p>本页目录</p>
+      <a href="#overview">学习总览</a>
+      <a href="#ros-graph">ROS 2 通信图</a>
+      <a href="#tf-time">TF 与时间</a>
+      <a href="#slam">SLAM 控制链路</a>
+      <a href="#debug">集成与调试</a>
+      <a href="#interview">面试追问</a>
+      <a class="back-nav" href="index.html">← 返回能力总览</a>
+    </aside>
+    <main class="content">
+      <section class="hero" id="overview">
+        <p class="eyebrow">Module 04 / robotics software</p>
+        <h1>先看数据链路，<br>再理解<span>定位与建图</span></h1>
+        <p class="lede">ROS 2 负责组织节点、消息和坐标变换；SLAM 负责从传感器数据估计位姿并生成地图。面试时应区分“会集成现有包”和“从零实现算法”。</p>
+        <ul class="tags"><li>Node · Topic · Service</li><li>DDS · QoS</li><li>TF2 · Timestamp</li><li>Frontend · Backend · Loop</li></ul>
+      </section>
+
+      <section class="section" id="ros-graph">
+        <div class="heading"><h2>ROS 2 通信图</h2><p>先明确数据是连续流、短请求还是带反馈的长任务，再选择 Topic、Service 或 Action；QoS 是数据链路的工程取舍，而不是固定模板。</p></div>
+        <div class="cards">
+          <article class="card"><span class="label">TOPIC</span><h3>发布订阅</h3><p>适合持续数据流，例如激光、里程计、图像和控制状态。发布者和订阅者解耦，但需要处理频率、队列和丢帧策略。</p><div class="diagram"><div class="node">Lidar<br>Publisher</div><i class="link"></i><div class="node">SLAM<br>Subscriber</div><i class="pulse"></i></div><ul class="list"><li>可靠性与延迟需结合数据类型选择。</li><li>关注消息时间戳与 frame_id。</li></ul></article>
+          <article class="card"><span class="label">SERVICE / ACTION</span><h3>请求与任务</h3><p>Service 适合快速请求响应；Action 适合导航、机械臂执行等可取消且有阶段反馈的长任务。</p><div class="diagram"><div class="node">Client<br>Goal</div><i class="link"></i><div class="node">Server<br>Feedback</div><i class="pulse"></i></div><ul class="list"><li>不要把高频传感器数据放进 Service。</li><li>Action 要说明 goal、feedback、result。</li></ul></article>
+          <article class="card"><span class="label">QOS</span><h3>DDS 取舍</h3><p>可靠性、历史深度、持久性影响通信行为。传感器可容忍丢帧时不必一律选择 Reliable，以免积压和延迟扩大。</p><div class="diagram"><div class="node">QoS<br>Policy</div><i class="link"></i><div class="node">Latency<br>vs Loss</div><i class="pulse"></i></div><ul class="list"><li>先说明任务对数据新鲜度的要求。</li><li>再讨论链路可靠性和资源成本。</li></ul></article>
+        </div>
+      </section>
+
+      <section class="section" id="tf-time">
+        <div class="heading"><h2>TF 与时间</h2><p>坐标变换并非只有“从 A 到 B”的关系，还需要知道它在什么时刻成立。时间不同步会让正确的几何关系在错误时刻被使用。</p></div>
+        <div class="chain"><div><b>SENSOR FRAME</b><span>激光、相机或 IMU 的安装坐标系。</span></div><div><b>BASE_LINK</b><span>车体参考坐标，连接传感器外参。</span></div><div><b>ODOM</b><span>局部连续但会累计漂移的里程计参考。</span></div><div><b>MAP</b><span>全局地图参考，由定位/SLAM 修正。</span></div></div>
+      </section>
+
+      <section class="section" id="slam">
+        <div class="heading"><h2>SLAM 的职责拆解</h2><p>理解职责比背算法名称更重要：前端估计局部运动，后端优化全局约束，回环抑制累计漂移，建图输出可用环境表示。</p></div>
+        <div class="cards">
+          <article class="card"><span class="label">FRONTEND</span><h3>匹配与里程计</h3><p>利用激光、视觉、IMU 或轮速数据估计相邻时刻位姿。输出常会有累计误差，不能当作全局绝对真值。</p><ul class="list"><li>关注特征/扫描匹配和传感器时间。</li><li>观察轨迹是否连续稳定。</li></ul></article>
+          <article class="card"><span class="label">BACKEND</span><h3>图优化</h3><p>将里程计、回环等约束放入图中优化全局位姿，目标是在多种观测之间取得整体一致性。</p><ul class="list"><li>异常约束会拉扯整条轨迹。</li><li>优化频率与计算资源需要平衡。</li></ul></article>
+          <article class="card"><span class="label">LOOP / MAP</span><h3>回环与地图</h3><p>回环识别到曾经到过的位置后可提供闭环约束，抑制漂移；建图则输出栅格或点云等环境表示。</p><ul class="list"><li>错误回环可能导致地图折叠或跳变。</li><li>使用现成包属于工程集成，不等于自研算法。</li></ul></article>
+        </div>
+      </section>
+
+      <section class="section" id="debug"><div class="qa"><p class="eyebrow">Integration debug</p><h2>集成与调试路径</h2><details><summary>RViz2 中地图不更新或机器人位置跳变怎么办？</summary><p>按传感器数据、时间戳、frame_id、TF 树连通性、里程计质量、SLAM 节点日志逐层检查。先用 rosbag2 固化可复现数据，再调参数。</p></details><details><summary>Nav2 是否等于 SLAM？</summary><p>不是。Nav2 主要处理导航行为与路径规划；SLAM 负责定位/建图。项目中可以把二者与已有定位或地图服务集成，但需说明各自职责。</p></details></div></section>
+      <section class="section" id="interview"><div class="qa"><p class="eyebrow">Interview drills</p><h2>高频追问</h2><details><summary>TF2 为什么需要时间戳？</summary><p>查询的是某个时刻的坐标关系。时间不同步、发布频率不足或请求超出缓存会导致外推错误，从而让融合或定位使用错误变换。</p></details><details><summary>QoS 为什么会让 Topic 看似“收不到消息”？</summary><p>发布者和订阅者的可靠性、持久性等策略不兼容时可能无法匹配；还要检查命名空间、消息类型和实际发布频率。</p></details></div></section>
+    </main>
+  </div>
+  <footer>ROS / SLAM · 左侧目录可跳转本页学习章节。</footer>
+</body>
+</html>
+
+
