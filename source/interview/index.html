@@ -24,8 +24,9 @@
     .wrap { width: min(1180px, calc(100% - 40px)); margin: auto; }
     .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 14px; color: #3268c8; font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
     .eyebrow::before { width: 23px; height: 2px; background: currentColor; content: ""; }
-    .hero { padding: 76px 0 54px; }
-    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.16fr) minmax(315px, .84fr); align-items: center; gap: 50px; }
+    .hero { padding: 28px 0 24px; }
+    .hero-grid { display: block; }
+    .hero-grid .system-card { width: min(100%, 620px); margin: 0 auto; }
     h1 { max-width: 700px; margin: 0; font-size: clamp(36px, 5.2vw, 67px); letter-spacing: -.065em; line-height: 1.08; }
     h1 b, h1 span { color: var(--blue); font-weight: inherit; }
     .lede { max-width: 660px; margin: 23px 0 0; color: #50647d; font-size: clamp(16px, 1.8vw, 19px); }
@@ -142,12 +143,6 @@
   <main>
     <section class="hero">
       <div class="wrap hero-grid">
-        <div>
-          <p class="eyebrow">Embedded software portfolio</p>
-          <h1>把<span>面试短板</span>变成<br><b>底层能力</b></h1>
-          <p class="lede">从 C 语言与系统协作打牢基础，延伸到电机控制和 ROS/SLAM 工程链路；页面内置训练器，用问题暴露知识缺口，再沿着原理补齐答案。</p>
-          <ul class="hero-tags" aria-label="能力关键词"><li>嵌入式 C</li><li>RTOS / Linux</li><li>PWM · PID · FOC 基础</li><li>ROS 2 · SLAM</li></ul>
-        </div>
         <aside class="system-card" aria-label="能力模块概览">
           <div class="system-top"><span>能力模块 / 04</span><span class="online">ready</span></div>
           <div class="system-lines">
