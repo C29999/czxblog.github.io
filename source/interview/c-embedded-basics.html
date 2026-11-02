@@ -485,11 +485,16 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
 
       document.querySelectorAll('[data-can-demo]').forEach(demo => {
         const steps = [
-          { title: '1 / 5 · 两个对等节点同时申请总线', text: '总线空闲后，节点 A、B 都可发送 SOF。CAN 没有固定主从，任一节点有报文都能参与发送。', bus: 'SOF：A 与 B 同时起帧', packet: 'SOF', moving: true, nodes: { a: ['contending', '准备发送 ID 0x201'], b: ['contending', '准备发送 ID 0x321'], c: ['listening', '监听总线'] } },
-          { title: '2 / 5 · 仲裁：显性位保留，低 ID 优先', text: 'ID 首次不同处，A 发显性 0，B 发隐性 1 却采样到 0，于是 B 退出本次发送并转为接收。获胜帧未被破坏，这就是非破坏性仲裁。', bus: '仲裁位：显性 0 覆盖隐性 1 → 0x201 获胜', packet: '0', moving: true, nodes: { a: ['winner', '继续发送：仲裁获胜'], b: ['lost', '读回 0，退出仲裁'], c: ['receiver', '接收获胜帧'] } },
-          { title: '3 / 5 · 获胜报文向所有节点广播', text: 'A 继续发送 ID、控制场、数据和 CRC。所有节点都能看到该帧；C 的硬件过滤器匹配 0x201，报文进入 Rx FIFO。', bus: '广播：ID 0x201 · DATA · CRC', packet: '0x201', moving: true, nodes: { a: ['winner', '发送数据与 CRC'], b: ['receiver', '作为接收者监听'], c: ['receiver', '过滤命中 → Rx FIFO'] } },
-          { title: '4 / 5 · 正确接收者在 ACK 槽确认', text: '至少一个非监听节点正确校验帧后，会在 ACK 槽写入显性位。A 只知道“总线上有人正确接收”，不代表应用已经处理了数据。', bus: 'ACK 槽：接收节点驱动显性 0', packet: 'ACK', moving: true, nodes: { a: ['winner', '采样 ACK'], b: ['ack', '正确接收 → ACK'], c: ['ack', '正确接收 → ACK'] } },
-          { title: '5 / 5 · 帧结束，落败节点再次竞争', text: 'A 的发送完成。B 的报文没有丢失；下次总线空闲时会重新参与仲裁，若开启自动重传则由控制器自动重试。', bus: 'EOF / Intermission：B 等待下一次发送机会', packet: 'EOF', moving: false, nodes: { a: ['done', '发送完成'], b: ['contending', '等待空闲后重新竞争'], c: ['done', '数据已进入 Rx FIFO'] } }
+          { title: '1 / 10 · 总线空闲，节点都在监听', text: 'CANH/CANL 处于空闲状态。A、B、C 都是对等节点，谁有待发报文，谁都可以在下一次空闲时发送。', bus: 'Bus Idle：总线空闲', packet: '', moving: false, nodes: { a: ['listening', '监听总线空闲'], b: ['listening', '监听总线空闲'], c: ['listening', '监听总线空闲'] } },
+          { title: '2 / 10 · 节点 A 准备优先报文', text: 'A 将 ID 0x201 和数据写入发送缓冲，等待总线空闲后发起发送。', bus: 'A：Tx FIFO 已就绪 · ID 0x201', packet: 'A TX', moving: true, nodes: { a: ['contending', 'Tx FIFO：ID 0x201'], b: ['listening', '监听总线'], c: ['listening', '监听总线'] } },
+          { title: '3 / 10 · 节点 B 也准备发送', text: 'B 同时有 ID 0x321 待发。它不需要向 A 申请权限，只需与其他节点一起监听总线。', bus: 'A、B 都有待发报文', packet: 'A + B', moving: true, nodes: { a: ['contending', '等待总线空闲'], b: ['contending', 'Tx FIFO：ID 0x321'], c: ['listening', '监听总线'] } },
+          { title: '4 / 10 · 两个节点同时发出 SOF', text: '总线空闲后，A、B 都发送帧起始 SOF；CAN 从此开始逐位仲裁。', bus: 'SOF：A 与 B 同时起帧', packet: 'SOF', moving: true, nodes: { a: ['contending', '发送 SOF'], b: ['contending', '发送 SOF'], c: ['listening', '监听起始位'] } },
+          { title: '5 / 10 · ID 首次不同，显性位覆盖隐性位', text: '仲裁到首次不同的 ID 位：A 发显性 0，B 发隐性 1；总线实际电平保持为 0。', bus: '仲裁位：0（显性）覆盖 1（隐性）', packet: '0 > 1', moving: true, nodes: { a: ['winner', '发送显性 0'], b: ['lost', '发送 1，却采样到 0'], c: ['receiver', '观察仲裁位'] } },
+          { title: '6 / 10 · 节点 B 退让并转为接收', text: 'B 发现发送值与采样值不一致，立即停止发送、转为接收；A 的帧没有被破坏，这就是非破坏性仲裁。', bus: 'A 获得总线 · B 转为接收', packet: '0x201', moving: true, nodes: { a: ['winner', '仲裁获胜，继续发送'], b: ['receiver', '退出仲裁，改为接收'], c: ['receiver', '接收获胜帧'] } },
+          { title: '7 / 10 · 节点 A 发送报文头', text: 'A 继续发送 ID 0x201、控制场和长度字段；共享总线上的所有节点都能看到这些位。', bus: '广播：ID 0x201 · 控制场', packet: '0x201', moving: true, nodes: { a: ['winner', '发送 ID 与控制场'], b: ['receiver', '校验并接收'], c: ['receiver', '校验并接收'] } },
+          { title: '8 / 10 · 数据与 CRC 广播，C 命中过滤器', text: 'A 发送数据和 CRC。C 的硬件过滤器匹配 0x201，因此将正确帧放入 Rx FIFO；其余节点仍会在链路层校验该帧。', bus: 'DATA · CRC：C 过滤命中 → Rx FIFO', packet: 'DATA', moving: true, nodes: { a: ['winner', '发送数据与 CRC'], b: ['receiver', '接收并校验'], c: ['receiver', '过滤命中 → Rx FIFO'] } },
+          { title: '9 / 10 · 正确接收者在 ACK 槽确认', text: '至少一个非监听节点正确校验后，会在 ACK 槽写入显性位。A 只知道总线上有人正确收帧，不代表应用已处理数据。', bus: 'ACK 槽：接收节点驱动显性 0', packet: 'ACK', moving: true, nodes: { a: ['winner', '采样 ACK'], b: ['ack', '正确接收 → ACK'], c: ['ack', '正确接收 → ACK'] } },
+          { title: '10 / 10 · 帧结束，节点 B 下次再竞争', text: 'A 发送完成，C 的数据已在 Rx FIFO。B 的报文没有丢失；总线再次空闲时会重新参与仲裁，开启自动重传时由控制器自动重试。', bus: 'EOF / Intermission：B 等待下一次发送机会', packet: 'EOF', moving: false, nodes: { a: ['done', '发送完成'], b: ['contending', '等待空闲后重新竞争'], c: ['done', '数据已进入 Rx FIFO'] } }
         ];
         const nodes = [...demo.querySelectorAll('[data-can-node]')];
         const busLabel = demo.querySelector('.can-bus-label');
