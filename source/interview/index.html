@@ -122,6 +122,9 @@
     .remote-fields input { min-width: 0; min-height: 41px; padding: 0 10px; border: 1px solid #cbd9e7; border-radius: 9px; color: #263b55; background: #fff; font: 14px ui-monospace, SFMono-Regular, Consolas, monospace; }
     .remote-fields .key-memory { grid-column:1 / -1; display:flex; align-items:center; gap:8px; color:#61748a; font-size:12px; font-weight:700; } .remote-fields .key-memory input { flex:none; min-width:16px; min-height:16px; width:16px; height:16px; padding:0; accent-color:#7253ca; }
     .remote-fields textarea { min-height:104px; padding:10px; font-size:13px; line-height:1.5; }
+    .connection-actions { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:0 14px 12px; }
+    .connection-status { color:#61748a; font-size:12px; font-weight:700; line-height:1.45; }
+    .connection-status[data-state="success"] { color:#087d67; } .connection-status[data-state="error"] { color:#a95527; } .connection-status[data-state="testing"] { color:#526d99; }
     .remote-warning { margin: 0; padding: 0 14px 13px; color: #7c6d54; font-size: 11px; line-height: 1.5; }
     .coach-library { padding: 20px; border: 1px solid #e0e8f1; border-radius: 17px; background: rgba(255,255,255,.75); }
     .coach-library h2 { margin: 0; font-size: 24px; letter-spacing: -.035em; } .coach-library>p { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
@@ -220,6 +223,10 @@
                 <textarea id="systemPromptInput" spellcheck="false">你是一位严谨、诚实的嵌入式软件面试教练。职责：围绕 C 语言、RTOS/Linux、电机控制、ROS/SLAM 追问基础原理；区分概念理解、工程集成和从零实现；指出含糊或不准确的表述；根据候选人的回答提出一个更底层的追问，并给出可在 30 分钟内完成的学习或验证建议。不要虚构候选人的项目经历，不要为了鼓励而忽略技术错误。请用清晰、简洁的中文作答。</textarea>
               </label>
             </div>
+            <div class="connection-actions">
+              <button class="secondary" type="button" id="testConnection">检测连通性</button>
+              <span class="connection-status" id="connectionStatus" role="status" aria-live="polite"></span>
+            </div>
             <p class="remote-warning">点击“让 AI 深度点评”后，当前题目、你的回答和 Key（如填写）会发送到上方 URL。Key 默认仅保存在当前浏览器会话；勾选“记住”后才保存在本机浏览器。它不会写入网页文件、Git 或服务器；请只填写可信服务地址。静态文件预览可能受浏览器 CORS 限制。</p>
           </details>
           <section class="question-card" aria-labelledby="questionText">
@@ -297,6 +304,8 @@
       const rememberKey = document.querySelector('#rememberKey');
       const systemPromptInput = document.querySelector('#systemPromptInput');
       const remoteReview = document.querySelector('#remoteReview');
+      const testConnection = document.querySelector('#testConnection');
+      const connectionStatus = document.querySelector('#connectionStatus');
       const drafts = {};
       const current = {};
       let topic = topicSelect.value;
@@ -328,6 +337,33 @@
         } catch {
           /* 隐私模式或受限环境下忽略存储失败。 */
         }
+      }
+
+      function setConnectionStatus(message, state) {
+        connectionStatus.textContent = message;
+        if (state) connectionStatus.dataset.state = state;
+        else delete connectionStatus.dataset.state;
+      }
+
+      function validateRemoteConfig(apiUrl, model) {
+        if (!apiUrl) return '请先填写完整的 Chat Completions API URL。';
+        if (!model) return '请填写服务端支持的模型名称。';
+        try {
+          const parsedUrl = new URL(apiUrl);
+          if (parsedUrl.protocol !== 'https:' && parsedUrl.protocol !== 'http:') throw new Error('unsupported protocol');
+        } catch {
+          return 'API URL 必须是以 https:// 或 http:// 开头的完整地址。';
+        }
+        return '';
+      }
+
+      function describeRemoteStatus(status) {
+        if (status === 401) return '认证失败（HTTP 401）。请检查 API Key。';
+        if (status === 403) return '访问被拒绝（HTTP 403）。请检查 Key 权限或服务端访问策略。';
+        if (status === 404) return '未找到接口（HTTP 404）。请检查 API URL、路径或模型名称。';
+        if (status === 429) return '请求过多或额度不足（HTTP 429）。请稍后重试并检查额度。';
+        if (status >= 500) return '服务端异常（HTTP ' + status + '）。请稍后重试。';
+        return '接口返回 HTTP ' + status + '。请检查 URL、模型名和服务配置。';
       }
 
       function chooseQuestion(next) {
@@ -393,6 +429,62 @@
         appendLine('可补充：', missing.length ? missing.join('、') : '可以继续补充一个实际排错或验证例子。', 'missing');
       }
 
+      async function checkConnection() {
+        const apiUrl = apiUrlInput.value.trim();
+        const apiKey = apiKeyInput.value.trim();
+        const model = modelInput.value.trim();
+        const validationError = validateRemoteConfig(apiUrl, model);
+        if (validationError) {
+          setConnectionStatus(validationError, 'error');
+          return;
+        }
+
+        testConnection.disabled = true;
+        testConnection.textContent = '检测中…';
+        setConnectionStatus('正在发送最小化连通性请求…', 'testing');
+        const headers = { 'Content-Type': 'application/json' };
+        if (apiKey) headers.Authorization = 'Bearer ' + apiKey;
+        const controller = new AbortController();
+        const timeoutId = window.setTimeout(() => controller.abort(), 15000);
+        const startedAt = performance.now();
+
+        try {
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers,
+            signal: controller.signal,
+            body: JSON.stringify({
+              model,
+              temperature: 0,
+              max_tokens: 8,
+              messages: [{ role: 'user', content: '连通性测试：请只回复 OK。' }]
+            })
+          });
+          if (!response.ok) {
+            setConnectionStatus(describeRemoteStatus(response.status), 'error');
+            return;
+          }
+          const data = await response.json();
+          const content = data?.choices?.[0]?.message?.content;
+          if (typeof content !== 'string' || !content.trim()) {
+            setConnectionStatus('接口已响应，但返回格式不是 Chat Completions 格式。请检查 API URL 或兼容性。', 'error');
+            return;
+          }
+          const elapsed = Math.round(performance.now() - startedAt);
+          setConnectionStatus('连接成功（' + elapsed + ' ms）。模型响应：' + content.trim().replace(/\s+/g, ' ').slice(0, 80), 'success');
+        } catch (error) {
+          if (error && error.name === 'AbortError') {
+            setConnectionStatus('检测超时（15 秒）。请检查服务状态、网络或代理设置。', 'error');
+          } else {
+            setConnectionStatus('无法连接。请检查网络、服务地址及浏览器 CORS 设置。', 'error');
+          }
+        } finally {
+          window.clearTimeout(timeoutId);
+          testConnection.disabled = false;
+          testConnection.textContent = '检测连通性';
+        }
+      }
+
       async function requestRemoteReview() {
         const apiUrl = apiUrlInput.value.trim();
         const apiKey = apiKeyInput.value.trim();
@@ -401,12 +493,9 @@
         const answer = answerInput.value.trim();
         const item = current[topic];
 
-        if (!apiUrl) {
-          feedback.textContent = '请先在“连接远程 AI”中填写完整的 Chat Completions API URL。';
-          return;
-        }
-        if (!model) {
-          feedback.textContent = '请填写服务端支持的模型名称。';
+        const validationError = validateRemoteConfig(apiUrl, model);
+        if (validationError) {
+          feedback.textContent = validationError;
           return;
         }
         if (!systemPrompt) {
@@ -417,14 +506,6 @@
           feedback.textContent = '先写下你的回答，再让 AI 进行深度点评。';
           return;
         }
-        try {
-          const parsedUrl = new URL(apiUrl);
-          if (parsedUrl.protocol !== 'https:' && parsedUrl.protocol !== 'http:') throw new Error('unsupported protocol');
-        } catch {
-          feedback.textContent = 'API URL 必须是以 https:// 或 http:// 开头的完整地址。';
-          return;
-        }
-
         remoteReview.disabled = true;
         remoteReview.textContent = 'AI 点评中…';
         feedback.textContent = '正在将当前题目和回答发送到你填写的服务，请稍候…';
@@ -484,6 +565,10 @@
         appendLine('追问：', item.follow);
       });
       remoteReview.addEventListener('click', requestRemoteReview);
+      testConnection.addEventListener('click', checkConnection);
+      [apiUrlInput, modelInput, apiKeyInput].forEach(input => input.addEventListener('input', () => {
+        if (connectionStatus.textContent) setConnectionStatus('配置已修改，请重新检测。');
+      }));
       apiKeyInput.addEventListener('input', saveKeyForBrowser);
       rememberKey.addEventListener('change', saveKeyForBrowser);
       topicSelect.addEventListener('change', () => {
