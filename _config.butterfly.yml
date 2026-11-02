@@ -20,6 +20,8 @@ menu:
  主页: / || fas fa-home
  爱好: /houbes/ || fas fa-archive
  学习 : /Study/ || fas fa-tags
+ 求职||fas fa-briefcase:
+   C语言 / 嵌入式基础: /interview/c-embedded-basics.html || fas fa-microchip
  生活: /life/ || fas fa-folder-open
  友链: /link/ || fas fa-link
  关于: /about/ || fas fa-heart
