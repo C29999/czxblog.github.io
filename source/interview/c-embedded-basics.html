@@ -51,7 +51,7 @@
     .protocol-visual { display:block; width:min(100%,560px); aspect-ratio:320 / 172; height:auto; margin:18px auto 16px; overflow:hidden; border:1px solid #dce7f0; border-radius:16px; background:linear-gradient(135deg,#fff,var(--pale)); } .protocol-visual svg { display:block; width:100%; height:100%; overflow:hidden; }
     .chip { fill:#fff; stroke:var(--accent); stroke-width:2; } .core { fill:var(--pale); stroke:var(--accent); stroke-width:1.5; } .pin { stroke:var(--accent); stroke-width:2; stroke-linecap:round; opacity:.67; } .wire { fill:none; stroke:var(--accent); stroke-width:2.2; stroke-linecap:round; stroke-dasharray:6 7; animation:dash 1.35s linear infinite; } .wire.gray { stroke:#8094ac; stroke-width:1.6; animation-direction:reverse; animation-duration:1.75s; }
     .t-chip { fill:var(--accent); font:800 10px Inter,"PingFang SC",sans-serif; } .t-small { fill:#6d819a; font:8px ui-monospace,monospace; } .packet { fill:var(--accent); stroke:#fff; stroke-width:2; } .right { offset-path:path("M 110 81 C 144 81, 166 81, 201 81"); animation:go 1.65s linear infinite; } .left { offset-path:path("M 201 108 C 166 108, 144 108, 110 108"); animation:go 1.65s linear infinite reverse; } .blink { fill:var(--accent); animation:blink 1.1s ease-in-out infinite; } .rotor { transform-origin:254px 87px; animation:spin 2.1s linear infinite; }
-    .details { display:grid; grid-template-columns:1fr 1fr; gap:10px; } .detail { padding:10px; border-radius:12px; background:#f8fbfe; } .detail span { display:block; color:#78899e; font-size:11px; font-weight:800; } .detail strong { display:block; margin-top:3px; color:#43566e; font-size:12px; line-height:1.4; }
+    .protocol-wire-map .signal-line,.protocol-wire-map .signal-packet { opacity:.23; animation-play-state:paused; transition:opacity .2s ease,filter .2s ease; } .protocol-wire-map[data-wire-phase="uart-tx"] .phase-uart-tx,.protocol-wire-map[data-wire-phase="uart-rx"] .phase-uart-rx,.protocol-wire-map[data-wire-phase="spi-cs"] .phase-spi-cs,.protocol-wire-map[data-wire-phase="spi-mosi"] .phase-spi-mosi,.protocol-wire-map[data-wire-phase="spi-miso"] .phase-spi-miso,.protocol-wire-map[data-wire-phase="iic-write"] .phase-iic-write,.protocol-wire-map[data-wire-phase="iic-ack"] .phase-iic-ack,.protocol-wire-map[data-wire-phase="iic-read"] .phase-iic-read { opacity:1; animation-play-state:running; filter:drop-shadow(0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)); } .protocol-wire-map[data-wire-phase="iic-write"] .phase-iic-clock,.protocol-wire-map[data-wire-phase="iic-ack"] .phase-iic-clock,.protocol-wire-map[data-wire-phase="iic-read"] .phase-iic-clock { opacity:1; animation-play-state:running; } .uart-tx { offset-path:path("M 110 71 C 144 71, 166 71, 202 71"); animation:go 1.55s linear infinite; } .uart-rx { offset-path:path("M 202 98 C 166 98, 144 98, 110 98"); animation:go 1.55s linear infinite; } .spi-mosi { offset-path:path("M 100 84 C 141 84, 169 84, 210 84"); animation:go 1.55s linear infinite; } .spi-miso { offset-path:path("M 210 107 C 169 107, 141 107, 100 107"); animation:go 1.55s linear infinite; } .iic-out { offset-path:path("M 109 108 C 145 108, 173 108, 209 108"); animation:go 1.55s linear infinite; } .iic-back { offset-path:path("M 209 108 C 173 108, 145 108, 109 108"); animation:go 1.55s linear infinite; } .wire-flow-caption { display:flex; min-height:34px; align-items:center; gap:7px; margin:-7px 0 14px; padding:7px 10px; border:1px solid color-mix(in srgb,var(--accent) 22%,#dce7f0); border-radius:9px; color:#5d748c; background:linear-gradient(90deg,rgba(255,255,255,.92),var(--pale)); font-size:11px; line-height:1.45; } .wire-flow-caption b { flex:none; color:var(--accent); font:800 10px ui-monospace,SFMono-Regular,Consolas,monospace; } .wire-flow-caption span { min-width:0; } .details { display:grid; grid-template-columns:1fr 1fr; gap:10px; } .detail { padding:10px; border-radius:12px; background:#f8fbfe; } .detail span { display:block; color:#78899e; font-size:11px; font-weight:800; } .detail strong { display:block; margin-top:3px; color:#43566e; font-size:12px; line-height:1.4; }
     .protocol-practice { margin-top:14px; padding:14px; border:1px solid color-mix(in srgb,var(--accent) 23%,#dce7f0); border-radius:14px; background:linear-gradient(135deg,#fff,var(--pale)); } .practice-top { display:flex; justify-content:space-between; gap:11px; align-items:start; } .practice-top strong { color:#40556f; font-size:14px; } .practice-top span { color:#6e8198; font-size:11px; text-align:right; } .practice-controls { display:grid; grid-template-columns:1fr 1fr auto; gap:9px; align-items:end; margin-top:11px; } .practice-field { display:grid; gap:4px; color:#657990; font-size:10px; font-weight:850; } .practice-field select { min-width:0; height:37px; padding:0 8px; border:1px solid #cad9e7; border-radius:8px; color:#40556f; background:#fff; font:12px ui-monospace,SFMono-Regular,Consolas,monospace; } .practice-toggle { display:flex; align-items:center; gap:6px; min-height:37px; color:#536a81; font-size:11px; font-weight:750; white-space:nowrap; } .practice-toggle input { width:15px; height:15px; margin:0; accent-color:var(--accent); } .practice-run { min-height:37px; margin-top:10px; padding:0 11px; border:1px solid var(--accent); border-radius:8px; color:#fff; background:var(--accent); cursor:pointer; font:800 12px Inter,"PingFang SC",sans-serif; } .practice-run:hover { filter:brightness(.95); } .practice-run:focus-visible,.practice-field select:focus-visible { outline:3px solid color-mix(in srgb,var(--accent) 28%,transparent); outline-offset:2px; } .practice-log { min-height:20px; margin:9px 0 0; color:#586e86; font:11px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace; } .practice-log b { color:var(--accent); }
     .protocol-deep { margin-top:15px; border:1px solid #dce7f0; border-radius:14px; background:#fbfdff; overflow:hidden; } .protocol-deep summary { padding:12px 14px; color:#405a76; cursor:pointer; font-size:13px; font-weight:850; } .protocol-deep[open] summary { color:var(--accent); border-bottom:1px solid #e1eaf3; background:var(--pale); } .deep-body { padding:14px; } .deep-note { margin:0; color:#697d93; font-size:11px; line-height:1.6; } .io-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-top:12px; } .io-item { padding:10px; border:1px solid #e1eaf3; border-radius:11px; background:#fff; } .io-item b { display:block; color:#40566f; font-size:12px; } .io-item code { display:inline-block; margin-top:4px; color:var(--accent); font:800 10px ui-monospace,SFMono-Regular,Consolas,monospace; } .io-item p { margin:5px 0 0; color:#61758c; font-size:11px; line-height:1.55; } .deep-columns { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; } .deep-columns section { padding:12px; border:1px solid #e0eaf3; border-radius:12px; background:#fff; } .deep-columns h4 { margin:0; color:#40566f; font-size:13px; } .deep-columns ol { padding-left:18px; margin:8px 0 0; color:#586d85; font-size:12px; line-height:1.65; } .deep-columns li+li { margin-top:3px; }
     .implementation-compare { margin-top:12px; padding:12px; border:1px solid color-mix(in srgb,var(--accent) 20%,#dce7f0); border-radius:12px; background:linear-gradient(135deg,#fff,var(--pale)); } .implementation-compare h4 { margin:0; color:#40566f; font-size:13px; } .implementation-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:9px; } .implementation-grid section { padding:11px; border:1px solid rgba(159,184,213,.35); border-radius:10px; background:rgba(255,255,255,.78); } .implementation-grid b { display:block; color:var(--accent); font-size:12px; } .implementation-grid p { margin:5px 0 0; color:#586e86; font-size:11px; line-height:1.62; } .implementation-tip { margin:9px 0 0; color:#526980; font-size:11px; line-height:1.6; } .implementation-tip strong { color:#405f87; }
@@ -249,11 +249,11 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
           <article class="protocol" id="uart">
             <div class="protocol-head"><span class="badge">UART</span><span class="kind">异步 · 点对点</span></div>
             <h3>串口与模组交互</h3><p>通过 TX/RX 的异步串行通信配置波特率、帧格式和中断/DMA 收发，适合日志输出、调试终端和模块化指令交互。</p>
-            <figure class="protocol-visual" aria-label="STM32F103C8T6 与 CH340C 的 UART 动态信号示意"><svg viewBox="0 0 320 172" role="img">
+            <figure class="protocol-visual protocol-wire-map" data-wire-map="UART" aria-label="STM32F103C8T6 与 CH340C 通过 TX、RX 和公共地连接的 UART 动态信号示意"><svg viewBox="0 0 320 172" role="img">
               <rect class="chip" x="27" y="43" width="83" height="86" rx="10"/><rect class="core" x="40" y="59" width="57" height="54" rx="4"/><text class="t-chip" x="68" y="82" text-anchor="middle">STM32</text><text class="t-small" x="68" y="97" text-anchor="middle">F103C8T6</text>
-              <rect class="chip" x="202" y="55" width="83" height="62" rx="10"/><rect class="core" x="215" y="68" width="57" height="36" rx="4"/><text class="t-chip" x="243" y="87" text-anchor="middle">CH340C</text>
-              <path class="wire" d="M110 81H202"/><path class="wire gray" d="M202 108H110"/><text class="t-small" x="124" y="71">TX</text><text class="t-small" x="173" y="122">RX</text><circle class="packet right" cx="0" cy="0" r="4"/><circle class="packet left" cx="0" cy="0" r="4"/>
-            </svg></figure>
+              <rect class="chip" x="202" y="43" width="83" height="86" rx="10"/><rect class="core" x="215" y="61" width="57" height="47" rx="4"/><text class="t-chip" x="243" y="82" text-anchor="middle">CH340C</text><text class="t-small" x="243" y="97" text-anchor="middle">USB-UART</text>
+              <path class="wire signal-line phase-uart-tx" d="M110 71H202"/><path class="wire gray signal-line phase-uart-rx" d="M202 98H110"/><path class="pin" d="M110 123H202"/><text class="t-small" x="124" y="61">TX → RX</text><text class="t-small" x="160" y="113">TX ← RX</text><text class="t-small" x="143" y="139">GND</text><circle class="packet uart-tx signal-packet phase-uart-tx" cx="0" cy="0" r="4"/><circle class="packet uart-rx signal-packet phase-uart-rx" cx="0" cy="0" r="4"/>
+            </svg></figure><div class="wire-flow-caption" data-wire-caption="UART" aria-label="自动循环的 UART 线路数据方向"><b>线路动态</b><span></span></div>
             <div class="details"><div class="detail"><span>典型芯片</span><strong>STM32F103C8T6<br>CH340C</strong></div><div class="detail"><span>重点</span><strong>帧格式 · 超时<br>环形缓冲</strong></div></div>
             <details class="protocol-deep"><summary>查看 UART 的 IO 配置、收发过程与原因</summary><div class="deep-body">
               <p class="deep-note">示例为 STM32F103 默认 USART1 映射；若重映射或换封装，必须重新查芯片 AF/引脚表与原理图。</p>
@@ -306,11 +306,11 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
           <article class="protocol i2c" id="i2c">
             <div class="protocol-head"><span class="badge">I²C / IIC</span><span class="kind">同步 · 多从机</span></div>
             <h3>传感器与 EEPROM</h3><p>在 SCL/SDA 两线上完成设备寻址、寄存器读写和 ACK 应答，适合板内的低引脚数传感器与存储器连接。</p>
-            <figure class="protocol-visual" aria-label="STM32G071 与 AT24C02 的 I2C 时钟和数据动画"><svg viewBox="0 0 320 172" role="img">
+            <figure class="protocol-visual protocol-wire-map" data-wire-map="IIC" aria-label="STM32G071 与 AT24C02 通过 SCL 和 SDA 连接的 IIC 动态信号示意"><svg viewBox="0 0 320 172" role="img">
               <rect class="chip" x="29" y="43" width="80" height="86" rx="10"/><rect class="core" x="42" y="59" width="54" height="54" rx="4"/><text class="t-chip" x="69" y="82" text-anchor="middle">STM32</text><text class="t-small" x="69" y="97" text-anchor="middle">G071</text>
               <rect class="chip" x="209" y="55" width="79" height="62" rx="10"/><text class="t-chip" x="248" y="82" text-anchor="middle">AT24C02</text><text class="t-small" x="248" y="97" text-anchor="middle">EEPROM</text>
-              <path class="wire" d="M109 80h10v-9h10v9h10v-9h10v9h10v-9h10v9h10v-9h10v9h10v-9h10v9h10"/><path class="wire gray" d="M109 108H209"/><text class="t-small" x="122" y="66">SCL</text><text class="t-small" x="122" y="123">SDA</text><text class="t-chip" x="177" y="100">ACK</text>
-            </svg></figure>
+              <path class="wire signal-line phase-iic-clock phase-iic-write phase-iic-ack phase-iic-read" d="M109 80h10v-9h10v9h10v-9h10v9h10v-9h10v9h10v-9h10v9h10v-9h10v9h10"/><path class="wire gray signal-line phase-iic-write phase-iic-ack phase-iic-read" d="M109 108H209"/><text class="t-small" x="122" y="66">SCL</text><text class="t-small" x="122" y="123">SDA</text><text class="t-chip" x="177" y="100">ACK</text><circle class="packet iic-out signal-packet phase-iic-write" cx="0" cy="0" r="4"/><circle class="packet iic-back signal-packet phase-iic-ack" cx="0" cy="0" r="4"/><circle class="packet iic-back signal-packet phase-iic-read" cx="0" cy="0" r="4"/>
+            </svg></figure><div class="wire-flow-caption" data-wire-caption="IIC" aria-label="自动循环的 IIC 线路数据方向"><b>线路动态</b><span></span></div>
             <div class="details"><div class="detail"><span>典型芯片</span><strong>STM32G071<br>AT24C02</strong></div><div class="detail"><span>重点</span><strong>Address · ACK<br>开漏上拉</strong></div></div>
             <details class="protocol-deep"><summary>查看 IIC 的 IO 配置、收发过程与原因</summary><div class="deep-body">
               <p class="deep-note">示例为 STM32G071 I2C1 的 PB6(SCL)/PB7(SDA) 常见映射（AF 以具体封装表为准）。IIC 电平质量主要依赖板外上拉与总线电容，内部弱上拉通常不足以承担高速总线。</p>
@@ -328,11 +328,11 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
           <article class="protocol spi" id="spi">
             <div class="protocol-head"><span class="badge">SPI</span><span class="kind">同步 · 全双工</span></div>
             <h3>高速存储与显示</h3><p>使用 SCK、MOSI、MISO 与 CS 进行全双工数据交换，常用于外部 Flash、显示屏和高速采样外设。</p>
-            <figure class="protocol-visual" aria-label="STM32G0 与 W25Q128 SPI 的双向数据和时钟动画"><svg viewBox="0 0 320 172" role="img">
+            <figure class="protocol-visual protocol-wire-map" data-wire-map="SPI" aria-label="STM32G0 与 W25Q128 通过 CS、SCK、MOSI 和 MISO 连接的 SPI 动态信号示意"><svg viewBox="0 0 320 172" role="img">
               <rect class="chip" x="20" y="42" width="80" height="88" rx="10"/><rect class="core" x="33" y="59" width="54" height="55" rx="4"/><text class="t-chip" x="60" y="82" text-anchor="middle">STM32</text><text class="t-small" x="60" y="97" text-anchor="middle">G0</text>
-              <rect class="chip" x="210" y="53" width="83" height="66" rx="10"/><text class="t-chip" x="251" y="82" text-anchor="middle">W25Q128</text><text class="t-small" x="251" y="97" text-anchor="middle">SPI FLASH</text>
-              <path class="wire" d="M100 68h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h10v8h10"/><path class="wire" d="M100 91H210"/><path class="wire gray" d="M210 114H100"/><text class="t-small" x="108" y="52">SCK</text><text class="t-small" x="108" y="84">MOSI</text><text class="t-small" x="162" y="128">MISO</text><circle class="packet right" cx="0" cy="0" r="4"/><circle class="packet left" cx="0" cy="0" r="4"/>
-            </svg></figure>
+              <rect class="chip" x="210" y="42" width="83" height="88" rx="10"/><text class="t-chip" x="251" y="79" text-anchor="middle">W25Q128</text><text class="t-small" x="251" y="94" text-anchor="middle">SPI FLASH</text>
+              <path class="wire signal-line phase-spi-mosi phase-spi-miso" d="M100 61h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h10v8h10"/><path class="wire signal-line phase-spi-mosi" d="M100 84H210"/><path class="wire gray signal-line phase-spi-miso" d="M210 107H100"/><path class="wire gray signal-line phase-spi-cs" d="M100 126H210"/><text class="t-small" x="108" y="48">SCK</text><text class="t-small" x="108" y="77">MOSI</text><text class="t-small" x="158" y="120">MISO</text><text class="t-small" x="150" y="141">CS ↓</text><circle class="packet spi-mosi signal-packet phase-spi-mosi" cx="0" cy="0" r="4"/><circle class="packet spi-miso signal-packet phase-spi-miso" cx="0" cy="0" r="4"/>
+            </svg></figure><div class="wire-flow-caption" data-wire-caption="SPI" aria-label="自动循环的 SPI 线路数据方向"><b>线路动态</b><span></span></div>
             <div class="details"><div class="detail"><span>典型芯片</span><strong>STM32G0<br>W25Q128JV</strong></div><div class="detail"><span>重点</span><strong>CPOL/CPHA · CS<br>DMA 连续传输</strong></div></div>
             <details class="protocol-deep"><summary>查看 SPI 的 IO 配置、收发过程与原因</summary><div class="deep-body">
               <p class="deep-note">示例为 STM32G0 SPI1 的 PA5(SCK)/PA6(MISO)/PA7(MOSI)/PA4(CS) 常见连接。具体 AF 编号与硬件 NSS 用法必须按芯片手册核对。</p>
@@ -405,6 +405,36 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
         interrupt: ['中断响应', '外设事件先形成 IRQ 请求，NVIC 按优先级决定是否打断当前执行流，并从向量表取 ISR 入口。ISR 应尽量短，把耗时工作交给任务或主循环。'],
         dma: ['DMA 搬运', 'DMA 也是总线主设备：外设请求到来时，它可直接在外设寄存器和 SRAM 之间搬数据。CPU 只负责配置、处理半传输/完成/错误中断及缓存一致性。']
       };
+
+      const wireMapSteps = {
+        UART: [
+          ['uart-tx', 'TX：MCU → USB 转串口，按“起始位 · 数据位 · 停止位”逐位发送。'],
+          ['uart-rx', 'RX：USB 转串口 → MCU，接收端按约定波特率采样字节。']
+        ],
+        IIC: [
+          ['iic-write', 'SCL 提供节拍；主机经 SDA 向 EEPROM 发送地址、寄存器和数据。'],
+          ['iic-ack', '第 9 个时钟：EEPROM 将 SDA 拉低，ACK 返回主机。'],
+          ['iic-read', '读阶段：EEPROM 在 SCL 节拍下经 SDA 把数据送回主机。']
+        ],
+        SPI: [
+          ['spi-cs', 'CS 拉低：主机选中这颗 Flash，其他从机保持 MISO 高阻。'],
+          ['spi-mosi', 'SCK 翻转：命令、地址或 dummy byte 经 MOSI 送入 Flash。'],
+          ['spi-miso', '同一组 SCK：Flash 通过 MISO 同步返回状态、ID 或数据。']
+        ]
+      };
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      document.querySelectorAll('[data-wire-map]').forEach(map => {
+        const steps = wireMapSteps[map.dataset.wireMap];
+        const caption = map.parentElement.querySelector('[data-wire-caption="' + map.dataset.wireMap + '"] span');
+        let current = 0;
+        function renderWireStep() {
+          const [phase, text] = steps[current];
+          map.dataset.wirePhase = phase;
+          caption.textContent = text;
+        }
+        renderWireStep();
+        if (!reduceMotion) window.setInterval(() => { current = (current + 1) % steps.length; renderWireStep(); }, 2400);
+      });
       const m3Map = document.querySelector('#m3Map');
       const m3Title = document.querySelector('#m3ExplainTitle');
       const m3Text = document.querySelector('#m3ExplainText');
