@@ -195,7 +195,7 @@
             <div><p class="eyebrow">AI interview trainer</p><h2 id="coach-title">AI 问答与测评打分</h2></div>
             <aside class="score-card" aria-label="关键词测评得分" aria-live="polite"><span>关键词得分</span><strong id="scoreValue">--</strong><small id="scoreLevel">等待作答</small></aside>
           </div>
-          <p class="coach-note">选择模块后，训练器会随机出题。先独立作答，再检查关键词覆盖与参考思路；不会自动跳题，方便你反复补齐薄弱处。</p>
+          <p class="coach-note">C、RTOS/Linux 与 STM32/PWM 题目优先整理自本地面经合集；ROS/SLAM 和深入电机控制题保留站内专题补充。先独立作答，再检查关键词覆盖与参考思路。</p>
           <div class="coach-controls">
             <label for="topicSelect">训练模块</label>
             <select id="topicSelect">
@@ -259,23 +259,31 @@
       const questionBank = {
         c: {
           label: 'C语言基础 / 嵌入式基础',
+          source: '题源：面经合集（C / 内存 / STM32 高频）',
           questions: [
             { q: 'volatile 解决了什么问题？它能保证多线程或中断共享变量的原子性吗？', keys: ['编译器优化', '内存', '原子', '中断'], hint: '说明它约束的是编译器读写优化；并发正确性仍要考虑原子操作、临界区或同步机制。', follow: '如果主循环和中断同时访问一个多字节计数器，如何避免读到撕裂数据？' },
             { q: '栈、全局/静态区和堆的生命周期有什么差异？嵌入式项目为什么常谨慎使用动态分配？', keys: ['栈', '静态', '堆', '碎片'], hint: '分别说明存储期和分配方式，再谈堆碎片、失败路径、确定性与内存泄漏。', follow: '若必须动态分配，启动阶段和运行阶段的内存策略可以怎样划分？' },
-            { q: '环形缓冲区用于串口接收时，生产者和消费者分别是谁？需要关注哪些并发边界？', keys: ['中断', '读写指针', '溢出', '临界区'], hint: '从 ISR 生产、主循环/任务消费开始，讲读写指针、满/空判定、溢出处理和临界区。', follow: '单生产者单消费者场景中，哪些变量需要 volatile，哪些操作仍可能需要保护？' }
+            { q: '结构体内存对齐会怎样影响通信协议解析？使用 #pragma pack(1) 何时合适，又有什么代价？', keys: ['填充', '对齐', '字节流', '非对齐'], hint: '说明编译器会插入填充字节；协议解析应按字节流或明确布局处理。pack(1) 可避免填充，但要评估非对齐访问的性能与兼容性。', follow: '多字节字段还可能受什么影响？如何同时处理字节序问题？' },
+            { q: '串口用 DMA 接收不定长数据时，怎样判断一帧结束？连续两帧到来而上一帧未处理完时，如何避免覆盖或丢帧？', keys: ['空闲中断', '环形缓冲区', '读写指针', '溢出'], hint: '从 IDLE/超时或协议长度判断帧边界，配合环形或双缓冲；说明生产和消费速率、满缓冲策略与错误统计。', follow: '系统负载升高时偶发丢帧，怎样用逻辑分析仪和软件计数器分层定位？' }
           ]
         },
         rtos: {
           label: 'RTOS / Linux',
+          source: '题源：面经合集（RTOS / Linux / BSP 高频）',
           questions: [
             { q: '什么是优先级反转？互斥锁的优先级继承解决了哪一部分问题？', keys: ['低优先级', '高优先级', '互斥锁', '优先级继承'], hint: '描述低优先级持锁、高优先级阻塞、介于两者的任务抢占的链路，再讲优先级继承。', follow: '为什么二值信号量与带优先级继承的互斥锁不能在所有场景中互换？' },
             { q: '消息队列、信号量和事件标志组分别适合传递什么？', keys: ['数据', '同步', '多个', '事件'], hint: '队列常传数据，信号量常同步/计数，事件组用于多个位状态；说明任务与 ISR 的使用限制。', follow: '传感器任务向控制任务发送最新数据时，队列深度如何影响实时性与丢帧？' },
-            { q: 'Linux 用户态程序访问 I²C 或 GPIO 时，到内核驱动大致经过哪些边界？', keys: ['用户态', '系统调用', '内核', '设备文件'], hint: '从应用、系统调用或库接口、设备文件/内核驱动、总线控制器依次说明。', follow: '当应用读设备文件超时，如何分别判断是用户态逻辑、驱动还是硬件总线问题？' }
+            { q: 'Cortex-M 的 SysTick 和 PendSV 在 FreeRTOS 任务切换中分别做什么？为什么不宜在 SysTick 中完成全部上下文切换？', keys: ['时基', 'PendSV', '上下文', '低优先级'], hint: '说明 SysTick 提供节拍并触发调度判断，PendSV 通常在较低异常优先级保存/恢复上下文，避免抢占更紧急的中断。', follow: '任务切换时，除了通用寄存器，还需要保存哪些与任务相关的状态？' },
+            { q: '为什么 ISR 中不能直接调用普通队列发送函数？使用 xQueueSendFromISR() 后还需要处理什么？', keys: ['中断', 'FromISR', '阻塞', '任务切换'], hint: 'ISR 不能执行会阻塞或依赖普通任务调度状态的 API；说明 FromISR 版本、唤醒更高优先级任务与在退出 ISR 时请求切换。', follow: '若中断处理很重，如何把工作安全地延后到任务上下文？' },
+            { q: '在新开发板上接入 I²C 传感器，从设备树到驱动注册、再到应用读取，完整链路应怎样检查？', keys: ['设备树', 'compatible', 'probe', '设备节点'], hint: '按 pinmux/时钟/总线节点与设备地址、compatible 匹配、probe 日志、字符设备或 IIO 接口、用户态读写逐层说明。', follow: 'probe 没有执行时，你会先检查哪些启动日志和设备树属性？' }
           ]
         },
         motor: {
           label: '电机控制',
+          source: '题源：面经合集（STM32 / PWM）+ 站内电机专题',
           questions: [
+            { q: '用 STM32 定时器输出 1 kHz、50% 占空比 PWM 时，ARR、PSC 和 CCR 分别如何影响频率与占空比？', keys: ['时钟', '预分频', 'ARR', 'CCR'], hint: '先从定时器输入时钟和 PSC 推导计数频率，再用 ARR 确定周期、CCR 确定比较点；注意不同芯片对 CCR/ARR 边界值的定义。', follow: '电机 PWM 频率选得过低或过高，会分别带来哪些噪声、开关损耗与控制问题？' },
+            { q: '多通道 ADC 采样配合 DMA 与双缓冲时，怎样避免 CPU 正在处理的数据被下一次采样覆盖？', keys: ['DMA', '双缓冲', '半传输', '完成中断'], hint: '说明 DMA 在一个缓冲采样时，CPU 处理另一缓冲；用半传输/完成事件或缓冲索引交接，并考虑处理时间是否小于采样周期。', follow: '如果 ADC 与 PWM 联动采样，为什么还要关心触发时刻和电流纹波？' },
             { q: '三相 PWM 驱动中为什么需要死区时间？死区设置过大或过小分别有什么风险？', keys: ['上下桥臂', '直通', '死区', '损耗'], hint: '先说明上下桥臂不能同时导通；过小可能直通，过大影响有效电压、带来畸变和损耗。', follow: '观察到相电流畸变时，除了死区还应从哪些采样与驱动时序检查？' },
             { q: '速度 PID 的 P、I、D 分别主要解决什么？如何避免只靠盲目调参？', keys: ['误差', '稳态', '超调', '采样'], hint: '说明比例响应、积分消除稳态误差、微分抑制变化；结合采样周期、限幅和实际阶跃响应。', follow: '积分饱和会如何表现？常见的抗积分饱和措施是什么？' },
             { q: 'PWM 调速、六步换相和 FOC 为什么不能当作同一个概念？', keys: ['占空比', '换相', '电流采样', '坐标变换'], hint: 'PWM 是调制手段，六步换相是换相策略；FOC 还需要电流采样、坐标变换和电流环。', follow: 'FOC 中为何要进行 Clarke/Park 变换，电角度从哪里来？' }
@@ -283,6 +291,7 @@
         },
         ros: {
           label: 'ROS / SLAM',
+          source: '题源：站内 ROS / SLAM 专题（面经合集暂未覆盖）',
           questions: [
             { q: 'ROS 2 中 Topic、Service、Action 分别适合什么场景？QoS 为什么重要？', keys: ['发布订阅', '请求响应', '长任务', 'DDS'], hint: '持续数据流用 Topic，短请求用 Service，可取消且需要反馈的长任务用 Action；QoS 要按实时性和丢包容忍度取舍。', follow: '激光雷达数据更偏向 Best Effort 还是 Reliable？需要根据哪些因素决定？' },
             { q: 'TF2 为什么需要时间戳？定位与传感器融合时常见的 TF 问题有哪些？', keys: ['坐标树', '时间同步', '动态', '外推'], hint: 'TF 查询的是某一时刻的坐标变换；检查坐标树连通无环、静动态发布、时间同步和外推错误。', follow: 'base_link、odom 与 map 常见的职责分别是什么？为什么不能随意把它们合并？' },
@@ -390,7 +399,7 @@
       function renderQuestion(next = false) {
         chooseQuestion(next || !current[topic]);
         const item = current[topic];
-        questionMeta.textContent = questionBank[topic].label + ' · 本轮随机题';
+        questionMeta.textContent = questionBank[topic].label + ' · ' + questionBank[topic].source + ' · 本轮随机题';
         questionText.textContent = item.q;
         answerInput.value = drafts[topic] || '';
         clearFeedback();
