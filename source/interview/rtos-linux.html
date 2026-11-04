@@ -3,10 +3,58 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="RTOS 与 Linux 面试基础学习页。">
+  <meta name="description" content="RTOS、Linux TCP、Socket 与 epoll 面试基础学习页。">
   <title>RTOS / Linux | 面试学习库</title>
   <link rel="stylesheet" href="module-pages.css">
-  <style>:root { --accent:#0b918b; --pale:#e0f7f4; }</style>
+  <style>
+    :root { --accent:#0b918b; --pale:#e0f7f4; }
+    .tcp-intro { margin-bottom:18px; padding:15px 17px; border-left:4px solid var(--accent); border-radius:0 14px 14px 0; background:linear-gradient(90deg,var(--pale),transparent); color:#426274; font-size:14px; }
+    .tcp-intro strong { color:#087a75; }
+    .tcp-path { display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:15px 0 0; color:#376878; font:800 11px/1.35 ui-monospace,monospace; }
+    .tcp-path span { padding:6px 8px; border:1px solid #bce3de; border-radius:8px; background:#fff; }
+    .tcp-path i { width:18px; height:2px; background:var(--accent); }
+    .tcp-flow-demo { position:relative; margin-top:20px; padding:22px; overflow:hidden; border:1px solid #cce5e3; border-radius:20px; background:linear-gradient(135deg,#fff 0%,#f0fbfa 100%); box-shadow:var(--shadow); }
+    .tcp-flow-head { display:flex; justify-content:space-between; align-items:start; gap:20px; }
+    .tcp-flow-head h3 { margin:0; font-size:20px; letter-spacing:-.025em; }
+    .tcp-flow-head p { max-width:555px; margin:4px 0 0; color:var(--muted); font-size:13px; }
+    .tcp-key { flex:0 0 auto; padding:5px 9px; border-radius:99px; color:#087a75; background:#dff6f3; font:800 10px ui-monospace,monospace; letter-spacing:.06em; }
+    .tcp-lanes { position:relative; display:grid; grid-template-columns:1.05fr 1.15fr .76fr 1.15fr 1.05fr; gap:8px; min-height:166px; margin:20px 0 13px; padding:15px 10px; border:1px solid #d6ebe9; border-radius:15px; background:rgba(255,255,255,.82); }
+    .tcp-stage { position:relative; z-index:2; display:flex; min-width:0; flex-direction:column; justify-content:center; gap:5px; padding:10px 7px; border:1px solid #b9ded9; border-radius:11px; background:#fff; text-align:center; }
+    .tcp-stage b { color:#087a75; font:800 11px ui-monospace,monospace; }
+    .tcp-stage span { color:#527284; font-size:11px; font-weight:700; line-height:1.4; }
+    .tcp-stage.wire { border-style:dashed; border-color:#7fc7be; background:linear-gradient(180deg,#f6fffe,#e4f7f4); }
+    .tcp-stage.wire::before { position:absolute; right:12px; left:12px; height:2px; background:repeating-linear-gradient(90deg,var(--accent) 0 7px,transparent 7px 12px); content:""; animation:flow 1.2s linear infinite; }
+    .tcp-packet { position:absolute; z-index:3; top:50%; left:6%; display:grid; min-width:74px; min-height:27px; place-items:center; padding:3px 8px; border-radius:99px; color:#fff; background:#087a75; box-shadow:0 6px 15px rgba(8,122,117,.26); font:800 10px ui-monospace,monospace; opacity:0; pointer-events:none; transform:translateY(-50%); }
+    .tcp-flow-demo[data-flow="right"] .tcp-packet { animation:tcp-go-right 1.35s ease-in-out; }
+    .tcp-flow-demo[data-flow="left"] .tcp-packet { animation:tcp-go-left 1.35s ease-in-out; }
+    .tcp-flow-demo[data-flow="idle"] .tcp-packet { opacity:0; }
+    .tcp-status { min-height:48px; margin:0; padding:11px 12px; border-radius:10px; color:#365f70; background:#e9f8f6; font-size:13px; }
+    .tcp-status b { color:#087a75; }
+    .tcp-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:12px; }
+    .tcp-toolbar button,.tcp-step { border:1px solid #bcded9; border-radius:8px; color:#286a69; background:#fff; font:800 12px Inter,"PingFang SC","Microsoft YaHei",sans-serif; cursor:pointer; }
+    .tcp-toolbar button { min-height:34px; padding:5px 11px; }
+    .tcp-toolbar button:hover,.tcp-toolbar button:focus-visible,.tcp-step:hover,.tcp-step:focus-visible { color:#fff; border-color:#087a75; background:#087a75; outline:none; }
+    .tcp-toolbar button:focus-visible,.tcp-step:focus-visible { box-shadow:0 0 0 3px rgba(11,145,139,.22); }
+    .tcp-step-list { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; padding:0; margin:12px 0 0; list-style:none; }
+    .tcp-step { width:100%; min-height:42px; padding:5px 7px; font-size:11px; line-height:1.25; }
+    .tcp-step[aria-current="step"] { color:#fff; border-color:#087a75; background:#087a75; }
+    .tcp-notes { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:13px; margin-top:17px; }
+    .tcp-note { padding:15px; border:1px solid #d4e8e6; border-radius:13px; background:#fbfefd; }
+    .tcp-note h3 { margin:0; color:#0a7772; font-size:16px; }
+    .tcp-note p { margin:6px 0 0; color:#526b7a; font-size:13px; }
+    .tcp-code-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:17px; margin-top:18px; }
+    .tcp-code-card,.tcp-checklist { padding:19px; border:1px solid #d8e7eb; border-radius:16px; background:#fff; box-shadow:0 8px 23px rgba(29,60,98,.05); }
+    .tcp-code-card h3,.tcp-checklist h3 { margin:0; font-size:19px; letter-spacing:-.025em; }
+    .tcp-code-card > p,.tcp-checklist > p { margin:7px 0 0; color:#597084; font-size:13px; }
+    .tcp-code-card pre { margin:14px 0 0; padding:14px; overflow:auto; border-radius:11px; color:#d9f6f1; background:#163e4b; font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace; }
+    .tcp-code-card code { font:inherit; }
+    .tcp-checklist ol { padding-left:20px; margin:14px 0 0; color:#506c7d; font-size:13px; }
+    .tcp-checklist li + li { margin-top:7px; }
+    @keyframes tcp-go-right { 0% { left:6%; opacity:0; } 12%,86% { opacity:1; } 100% { left:calc(94% - 74px); opacity:0; } }
+    @keyframes tcp-go-left { 0% { left:calc(94% - 74px); opacity:0; } 12%,86% { opacity:1; } 100% { left:6%; opacity:0; } }
+    @media (max-width:780px) { .tcp-flow-head { display:block; } .tcp-key { display:inline-flex; margin-top:9px; } .tcp-lanes { grid-template-columns:1fr 1fr 1fr; min-height:224px; } .tcp-stage:nth-of-type(2),.tcp-stage:nth-of-type(4) { grid-row:2; } .tcp-stage.wire { grid-column:2; grid-row:1; } .tcp-stage:nth-of-type(5) { grid-column:3; grid-row:2; } .tcp-step-list { grid-template-columns:repeat(2,minmax(0,1fr)); } .tcp-notes,.tcp-code-grid { grid-template-columns:1fr; } }
+    @media (max-width:520px) { .tcp-flow-demo { padding:15px; } .tcp-lanes { gap:5px; padding:8px 5px; } .tcp-stage { padding:8px 4px; } .tcp-stage span { font-size:10px; } .tcp-packet { min-width:60px; font-size:9px; } .tcp-path i { width:11px; } }
+  </style>
 </head>
 <body>
   <header class="topbar"><a class="back" href="index.html">← 返回面试学习首页</a><a class="back" href="../">返回博客主页 →</a></header>
@@ -17,6 +65,7 @@
       <a href="#scheduling">任务与调度</a>
       <a href="#sync">同步与通信</a>
       <a href="#linux">Linux 系统边界</a>
+      <a href="#tcp">Linux TCP / Socket</a>
       <a href="#interview">面试追问</a>
       <a class="back-nav" href="index.html">← 返回面试学习首页</a>
       <a class="back-nav" href="../">⌂ 返回博客主页</a>
@@ -26,7 +75,7 @@
         <p class="eyebrow">Module 02 / system coordination</p>
         <h1>从任务调度到<span>系统边界</span></h1>
         <p class="lede">FreeRTOS 处理资源受限 MCU 上的任务协作；Linux 通过用户态、系统调用和驱动管理更完整的系统资源。面试重点是明确两者的边界与取舍。</p>
-        <ul class="tags"><li>Task · Priority</li><li>Queue · Semaphore</li><li>ISR to Task</li><li>syscall · /dev · driver</li></ul>
+        <ul class="tags"><li>Task · Priority</li><li>Queue · Semaphore</li><li>ISR to Task</li><li>syscall · /dev · driver</li><li>TCP · Socket · epoll</li></ul>
       </section>
 
       <section class="section" id="scheduling">
@@ -52,10 +101,119 @@
         </div>
       </section>
 
-      <section class="section" id="interview"><div class="qa"><p class="eyebrow">Interview drills</p><h2>高频追问</h2><details><summary>队列、信号量和事件组各适合什么？</summary><p>队列主要传数据；信号量侧重同步或资源计数；事件组表达多个独立标志位。回答要补充任务/ISR 使用限制和超时处理。</p></details><details><summary>Linux 应用读设备文件失败，如何定位？</summary><p>依次确认设备枚举、节点与权限、应用参数和返回值、内核日志、驱动状态，最后再检查硬件连接与总线波形。</p></details></div></section>
+      <section class="section" id="tcp">
+        <div class="heading"><h2>Linux TCP：从 socket 到 close</h2><p>把 TCP 放进 Linux 的真实运行路径理解：应用只操作 fd；连接状态、可靠传输、重传、窗口和队列都在内核协议栈中完成。</p></div>
+        <p class="tcp-intro"><strong>面试先给结论：</strong>TCP 是面向连接、可靠、有序的<strong>字节流</strong>。它可靠地交付字节序列，但不保留业务消息边界，也不代表对端业务一定处理成功；长度、超时、重试和业务确认仍要由应用协议设计。</p>
+        <div class="cards">
+          <article class="card"><span class="label">SOCKET LIFECYCLE</span><h3>一个 fd，两类角色</h3><p>socket() 创建内核 socket 对象并返回文件描述符。服务器用监听 fd 接受新连接；每次 accept() 返回独立的连接 fd，监听 fd 仍继续接客。</p><div class="tcp-path"><span>socket</span><i></i><span>bind</span><i></i><span>listen</span><i></i><span>accept</span></div><ul class="list"><li>客户端路径：socket → connect → send/recv。</li><li>服务端连接 fd 才用于实际收发。</li><li>非阻塞 connect 返回 EINPROGRESS 后，需等可写并用 SO_ERROR 判定结果。</li></ul></article>
+          <article class="card"><span class="label">KERNEL BUFFERS</span><h3>send 成功，代表什么？</h3><p>通常只表示本次返回的字节已被本机内核接收进入发送路径；它既不等于数据已到达对端，也不等于对端应用已经处理。</p><div class="diagram"><div class="node">App<br>send()</div><i class="link"></i><div class="node">TCP send<br>buffer</div><i class="pulse"></i></div><ul class="list"><li>TCP ACK 确认的是字节到达对端 TCP 栈，不是业务 ACK。</li><li>接收端读得慢会形成背压：发送缓冲可能满。</li><li>阻塞 send 会等；非阻塞 send 可能短写或返回 EAGAIN。</li></ul></article>
+          <article class="card"><span class="label">BYTE STREAM</span><h3>没有“包”的边界</h3><p>一次 send 的数据可被多次 recv 读到；多次 send 的数据也可在一次 recv 一起读到。所谓粘包/拆包是应用协议帧边界问题。</p><div class="diagram"><div class="node">rx<br>buffer</div><i class="link"></i><div class="node">frame<br>parser</div><i class="pulse"></i></div><ul class="list"><li>常用：长度字段 + payload，并校验最大长度。</li><li>也可用固定长度或带转义的分隔符。</li><li>保留未解析残留字节，不能假定一次 recv 就是一帧。</li></ul></article>
+        </div>
+        <section class="tcp-flow-demo" id="tcp-flow-demo" aria-labelledby="tcp-flow-title" data-flow="right">
+          <div class="tcp-flow-head"><div><h3 id="tcp-flow-title">连接与数据流 · 点击步骤看内核中的真实路径</h3><p>这里将握手、数据与关闭拆开显示。发送方向和接收方向都是独立的字节流；ACK 只是传输层确认。</p></div><span class="tcp-key">动态示意 / 非抓包时序</span></div>
+          <div class="tcp-lanes" aria-hidden="true">
+            <div class="tcp-stage"><b>客户端应用</b><span>connect / send / recv</span></div>
+            <div class="tcp-stage"><b>客户端 TCP</b><span>发送/接收缓冲<br>序号、重传、窗口</span></div>
+            <div class="tcp-stage wire"><b>网络</b><span>报文段可能延迟、丢失、乱序</span></div>
+            <div class="tcp-stage"><b>服务端 TCP</b><span>发送/接收缓冲<br>确认、排序、重组</span></div>
+            <div class="tcp-stage"><b>服务端应用</b><span>accept / recv / send</span></div>
+            <span class="tcp-packet" id="tcp-packet">SYN</span>
+          </div>
+          <p class="tcp-status" id="tcp-flow-status" aria-live="polite"><b>1 / 10 · SYN：</b>客户端调用 connect()，内核从本地发送 SYN；此时客户端通常处于 SYN_SENT，服务端仍在 LISTEN。</p>
+          <div class="tcp-toolbar" aria-label="TCP 动态步骤控制"><button type="button" id="tcp-prev">← 上一步</button><button type="button" id="tcp-toggle" aria-pressed="false">暂停循环</button><button type="button" id="tcp-next">下一步 →</button></div>
+          <ol class="tcp-step-list" aria-label="TCP 传输步骤">
+            <li><button type="button" class="tcp-step" data-tcp-step="0" aria-current="step">1. SYN 建连请求</button></li>
+            <li><button type="button" class="tcp-step" data-tcp-step="1">2. SYN + ACK</button></li>
+            <li><button type="button" class="tcp-step" data-tcp-step="2">3. ACK 建立连接</button></li>
+            <li><button type="button" class="tcp-step" data-tcp-step="3">4. send 进发送缓冲</button></li>
+            <li><button type="button" class="tcp-step" data-tcp-step="4">5. 数据段发送</button></li>
+            <li><button type="button" class="tcp-step" data-tcp-step="5">6. TCP ACK 返回</button></li>
+            <li><button type="button" class="tcp-step" data-tcp-step="6">7. recv 取字节解析</button></li>
+            <li><button type="button" class="tcp-step" data-tcp-step="7">8. FIN 关闭写端</button></li>
+            <li><button type="button" class="tcp-step" data-tcp-step="8">9. 对端 FIN</button></li>
+            <li><button type="button" class="tcp-step" data-tcp-step="9">10. 最终 ACK / TIME_WAIT</button></li>
+          </ol>
+        </section>
+        <div class="tcp-notes">
+          <article class="tcp-note"><h3>三次握手为什么是三次？</h3><p>双方要确认两个方向都可收可发，并同步两边的初始序号：SYN 请求、SYN+ACK 确认并给出自己的序号、最后 ACK 完成确认。不是一句“为了防止旧连接”就能概括完。</p></article>
+          <article class="tcp-note"><h3>四次挥手也不是绝对四包</h3><p>关闭是两个方向分别终止：一方 FIN 后，对端仍可发送剩余数据，再发 FIN。ACK 与 FIN 在某些时机能合并，因此抓包中不一定恰好看到四个独立报文。</p></article>
+          <article class="tcp-note"><h3>TIME_WAIT 不等于故障</h3><p>主动关闭方常进入 TIME_WAIT，用于可靠重传最终 ACK，并让网络中的旧报文失效，避免干扰后续相同四元组的连接。排查时关注数量与端口耗尽，不要粗暴“清掉”。</p></article>
+        </div>
+        <div class="tcp-code-grid">
+          <article class="tcp-code-card"><h3>epoll ET：一次可读，要读到 EAGAIN</h3><p>ET（边缘触发）只在“不可读变为可读”时提醒。连接 fd 必须非阻塞；收到事件后循环读取，直到内核接收缓冲被读空。</p><pre><code>/* fd 已用 accept4(..., SOCK_NONBLOCK) 接入，并注册 EPOLLIN | EPOLLET */&#10;static int drain_rx(int fd)&#10;{&#10;    char chunk[4096];&#10;&#10;    for (;;) {&#10;        ssize_t n = recv(fd, chunk, sizeof chunk, 0);&#10;        if (n &gt; 0) {&#10;            rx_append_and_parse_frames(fd, chunk, (size_t)n);&#10;            /* 按长度字段/分隔符拆帧，缓存未解析残留字节 */&#10;            continue;&#10;        }&#10;        if (n == 0) return 0;       /* 收到 FIN：读完缓存后的有序 EOF */&#10;        if (errno == EINTR) continue;&#10;        if (errno == EAGAIN || errno == EWOULDBLOCK) return 1;&#10;        return -1;                  /* 其他错误：记录 errno 后关闭连接 */&#10;    }&#10;}</code></pre></article>
+          <aside class="tcp-checklist"><h3>阻塞、非阻塞与背压</h3><p>epoll 的事件是“现在值得继续尝试 I/O”的就绪通知，不是“一个完整协议包已到”或“本次肯定能读/写完”。</p><ol><li>阻塞 recv 无数据时会等待；非阻塞 fd 无数据通常是 EAGAIN/EWOULDBLOCK。</li><li>LT（默认）只要仍可读/写可持续通知；ET 必须尽力读/写到 EAGAIN。</li><li>EPOLLONESHOT 触发后需用 EPOLL_CTL_MOD 显式 rearm，适合短暂交给一个工作线程。</li><li>写路径也会短写：保存未发完的数据，只在需要时监听 EPOLLOUT；不要无界堆积用户态队列。</li><li>处理 EPOLLERR、EPOLLHUP、EPOLLRDHUP；HUP 时可能还有最后一批可读字节，先 drain，再用 SO_ERROR 判断具体错误。</li></ol></aside>
+        </div>
+      </section>
+      <section class="section" id="interview"><div class="qa"><p class="eyebrow">Interview drills</p><h2>高频追问</h2><details><summary>队列、信号量和事件组各适合什么？</summary><p>队列主要传数据；信号量侧重同步或资源计数；事件组表达多个独立标志位。回答要补充任务/ISR 使用限制和超时处理。</p></details><details><summary>Linux 应用读设备文件失败，如何定位？</summary><p>依次确认设备枚举、节点与权限、应用参数和返回值、内核日志、驱动状态，最后再检查硬件连接与总线波形。</p></details><details><summary>recv() 返回 0、EAGAIN、EINTR 各说明什么？</summary><p>返回 0 表示对端有序关闭，且已读完本地接收缓冲中的数据；非阻塞 fd 的 EAGAIN/EWOULDBLOCK 只是暂时无数据；EINTR 是系统调用被信号打断，通常按策略重试。只有其他错误才进一步按 errno 判断是否断连或异常。</p></details><details><summary>close() 与 shutdown(SHUT_WR) 有什么区别？</summary><p>close() 关闭本进程持有的这个 fd；当最后一个引用关闭时会进入 TCP 关闭过程。shutdown(SHUT_WR) 只关闭写方向，在已经排队的数据之后发送 FIN，应用仍可继续 recv() 对端剩余响应，适合“请求发完、继续等回应”的半关闭。</p></details><details><summary>TCP 出现“粘包/拆包”怎么回答？</summary><p>不要说 TCP 把包粘错了。TCP 只提供有序字节流，没有业务消息边界；一次 send 与一次 recv 不必一一对应。协议层要定义固定长度、分隔符（并处理转义）或长度字段 + payload，并在接收缓存里循环解析完整帧和校验长度。</p></details><details><summary>为什么向已关闭连接写数据，进程可能被 SIGPIPE 终止？</summary><p>对端已经关闭或复位时，send/write 可能返回 EPIPE；默认处理 SIGPIPE 会终止进程。网络服务通常使用 MSG_NOSIGNAL，或按进程策略忽略 SIGPIPE，并将 EPIPE 当作该连接的关闭信号进行清理。</p></details><details><summary>Linux 上怎样分层定位连不上、卡住或频繁重传？</summary><p>先用 ss -ltnp 看监听端口和进程，用 ss -tanpi 看连接状态、队列和 TCP 信息；再用 tcpdump -ni eth0 -nn 'tcp port 8080' -vv 看握手、重传、RST、FIN 与窗口；用 strace -ff -e trace=network -p &lt;PID&gt; 看 accept/connect/send/recv 与 errno。必要时补查 nstat、ip -s link、dmesg -T 和应用日志。</p></details></div></section>
     </main>
   </div>
   <footer>RTOS / Linux · 左侧目录可跳转本页学习章节。</footer>
+  <script>
+    (() => {
+      const demo = document.querySelector('#tcp-flow-demo');
+      const packet = document.querySelector('#tcp-packet');
+      const status = document.querySelector('#tcp-flow-status');
+      const stepButtons = [...document.querySelectorAll('[data-tcp-step]')];
+      const previous = document.querySelector('#tcp-prev');
+      const next = document.querySelector('#tcp-next');
+      const toggle = document.querySelector('#tcp-toggle');
+      if (!demo || !packet || !status || !previous || !next || !toggle || !stepButtons.length) return;
+
+      const steps = [
+        { packet: 'SYN', flow: 'right', text: '<b>1 / 10 · SYN：</b>客户端调用 connect()，内核从本地发送 SYN；此时客户端通常处于 SYN_SENT，服务端仍在 LISTEN。' },
+        { packet: 'SYN + ACK', flow: 'left', text: '<b>2 / 10 · SYN + ACK：</b>服务端内核收到请求后进入 SYN_RCVD，确认客户端的初始序号，并带上自己的 SYN 返回。' },
+        { packet: 'ACK', flow: 'right', text: '<b>3 / 10 · 最后 ACK：</b>客户端发送 ACK 后进入 ESTABLISHED；服务端收到最后 ACK 后也进入 ESTABLISHED。这个 ACK 也可能与第一段业务数据合并发送。' },
+        { packet: 'send()', flow: 'right', text: '<b>4 / 10 · 进入本机发送缓冲：</b>应用调用 send() 后，返回的字节先被本机内核接收进入发送路径；这不是“服务端业务已处理”。' },
+        { packet: 'DATA', flow: 'right', text: '<b>5 / 10 · 数据段向服务端传输：</b>TCP 根据 MSS、拥塞窗口和接收窗口组织字节流；一个业务帧可跨多个报文段。' },
+        { packet: 'ACK', flow: 'left', text: '<b>6 / 10 · TCP ACK：</b>服务端 TCP 栈确认已接收连续字节。它只代表传输层字节确认，不等于服务端业务逻辑已经处理完成。' },
+        { packet: 'recv()', flow: 'idle', text: '<b>7 / 10 · 服务端应用读取：</b>字节已在服务端接收缓冲；recv() 可能只取到半帧或多帧，应用要在自己的缓存中按协议边界解析。' },
+        { packet: 'FIN', flow: 'right', text: '<b>8 / 10 · 主动方关闭写方向：</b>close() 或 shutdown(SHUT_WR) 会在已排队数据之后发送 FIN；对端先 ACK，仍可继续发送自己的剩余数据。' },
+        { packet: 'FIN', flow: 'left', text: '<b>9 / 10 · 对端也关闭写方向：</b>对端应用处理完后发 FIN。两个方向的关闭彼此独立，所以抓包中 ACK 与 FIN 可能被合并。' },
+        { packet: 'ACK', flow: 'right', text: '<b>10 / 10 · 最终 ACK 与 TIME_WAIT：</b>主动关闭方确认对端 FIN 后通常进入 TIME_WAIT，保证最终 ACK 可重传并让旧报文失效。' }
+      ];
+      let current = 0;
+      let paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let timer = 0;
+
+      const schedule = () => {
+        window.clearTimeout(timer);
+        if (!paused) timer = window.setTimeout(() => render((current + 1) % steps.length), 4700);
+      };
+      const render = (index) => {
+        current = (index + steps.length) % steps.length;
+        const step = steps[current];
+        demo.dataset.flow = 'idle';
+        packet.textContent = step.packet;
+        status.innerHTML = step.text;
+        stepButtons.forEach((button, buttonIndex) => {
+          if (buttonIndex === current) button.setAttribute('aria-current', 'step');
+          else button.removeAttribute('aria-current');
+        });
+        void demo.offsetWidth;
+        demo.dataset.flow = step.flow;
+        schedule();
+      };
+
+      previous.addEventListener('click', () => render(current - 1));
+      next.addEventListener('click', () => render(current + 1));
+      toggle.addEventListener('click', () => {
+        paused = !paused;
+        toggle.textContent = paused ? '开始循环' : '暂停循环';
+        toggle.setAttribute('aria-pressed', String(paused));
+        schedule();
+      });
+      stepButtons.forEach((button) => button.addEventListener('click', () => render(Number(button.dataset.tcpStep))));
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) window.clearTimeout(timer);
+        else schedule();
+      });
+      if (paused) {
+        toggle.textContent = '开始循环';
+        toggle.setAttribute('aria-pressed', 'true');
+      }
+      render(0);
+    })();
+  </script>
 </body>
 </html>
 
