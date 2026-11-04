@@ -21,7 +21,9 @@ menu:
  爱好: /houbes/ || fas fa-archive
  学习 : /Study/ || fas fa-tags
  求职||fas fa-briefcase:
-   C语言 / 嵌入式基础: /interview/c-embedded-basics.html || fas fa-microchip
+  面试问答练习: /interview/ || fas fa-comments
+  C语言 / 嵌入式基础: /interview/c-embedded-basics.html || fas fa-microchip
+  CAN / UART / I²C / SPI 动态图示: /interview/c-embedded-basics.html#embedded-comms || fas fa-diagram-project
  生活: /life/ || fas fa-folder-open
  友链: /link/ || fas fa-link
  关于: /about/ || fas fa-heart

@@ -66,6 +66,8 @@
     @media (max-width:480px) { .can-node-grid { grid-template-columns:1fr; } .can-demo-heading { display:block; } .can-demo-heading span { display:block; margin-top:4px; } }
     @media (max-width:480px) { .can-network .can-node-grid,.can-network .can-drop-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; } .can-network .can-node { grid-template-columns:1fr; gap:4px; min-height:143px; padding:6px; text-align:center; } .can-network .can-node-chip { width:50px; height:50px; margin:auto; } .can-network .can-node em { margin-right:auto; margin-left:auto; } .can-network .can-drop::before { left:calc(50% - 8px); } .can-network .can-drop::after { left:calc(50% + 8px); } }
     @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; } }
+    .can-loop-state { display:inline-block; margin-left:6px; padding:2px 6px; border-radius:99px; color:#087d77; background:#d8f4ef; font-style:normal; letter-spacing:0; }
+    .can-loop-note { margin:11px 0 0; padding:9px 10px; border-left:3px solid #0b918b; border-radius:0 8px 8px 0; color:#557187; background:rgba(255,255,255,.7); font-size:11px; line-height:1.6; }
   </style>
 </head>
 <body>
@@ -283,7 +285,7 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
               <div class="transfer-lab" data-transfer="CAN"><div class="transfer-top"><b>逐步演示：CAN 一帧报文</b><span class="transfer-index"></span></div><div class="transfer-step"><strong></strong><p aria-live="polite"></p></div><div class="transfer-dots" aria-hidden="true"></div><div class="transfer-actions"><button class="transfer-prev" type="button">← 上一步</button><button class="transfer-next" type="button">下一步 →</button></div></div>
             </div></details>
             <section class="can-bus-demo" data-can-demo aria-labelledby="can-demo-title">
-              <div class="can-demo-heading"><b id="can-demo-title">动态演示：三个 MCU 如何并联到 CANH / CANL</b><span>CANH / CANL · 0 显性 · 1 隐性</span></div>
+              <div class="can-demo-heading"><b id="can-demo-title">持续轮回：三个 MCU 如何并联到 CANH / CANL</b><span>CANH / CANL · 0 显性 · 1 隐性 <em class="can-loop-state" aria-live="polite"></em></span></div>
               <div class="can-network" aria-label="三个 MCU 通过各自收发器并联到同一对 CANH 和 CANL 总线">
                 <div class="can-node-grid" aria-label="CAN 多节点总线状态">
                   <article class="can-node" data-can-node="a" aria-label="MCU A，CAN 对等节点"><img class="can-node-chip" src="can-mcu-chip.svg" alt="" aria-hidden="true"><div class="can-node-copy"><b>MCU A</b><span>经收发器 · ID 0x201</span><em class="can-node-state"></em></div></article>
@@ -294,7 +296,8 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
                 <div class="can-bus-rail" aria-hidden="true"><i class="can-bus-packet">CAN ID</i><span class="can-wire-name can-h">CANH</span><span class="can-wire-name can-l">CANL</span><span class="can-bus-label"></span></div>
               </div>
               <div class="can-demo-explain"><strong class="can-demo-step"></strong><p class="can-demo-text" aria-live="polite"></p></div>
-              <div class="transfer-actions"><button class="can-demo-prev" type="button">← 上一步</button><button class="can-demo-play" type="button" aria-pressed="false">自动播放</button><button class="can-demo-next" type="button">下一步 →</button></div>
+              <div class="transfer-actions"><button class="can-demo-prev" type="button">← 上一帧</button><button class="can-demo-play" type="button" aria-pressed="true">暂停循环</button><button class="can-demo-next" type="button">下一帧 →</button></div>
+              <p class="can-loop-note"><strong>这一轮演示按 A → B → C 排开，便于观察持续通信。</strong>真实 CAN 并不轮询：总线每次空闲后，所有待发节点重新竞争，报文 ID 更小者优先；没有待发报文的节点只监听。</p>
               <ul class="can-mcu-reasons"><li><strong>并联的对等节点：</strong>每个 MCU 经收发器连接同一对 CANH/CANL，任一节点均可在总线空闲时发送，不需要主机轮询。</li><li><strong>按位非破坏性仲裁：</strong>显性 0 覆盖隐性 1；发送隐性却读到显性的节点退出竞争，低 ID 报文先发，落败报文保留等待重试。</li><li><strong>广播、过滤与链路确认：</strong>所有节点看见同一帧，控制器按 ID 过滤到 Rx FIFO；ACK 仅说明至少一个节点在链路层正确收帧，不表示业务处理完成。</li></ul>
             </section>
             <div class="protocol-practice" data-protocol="CAN" data-required="两端 120 Ω 终端匹配" data-pass="核对位时序、终端电阻和错误计数（TEC/REC）；再检查筛选器是否放行该 ID。">
@@ -335,7 +338,7 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
             </svg></figure><div class="wire-flow-caption" data-wire-caption="SPI" aria-label="自动循环的 SPI 线路数据方向"><b>线路动态</b><span></span></div>
             <div class="details"><div class="detail"><span>典型芯片</span><strong>STM32G0<br>W25Q128JV</strong></div><div class="detail"><span>重点</span><strong>CPOL/CPHA · CS<br>DMA 连续传输</strong></div></div>
             <details class="protocol-deep"><summary>查看 SPI 的 IO 配置、收发过程与原因</summary><div class="deep-body">
-              <p class="deep-note">示例为 STM32G0 SPI1 的 PA5(SCK)/PA6(MISO)/PA7(MOSI)/PA4(CS) 常见连接。具体 AF 编号与硬件 NSS 用法必须按芯片手册核对。</p>
+              <p class="deep-note">示例为 STM32G0 SPI1 的 PA5(SCK)/PA6(MISO)/PA7(MOSI)/PA4(CS) 常见连接。具体 AF 编号与硬件 NSS 用法必须按芯片手册核对。<strong>屏幕模块的 SCL 通常就是 SCK，SDA 通常就是单向 MOSI/DIN，并非 I²C；RST 复位屏控，DC 区分命令/像素数据，CS 选中屏幕，BLK 控制背光。</strong>小屏多为只写显示，所以常不引出 MISO。</p>
               <div class="io-grid"><div class="io-item"><b>PA5 · SCK / PA7 · MOSI</b><code>复用功能 · 主机输出</code><p>主机提供时钟并把命令/数据送向从机；输出由 SPI 外设接管，边沿速度应根据布线和频率设置，过快会增大振铃。</p></div><div class="io-item"><b>PA6 · MISO</b><code>复用输入 ← 从机输出</code><p>从机未被选中时应高阻，避免多个从机同时驱动。部分 HAL 写法显示为 AF_PP，是复用器配置，实际方向仍由 SPI 外设和板级连接决定。</p></div><div class="io-item"><b>PA4 · CS / NSS</b><code>常用 GPIO 推挽输出</code><p>软件先拉低选中具体从机，传输结束且 BSY 清零后再拉高。独立 CS 能让多从机共享 SCK/MOSI/MISO。</p></div></div>
               <div class="implementation-compare"><h4>硬件 SPI 与软件 SPI（GPIO 模拟）</h4><div class="implementation-grid"><section><b>硬件 SPI：高速数据优先</b><p>把 SCK/MOSI/MISO 配到 SPI 复用功能，外设移位寄存器在 CPOL/CPHA 规定的边沿收发；可利用 FIFO、TX/RX 中断和双向 DMA，适合 Flash、屏幕和高速采样。</p></section><section><b>软件 SPI：引脚与时序更灵活</b><p>普通 GPIO 手动翻转 SCK/MOSI，并在正确边沿读取 MISO；可使用任意可用引脚，适合低速器件、临时调试或没有空闲 SPI 外设的情况，但每个比特都消耗 CPU，无法直接享受外设 DMA。</p></section></div><p class="implementation-tip"><strong>怎么选：</strong>需要高频、持续传输或 DMA 时选硬件 SPI；速率不高、引脚受限或需兼容特殊时序时才考虑软件 SPI。软件实现也必须严格遵守 CPOL/CPHA，并避免中断把时钟周期拉长。</p></div>
               <div class="deep-columns"><section><h4>发送：主机时钟驱动移位</h4><ol><li>设定主从、数据位宽、位序、分频和 CPOL/CPHA 模式；模式必须与从机数据手册一致。</li><li>CS 拉低后，写入数据寄存器；SPI 在时钟边沿把 MOSI 数据移出，同时采样 MISO。</li><li>TXE 只表示发送缓冲空，不表示线上发完；最后一帧要等 BSY 清零后再抬高 CS。</li><li>大块传输可同时开 TX DMA 与 RX DMA，避免 RX FIFO 因无人读取而溢出。</li></ol></section><section><h4>接收：必须产生时钟</h4><ol><li>SPI 没有独立“只读时钟”；主机想读 MISO，仍要发送 dummy byte 以产生 SCK。</li><li>每一个时钟周期都会同时得到一个 RX 字节，因此命令、地址和 dummy 阶段收到的字节也要按需读走。</li><li>读取 Flash ID 时先发命令，再根据手册发地址/dummy，最后发送 dummy byte 读回 ID。</li><li>读到全 0xFF/0x00 时，优先看模式、CS、MISO 方向、供电与命令时序。</li></ol></section></div>
@@ -521,16 +524,18 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
 
       document.querySelectorAll('[data-can-demo]').forEach(demo => {
         const steps = [
-          { title: '1 / 10 · 总线空闲，节点都在监听', text: 'CANH/CANL 处于空闲状态。A、B、C 都是对等节点，谁有待发报文，谁都可以在下一次空闲时发送。', bus: 'Bus Idle：总线空闲', packet: '', moving: false, nodes: { a: ['listening', '监听总线空闲'], b: ['listening', '监听总线空闲'], c: ['listening', '监听总线空闲'] } },
-          { title: '2 / 10 · 节点 A 准备优先报文', text: 'A 将 ID 0x201 和数据写入发送缓冲，等待总线空闲后发起发送。', bus: 'A：Tx FIFO 已就绪 · ID 0x201', packet: 'A TX', moving: true, nodes: { a: ['contending', 'Tx FIFO：ID 0x201'], b: ['listening', '监听总线'], c: ['listening', '监听总线'] } },
-          { title: '3 / 10 · 节点 B 也准备发送', text: 'B 同时有 ID 0x321 待发。它不需要向 A 申请权限，只需与其他节点一起监听总线。', bus: 'A、B 都有待发报文', packet: 'A + B', moving: true, nodes: { a: ['contending', '等待总线空闲'], b: ['contending', 'Tx FIFO：ID 0x321'], c: ['listening', '监听总线'] } },
-          { title: '4 / 10 · 两个节点同时发出 SOF', text: '总线空闲后，A、B 都发送帧起始 SOF；CAN 从此开始逐位仲裁。', bus: 'SOF：A 与 B 同时起帧', packet: 'SOF', moving: true, nodes: { a: ['contending', '发送 SOF'], b: ['contending', '发送 SOF'], c: ['listening', '监听起始位'] } },
-          { title: '5 / 10 · ID 首次不同，显性位覆盖隐性位', text: '仲裁到首次不同的 ID 位：A 发显性 0，B 发隐性 1；总线实际电平保持为 0。', bus: '仲裁位：0（显性）覆盖 1（隐性）', packet: '0 > 1', moving: true, nodes: { a: ['winner', '发送显性 0'], b: ['lost', '发送 1，却采样到 0'], c: ['receiver', '观察仲裁位'] } },
-          { title: '6 / 10 · 节点 B 退让并转为接收', text: 'B 发现发送值与采样值不一致，立即停止发送、转为接收；A 的帧没有被破坏，这就是非破坏性仲裁。', bus: 'A 获得总线 · B 转为接收', packet: '0x201', moving: true, nodes: { a: ['winner', '仲裁获胜，继续发送'], b: ['receiver', '退出仲裁，改为接收'], c: ['receiver', '接收获胜帧'] } },
-          { title: '7 / 10 · 节点 A 发送报文头', text: 'A 继续发送 ID 0x201、控制场和长度字段；共享总线上的所有节点都能看到这些位。', bus: '广播：ID 0x201 · 控制场', packet: '0x201', moving: true, nodes: { a: ['winner', '发送 ID 与控制场'], b: ['receiver', '校验并接收'], c: ['receiver', '校验并接收'] } },
-          { title: '8 / 10 · 数据与 CRC 广播，C 命中过滤器', text: 'A 发送数据和 CRC。C 的硬件过滤器匹配 0x201，因此将正确帧放入 Rx FIFO；其余节点仍会在链路层校验该帧。', bus: 'DATA · CRC：C 过滤命中 → Rx FIFO', packet: 'DATA', moving: true, nodes: { a: ['winner', '发送数据与 CRC'], b: ['receiver', '接收并校验'], c: ['receiver', '过滤命中 → Rx FIFO'] } },
-          { title: '9 / 10 · 正确接收者在 ACK 槽确认', text: '至少一个非监听节点正确校验后，会在 ACK 槽写入显性位。ACK 脉冲沿总线回到 A；A 只知道有人正确收帧，不代表应用已处理数据。', bus: 'ACK 槽：接收节点驱动显性 0', packet: 'ACK', moving: true, nodes: { a: ['sampling', '沿总线采样 ACK'], b: ['ack', '正确接收 → ACK'], c: ['ack', '正确接收 → ACK'] } },
-          { title: '10 / 10 · 帧结束，节点 B 下次再竞争', text: 'A 发送完成，C 的数据已在 Rx FIFO。B 的报文没有丢失；总线再次空闲时会重新参与仲裁，开启自动重传时由控制器自动重试。', bus: 'EOF / Intermission：B 等待下一次发送机会', packet: 'EOF', moving: false, nodes: { a: ['done', '发送完成'], b: ['contending', '等待空闲后重新竞争'], c: ['done', '数据已进入 Rx FIFO'] } }
+          { title: '{round} 轮 · 1 / 12 · 总线空闲，全部监听', text: 'CANH/CANL 空闲时，A、B、C 都在监听。CAN 没有轮询主机，任何有待发帧的节点都能在下一次空闲时开始发送。', bus: 'Bus Idle：下一帧由待发节点竞争', packet: '', moving: false, nodes: { a: ['listening', '监听总线空闲'], b: ['listening', '监听总线空闲'], c: ['listening', '监听总线空闲'] } },
+          { title: '{round} 轮 · 2 / 12 · A、B 同时有待发帧', text: 'A 准备控制帧 ID 0x201，B 准备状态帧 ID 0x321。两者都先监听到空闲，再同时起帧；不需要向对方申请权限。', bus: 'A：0x201 · B：0x321 · 同时等待发送', packet: 'A + B', moving: true, nodes: { a: ['contending', 'Tx FIFO：0x201'], b: ['contending', 'Tx FIFO：0x321'], c: ['listening', '监听总线'] } },
+          { title: '{round} 轮 · 3 / 12 · A 赢得仲裁', text: 'ID 首次不同处，A 发送显性 0，B 发送隐性 1。显性位覆盖隐性位，因此 B 立即退出发送，转为接收；A 的帧没有被破坏。', bus: '仲裁：0（A）覆盖 1（B）→ A 获胜', packet: '0 > 1', moving: true, nodes: { a: ['winner', '仲裁获胜'], b: ['lost', '退让，转为接收'], c: ['receiver', '观察仲裁位'] } },
+          { title: '{round} 轮 · 4 / 12 · A 广播控制帧', text: 'A 在同一对 CANH/CANL 上发送 ID、数据和 CRC。B、C 都看见该帧；C 的过滤器命中 0x201，于是硬件把数据放入 Rx FIFO。', bus: '广播 0x201 · C 过滤命中 → Rx FIFO', packet: '0x201', moving: true, nodes: { a: ['winner', '发送控制数据'], b: ['receiver', '链路校验'], c: ['receiver', 'Rx FIFO ← 0x201'] } },
+          { title: '{round} 轮 · 5 / 12 · 接收节点 ACK', text: 'B、C 正确校验后在 ACK 槽把总线拉为显性。A 从总线上采样到 ACK，只能说明至少一个节点在链路层正确收帧，不能说明业务已执行。', bus: 'ACK：接收节点确认链路层收帧', packet: 'ACK', moving: true, nodes: { a: ['sampling', '采样 ACK'], b: ['ack', '校验正确 → ACK'], c: ['ack', '校验正确 → ACK'] } },
+          { title: '{round} 轮 · 6 / 12 · B 取得下一次空闲', text: '帧结束并经过 Intermission 后，总线重新空闲。B 的 0x321 仍在发送队列中；这一刻没有更高优先级竞争帧，它便开始发送。', bus: 'EOF / Intermission → B 发送 0x321', packet: 'B TX', moving: true, nodes: { a: ['receiver', '监听 B 的帧'], b: ['winner', '开始发送 0x321'], c: ['receiver', '监听 B 的帧'] } },
+          { title: '{round} 轮 · 7 / 12 · B 广播状态帧', text: 'B 的状态帧在总线上广播。C 仍会完成底层校验，但其过滤器只接收 0x201，因此 0x321 不会进入 C 的 Rx FIFO；过滤不等于没有看见总线。', bus: '广播 0x321 · C 过滤未命中', packet: '0x321', moving: true, nodes: { a: ['receiver', '接收状态'], b: ['winner', '发送状态数据'], c: ['receiver', '校验后不入 FIFO'] } },
+          { title: '{round} 轮 · 8 / 12 · A、C 为 B ACK', text: '只要接收控制器正确接收，便会在 ACK 槽确认。B 采样到显性 ACK 后完成发送；C 是否把内容交给应用，由过滤器和软件策略决定。', bus: 'ACK：A、C 链路层确认', packet: 'ACK', moving: true, nodes: { a: ['ack', '正确接收 → ACK'], b: ['sampling', '采样 ACK'], c: ['ack', '正确校验 → ACK'] } },
+          { title: '{round} 轮 · 9 / 12 · C 准备自身报文', text: '总线又空闲后，C 也可以主动发送，而不只是被动接收。它把诊断状态 ID 0x181 放入 Tx FIFO，等待空闲即发。', bus: 'C：Tx FIFO 已就绪 · ID 0x181', packet: 'C TX', moving: true, nodes: { a: ['listening', '监听总线'], b: ['listening', '监听总线'], c: ['contending', 'Tx FIFO：0x181'] } },
+          { title: '{round} 轮 · 10 / 12 · C 广播诊断状态', text: 'C 取得总线后，A、B 同样能从这一对 CANH/CANL 接收其状态帧。发送权属于本帧，不属于某一个固定 MCU。', bus: '广播 0x181 · C → A、B', packet: '0x181', moving: true, nodes: { a: ['receiver', '接收诊断状态'], b: ['receiver', '接收诊断状态'], c: ['winner', '发送诊断状态'] } },
+          { title: '{round} 轮 · 11 / 12 · A、B 为 C ACK', text: 'A、B 校验无误后在 ACK 槽应答。这样，三个 MCU 都曾作为发送者，也都曾作为接收者；这就是 CAN 对等节点持续通信的常态。', bus: 'ACK：A、B 确认 C 的帧', packet: 'ACK', moving: true, nodes: { a: ['ack', '正确接收 → ACK'], b: ['ack', '正确接收 → ACK'], c: ['sampling', '采样 ACK'] } },
+          { title: '{round} 轮 · 12 / 12 · 回到空闲，开始下一轮', text: 'C 帧结束后总线再次空闲。演示回到 A、B 的待发状态，继续展示“竞争 → 广播 → ACK → 再竞争”。真实系统的顺序由待发报文与 ID 优先级决定，并非固定 A→B→C。', bus: 'EOF / Intermission：下一轮重新竞争', packet: 'EOF', moving: false, nodes: { a: ['contending', '下一轮待发'], b: ['contending', '下一轮待发'], c: ['done', '本帧发送完成'] } }
         ];
         const nodes = [...demo.querySelectorAll('[data-can-node]')];
         const drops = [...demo.querySelectorAll('.can-drop')];
@@ -541,7 +546,9 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
         const previous = demo.querySelector('.can-demo-prev');
         const play = demo.querySelector('.can-demo-play');
         const next = demo.querySelector('.can-demo-next');
+        const loopState = demo.querySelector('.can-loop-state');
         let current = 0;
+        let round = 1;
         let timer;
 
         function stopAutoPlay() {
@@ -550,6 +557,27 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
           timer = undefined;
           play.textContent = '自动播放';
           play.setAttribute('aria-pressed', 'false');
+          loopState.textContent = '第 ' + round + ' 轮 · 已暂停';
+        }
+
+        function advanceCANStep(direction) {
+          current += direction;
+          if (current >= steps.length) {
+            current = 0;
+            round += 1;
+          } else if (current < 0) {
+            current = steps.length - 1;
+            round = Math.max(1, round - 1);
+          }
+          renderCANStep();
+        }
+
+        function startAutoPlay() {
+          if (timer) return;
+          play.textContent = '暂停循环';
+          play.setAttribute('aria-pressed', 'true');
+          loopState.textContent = '第 ' + round + ' 轮 · 循环中';
+          timer = window.setInterval(() => advanceCANStep(1), 2500);
         }
 
         function renderCANStep() {
@@ -563,10 +591,11 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
           });
           busLabel.textContent = step.bus;
           packet.textContent = step.packet;
-          title.textContent = step.title;
+          title.textContent = step.title.replace('{round}', '第 ' + round);
           text.textContent = step.text;
-          previous.disabled = current === 0;
-          next.disabled = current === steps.length - 1;
+          previous.disabled = false;
+          next.disabled = false;
+          if (!timer) loopState.textContent = '第 ' + round + ' 轮 · 已暂停';
           if (step.moving) {
             demo.classList.add(step.packet === 'ACK' ? 'is-ack-flow' : 'is-tx-flow');
             void packet.offsetWidth;
@@ -576,31 +605,23 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
 
         previous.addEventListener('click', () => {
           stopAutoPlay();
-          if (current > 0) { current -= 1; renderCANStep(); }
+          advanceCANStep(-1);
         });
         next.addEventListener('click', () => {
           stopAutoPlay();
-          if (current < steps.length - 1) { current += 1; renderCANStep(); }
+          advanceCANStep(1);
         });
         play.addEventListener('click', () => {
           if (timer) {
             stopAutoPlay();
             return;
           }
-          if (current === steps.length - 1) current = 0;
-          renderCANStep();
-          play.textContent = '暂停播放';
-          play.setAttribute('aria-pressed', 'true');
-          timer = window.setInterval(() => {
-            if (current === steps.length - 1) {
-              stopAutoPlay();
-              return;
-            }
-            current += 1;
-            renderCANStep();
-          }, 2500);
+          startAutoPlay();
         });
         renderCANStep();
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          window.setTimeout(startAutoPlay, 700);
+        }
       });
 
       document.querySelectorAll('.protocol-practice').forEach(practice => {
