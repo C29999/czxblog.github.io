@@ -69,6 +69,8 @@
     .can-loop-state { display:inline-block; margin-left:6px; padding:2px 6px; border-radius:99px; color:#087d77; background:#d8f4ef; font-style:normal; letter-spacing:0; }
     .can-loop-note { margin:11px 0 0; padding:9px 10px; border-left:3px solid #0b918b; border-radius:0 8px 8px 0; color:#557187; background:rgba(255,255,255,.7); font-size:11px; line-height:1.6; }
     .software-stack { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; align-items:stretch; padding:18px; border:1px solid #cfe0f0; border-radius:18px; background:linear-gradient(135deg,#f9fcff,#eef8f7); box-shadow:0 8px 24px rgba(36,83,117,.06); } .software-layer { min-height:184px; padding:13px; border:1px solid #d6e4ef; border-radius:13px; background:#fff; box-shadow:0 3px 10px rgba(35,74,108,.04); } .software-layer h3 { margin:8px 0 6px; color:#38556e; font-size:14px; line-height:1.35; } .software-layer p { margin:0; color:#5b7187; font-size:11px; line-height:1.65; } .software-level { display:inline-block; padding:3px 6px; border-radius:99px; color:#3b6e97; background:#e8f2fb; font:800 9px ui-monospace,SFMono-Regular,Consolas,monospace; letter-spacing:.03em; } .app-layer { border-top:4px solid #326ddd; } .bsp-layer { border-top:4px solid #098d87; } .library-layer { border-top:4px solid #9c6acd; } .register-layer { border-top:4px solid #d9782d; } .hardware-layer { border-top:4px solid #536f87; } .software-arrow { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:4px; color:#7890a6; font-size:9px; font-weight:800; line-height:1.2; text-align:center; } .software-arrow::before { width:100%; height:2px; border-radius:99px; background:repeating-linear-gradient(90deg,#8fb1cc 0 7px,transparent 7px 12px); content:""; } .software-stack-note { margin-top:11px; padding:11px 13px; border-left:4px solid #326ddd; border-radius:0 10px 10px 0; color:#516d84; background:#f2f7fd; font-size:12px; line-height:1.7; } .software-stack-note strong { color:#2c65b8; } @media (max-width:980px) { .software-stack { grid-template-columns:1fr; gap:4px; } .software-layer { min-height:0; } .software-arrow { flex-direction:row; min-height:24px; } .software-arrow::before { width:24px; height:22px; background:repeating-linear-gradient(180deg,#8fb1cc 0 7px,transparent 7px 12px); } }
+    .screen-spi-demo { margin-top:13px; padding:13px; border:1px solid #d5dff2; border-radius:14px; background:linear-gradient(135deg,#f8fbff,#f3f8ff); } .screen-spi-demo-head { display:flex; justify-content:space-between; gap:10px; align-items:baseline; } .screen-spi-demo-head b { color:#405a76; font-size:13px; } .screen-spi-status { color:#366cc7; font:800 10px ui-monospace,SFMono-Regular,Consolas,monospace; } .screen-spi-stage { display:grid; grid-template-columns:82px minmax(150px,1fr) 82px; gap:8px; align-items:center; margin-top:11px; } .screen-spi-device { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:132px; padding:7px 4px; border:1px solid #cbdced; border-radius:10px; color:#4a657c; background:#fff; text-align:center; } .screen-spi-device>b { margin-top:7px; font-size:11px; } .screen-spi-device>span { margin-top:2px; color:#788da0; font-size:9px; } .screen-spi-core,.screen-spi-display { display:grid; place-items:center; width:48px; height:43px; border:2px solid #3f7ed6; border-radius:8px; color:#2e68bb; background:#e8f1ff; font:800 10px ui-monospace,SFMono-Regular,Consolas,monospace; font-style:normal; } .screen-spi-display { grid-template-columns:repeat(3,1fr); gap:3px; padding:5px; border-color:#0b918b; background:#ddf6f1; } .screen-spi-display span { height:100%; border-radius:2px; background:#83cec5; transition:background .2s ease,box-shadow .2s ease; } .screen-spi-demo.is-backlight .screen-spi-display span,.screen-spi-demo.is-writing .screen-spi-display span { background:#20b6a7; box-shadow:0 0 7px rgba(32,182,167,.45); } .screen-spi-wires { display:grid; gap:5px; } .screen-spi-wire { display:grid; grid-template-columns:65px minmax(0,1fr) 50px; gap:5px; align-items:center; color:#788da0; font-size:9px; } .screen-spi-wire b { color:#5d738a; font:800 9px ui-monospace,SFMono-Regular,Consolas,monospace; text-align:right; } .screen-spi-wire em { overflow:hidden; font-size:9px; font-style:normal; text-overflow:ellipsis; white-space:nowrap; } .screen-spi-trace { position:relative; height:3px; overflow:visible; border-radius:99px; background:#c6d6e5; } .screen-spi-trace::before { position:absolute; top:-2px; right:0; width:0; height:0; border-top:4px solid transparent; border-bottom:4px solid transparent; border-left:6px solid #c6d6e5; content:""; } .screen-spi-wire.is-active { color:#087d77; } .screen-spi-wire.is-active b { color:#087d77; } .screen-spi-wire.is-active .screen-spi-trace { background:repeating-linear-gradient(90deg,#0b918b 0 8px,rgba(11,145,139,.18) 8px 13px); background-size:20px 3px; animation:screen-spi-flow .55s linear infinite; } .screen-spi-wire.is-active .screen-spi-trace::before { border-left-color:#0b918b; } .screen-spi-wire.is-clock .screen-spi-trace { background:repeating-linear-gradient(90deg,#326ddd 0 6px,transparent 6px 10px); background-size:16px 3px; } .screen-spi-wire.is-command .screen-spi-trace { background:repeating-linear-gradient(90deg,#8d5ec0 0 8px,rgba(141,94,192,.18) 8px 13px); } .screen-spi-wire.is-command .screen-spi-trace::before { border-left-color:#8d5ec0; } .screen-spi-packet { position:absolute; top:50%; left:0; z-index:1; padding:2px 4px; border-radius:99px; color:#fff; background:#0b918b; box-shadow:0 2px 5px rgba(11,145,139,.3); font:800 8px/1 ui-monospace,SFMono-Regular,Consolas,monospace; opacity:0; transform:translateY(-50%); } .screen-spi-wire.is-data .screen-spi-packet { opacity:1; animation:screen-spi-packet 1.35s ease-in-out infinite; } .screen-spi-explain { min-height:60px; margin-top:11px; padding:10px; border:1px solid #dce7f0; border-radius:10px; background:rgba(255,255,255,.78); } .screen-spi-explain strong { color:#3569c8; font-size:12px; } .screen-spi-explain p { margin:4px 0 0; color:#586f87; font-size:11px; line-height:1.6; } .screen-spi-note { margin:10px 0 0; color:#667d93; font-size:10px; line-height:1.6; } .screen-spi-note code { color:#3369bf; font-size:.96em; } @keyframes screen-spi-flow { to { background-position:20px 0; } } @keyframes screen-spi-packet { 0% { left:0; opacity:0; } 14%,82% { opacity:1; } 100% { left:calc(100% - 27px); opacity:0; } }
+    .iic-compare-demo { margin-top:12px; padding:13px; border:1px solid #cfe3dd; border-radius:14px; background:linear-gradient(135deg,#f8fffd,#eff8ff); } .iic-compare-head { display:flex; justify-content:space-between; gap:10px; align-items:baseline; } .iic-compare-head b { color:#315f68; font-size:13px; } .iic-compare-status { color:#087d77; font:800 10px ui-monospace,SFMono-Regular,Consolas,monospace; } .iic-compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:11px; } .iic-compare-card { padding:11px; border:1px solid #d5e7e3; border-radius:11px; background:#fff; } .iic-compare-card h4 { margin:0; color:#426176; font-size:12px; } .iic-compare-card p { min-height:34px; margin:5px 0 0; color:#647d90; font-size:10px; line-height:1.55; } .iic-mini-bus { display:grid; grid-template-columns:44px 1fr 44px; gap:5px; align-items:center; margin-top:9px; } .iic-mini-chip { padding:7px 3px; border:1px solid #b9d7d1; border-radius:7px; color:#277d76; background:#edfaf7; font:800 9px/1.35 ui-monospace,SFMono-Regular,Consolas,monospace; text-align:center; } .iic-mini-lines { display:grid; gap:6px; } .iic-mini-line { position:relative; height:3px; border-radius:99px; background:#b9d8d4; } .iic-mini-line::after { position:absolute; top:50%; left:50%; color:#5e778d; font:800 8px ui-monospace,SFMono-Regular,Consolas,monospace; transform:translate(-50%,-50%); } .iic-mini-line.scl::after { content:"SCL"; } .iic-mini-line.sda::after { content:"SDA"; } .iic-compare-card.is-active .iic-mini-line { background:repeating-linear-gradient(90deg,#0b918b 0 8px,rgba(11,145,139,.18) 8px 13px); background-size:20px 3px; animation:screen-spi-flow .55s linear infinite; } .iic-compare-card.is-active { border-color:#0b918b; box-shadow:0 4px 11px rgba(11,145,139,.11); } .iic-compare-note { margin-top:10px; color:#5b7489; font-size:11px; line-height:1.6; } .iic-compare-note strong { color:#087d77; } @media (max-width:620px) { .screen-spi-stage { grid-template-columns:64px minmax(0,1fr) 64px; gap:4px; } .screen-spi-wire { grid-template-columns:52px minmax(0,1fr); } .screen-spi-wire em { display:none; } .screen-spi-device { min-height:127px; } .iic-compare-grid { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -334,6 +336,15 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
               <rect class="chip" x="209" y="55" width="79" height="62" rx="10"/><text class="t-chip" x="248" y="82" text-anchor="middle">AT24C02</text><text class="t-small" x="248" y="97" text-anchor="middle">EEPROM</text>
               <path class="wire signal-line phase-iic-clock phase-iic-write phase-iic-ack phase-iic-read" d="M109 80h10v-9h10v9h10v-9h10v9h10v-9h10v9h10v-9h10v9h10v-9h10v9h10"/><path class="wire gray signal-line phase-iic-write phase-iic-ack phase-iic-read" d="M109 108H209"/><text class="t-small" x="122" y="66">SCL</text><text class="t-small" x="122" y="123">SDA</text><text class="t-chip" x="177" y="100">ACK</text><circle class="packet iic-out signal-packet phase-iic-write" cx="0" cy="0" r="4"/><circle class="packet iic-back signal-packet phase-iic-ack" cx="0" cy="0" r="4"/><circle class="packet iic-back signal-packet phase-iic-read" cx="0" cy="0" r="4"/>
             </svg></figure><div class="wire-flow-caption" data-wire-caption="IIC" aria-label="自动循环的 IIC 线路数据方向"><b>线路动态</b><span></span></div>
+            <section class="iic-compare-demo" data-iic-compare aria-labelledby="iic-compare-title">
+              <div class="iic-compare-head"><b id="iic-compare-title">动态对比：硬件 IIC 与软件 IIC（GPIO 模拟）</b><span class="iic-compare-status" aria-live="polite"></span></div>
+              <div class="iic-compare-grid">
+                <article class="iic-compare-card" data-iic-kind="hardware"><h4>硬件 IIC：外设状态机</h4><p class="iic-compare-card-state"></p><div class="iic-mini-bus" aria-hidden="true"><span class="iic-mini-chip">MCU<br>IIC</span><div class="iic-mini-lines"><i class="iic-mini-line scl"></i><i class="iic-mini-line sda"></i></div><span class="iic-mini-chip">传感器</span></div></article>
+                <article class="iic-compare-card" data-iic-kind="software"><h4>软件 IIC：GPIO bit-bang</h4><p class="iic-compare-card-state"></p><div class="iic-mini-bus" aria-hidden="true"><span class="iic-mini-chip">MCU<br>GPIO</span><div class="iic-mini-lines"><i class="iic-mini-line scl"></i><i class="iic-mini-line sda"></i></div><span class="iic-mini-chip">传感器</span></div></article>
+              </div>
+              <p class="iic-compare-note"><strong>共同点：</strong>两者都必须用开漏方式驱动同一对 SCL/SDA，并依赖外部上拉。<strong>差别：</strong>硬件 IIC 由外设产生时序、可配中断/DMA；软件 IIC 由 CPU 逐次翻转 GPIO，灵活但更占 CPU、容易受中断抖动影响。</p>
+              <div class="transfer-actions"><button class="iic-compare-prev" type="button">← 上一步</button><button class="iic-compare-play" type="button" aria-pressed="true">暂停循环</button><button class="iic-compare-next" type="button">下一步 →</button></div>
+            </section>
             <div class="details"><div class="detail"><span>典型芯片</span><strong>STM32G071<br>AT24C02</strong></div><div class="detail"><span>重点</span><strong>Address · ACK<br>开漏上拉</strong></div></div>
             <details class="protocol-deep"><summary>查看 IIC 的 IO 配置、收发过程与原因</summary><div class="deep-body">
               <p class="deep-note">示例为 STM32G071 I2C1 的 PB6(SCL)/PB7(SDA) 常见映射（AF 以具体封装表为准）。IIC 电平质量主要依赖板外上拉与总线电容，内部弱上拉通常不足以承担高速总线。</p>
@@ -356,6 +367,24 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
               <rect class="chip" x="210" y="42" width="83" height="88" rx="10"/><text class="t-chip" x="251" y="79" text-anchor="middle">W25Q128</text><text class="t-small" x="251" y="94" text-anchor="middle">SPI FLASH</text>
               <path class="wire signal-line phase-spi-mosi phase-spi-miso" d="M100 61h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h10v8h10"/><path class="wire signal-line phase-spi-mosi" d="M100 84H210"/><path class="wire gray signal-line phase-spi-miso" d="M210 107H100"/><path class="wire gray signal-line phase-spi-cs" d="M100 126H210"/><text class="t-small" x="108" y="48">SCK</text><text class="t-small" x="108" y="77">MOSI</text><text class="t-small" x="158" y="120">MISO</text><text class="t-small" x="150" y="141">CS ↓</text><circle class="packet spi-mosi signal-packet phase-spi-mosi" cx="0" cy="0" r="4"/><circle class="packet spi-miso signal-packet phase-spi-miso" cx="0" cy="0" r="4"/>
             </svg></figure><div class="wire-flow-caption" data-wire-caption="SPI" aria-label="自动循环的 SPI 线路数据方向"><b>线路动态</b><span></span></div>
+            <section class="screen-spi-demo" data-screen-spi-demo aria-labelledby="screen-spi-demo-title">
+              <div class="screen-spi-demo-head"><b id="screen-spi-demo-title">动态演示：SPI 屏幕的六线写入</b><span class="screen-spi-status" aria-live="polite"></span></div>
+              <div class="screen-spi-stage" aria-label="MCU 通过 SCL、SDA、RST、DC、CS 和 BLK 六根线控制 SPI 屏幕">
+                <div class="screen-spi-device mcu-device"><i class="screen-spi-core">MCU</i><b>STM32</b><span>SPI + GPIO</span></div>
+                <div class="screen-spi-wires" aria-hidden="true">
+                  <div class="screen-spi-wire" data-screen-wire="scl"><b>SCL / SCK</b><i class="screen-spi-trace"></i><em>时钟</em></div>
+                  <div class="screen-spi-wire" data-screen-wire="sda"><b>SDA / MOSI</b><i class="screen-spi-trace"><span class="screen-spi-packet">0x2C</span></i><em>命令 / 像素</em></div>
+                  <div class="screen-spi-wire" data-screen-wire="rst"><b>RST</b><i class="screen-spi-trace"></i><em>复位</em></div>
+                  <div class="screen-spi-wire" data-screen-wire="dc"><b>DC</b><i class="screen-spi-trace"></i><em>命令 / 数据</em></div>
+                  <div class="screen-spi-wire" data-screen-wire="cs"><b>CS</b><i class="screen-spi-trace"></i><em>片选</em></div>
+                  <div class="screen-spi-wire" data-screen-wire="blk"><b>BLK</b><i class="screen-spi-trace"></i><em>背光</em></div>
+                </div>
+                <div class="screen-spi-device lcd-device"><i class="screen-spi-display"><span></span><span></span><span></span></i><b>LCD / OLED</b><span>只写显示</span></div>
+              </div>
+              <div class="screen-spi-explain"><strong class="screen-spi-step"></strong><p class="screen-spi-text" aria-live="polite"></p></div>
+              <div class="transfer-actions"><button class="screen-spi-prev" type="button">← 上一步</button><button class="screen-spi-play" type="button" aria-pressed="true">暂停循环</button><button class="screen-spi-next" type="button">下一步 →</button></div>
+              <p class="screen-spi-note"><strong>注意：</strong><code>SCL</code> 与 <code>SDA</code> 在这里分别是 <code>SCK</code> 与单向 <code>MOSI/DIN</code>，并非 I²C；没有 <code>MISO</code>，因此普通小屏不能经这组六线把显示内容读回 MCU。</p>
+            </section>
             <div class="details"><div class="detail"><span>典型芯片</span><strong>STM32G0<br>W25Q128JV</strong></div><div class="detail"><span>重点</span><strong>CPOL/CPHA · CS<br>DMA 连续传输</strong></div></div>
             <details class="protocol-deep"><summary>查看 SPI 的 IO 配置、收发过程与原因</summary><div class="deep-body">
               <p class="deep-note">示例为 STM32G0 SPI1 的 PA5(SCK)/PA6(MISO)/PA7(MOSI)/PA4(CS) 常见连接。具体 AF 编号与硬件 NSS 用法必须按芯片手册核对。<strong>屏幕模块的 SCL 通常就是 SCK，SDA 通常就是单向 MOSI/DIN，并非 I²C；RST 复位屏控，DC 区分命令/像素数据，CS 选中屏幕，BLK 控制背光。</strong>小屏多为只写显示，所以常不引出 MISO。</p>
@@ -458,6 +487,121 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
         renderWireStep();
         if (!reduceMotion) window.setInterval(() => { current = (current + 1) % steps.length; renderWireStep(); }, 2400);
       });
+
+      document.querySelectorAll('[data-screen-spi-demo]').forEach(demo => {
+        const steps = [
+          { title: '1 / 6 · RST 复位屏幕控制器', text: '以常见低有效 RST 为例：MCU 先拉低，再释放为高，让屏幕控制器回到已知初始状态；有效电平和复位脉宽必须以具体屏控手册为准。此时还没有 SPI 像素数据。', status: 'RST：复位', active: ['rst'], packet: '', mode: '' },
+          { title: '2 / 6 · BLK 打开背光', text: 'MCU 把 BLK 拉到有效电平，或输出 PWM 调节亮度。背光打开只让屏幕可见，不会把像素数据送进显存。', status: 'BLK：背光开启', active: ['blk'], packet: '', mode: 'backlight' },
+          { title: '3 / 6 · CS 拉低选中屏幕', text: 'CS 有效后，屏幕才把随后的 SCL/SDA 当成自己的传输；若总线上还有 Flash 或其他外设，它们保持未选中。', status: 'CS：选中屏幕', active: ['cs'], packet: '', mode: 'backlight' },
+          { title: '4 / 6 · DC=命令，发送初始化指令', text: '以常见屏控定义为例，DC 为低表示命令。SCL 提供时钟，SDA/MOSI 发送 0x2A、0x2B 或 0x2C 等控制指令；具体电平语义以屏控手册为准。', status: 'DC：命令 · SDA：0x2A', active: ['cs', 'dc', 'scl', 'sda'], packet: '0x2A', mode: 'command' },
+          { title: '5 / 6 · DC=数据，连续写入像素', text: '以常见屏控定义为例，DC 为高表示数据。MCU 在每个 SCL 节拍把 RGB565 等像素字节从 SDA/MOSI 连续送给屏幕；大块刷新可使用 TX DMA。', status: 'DC：数据 · SDA：RGB565', active: ['cs', 'dc', 'scl', 'sda'], packet: 'PIX', mode: 'writing' },
+          { title: '6 / 6 · CS 释放，屏幕保持显示', text: '最后一个字节发完并确认 SPI 不忙后，MCU 释放 CS。普通六线小屏没有 MISO，所以这次传输没有从屏幕回到 MCU 的数据线。', status: 'CS：释放 · 无 MISO 回读', active: ['blk'], packet: '', mode: 'backlight' }
+        ];
+        const wires = [...demo.querySelectorAll('[data-screen-wire]')];
+        const title = demo.querySelector('.screen-spi-step');
+        const text = demo.querySelector('.screen-spi-text');
+        const status = demo.querySelector('.screen-spi-status');
+        const packet = demo.querySelector('.screen-spi-packet');
+        const previous = demo.querySelector('.screen-spi-prev');
+        const play = demo.querySelector('.screen-spi-play');
+        const next = demo.querySelector('.screen-spi-next');
+        let current = 0;
+        let timer;
+
+        function renderScreenStep() {
+          const step = steps[current];
+          title.textContent = step.title;
+          text.textContent = step.text;
+          status.textContent = step.status;
+          packet.textContent = step.packet;
+          demo.classList.toggle('is-backlight', step.mode === 'backlight' || step.mode === 'command' || step.mode === 'writing');
+          demo.classList.toggle('is-writing', step.mode === 'writing');
+          wires.forEach(wire => {
+            const active = step.active.includes(wire.dataset.screenWire);
+            wire.className = 'screen-spi-wire' + (active ? ' is-active' : '') + (wire.dataset.screenWire === 'scl' && active ? ' is-clock' : '') + (wire.dataset.screenWire === 'sda' && active ? ' is-data' : '') + (step.mode === 'command' && wire.dataset.screenWire === 'dc' ? ' is-command' : '');
+          });
+        }
+
+        function advanceScreenStep(delta) {
+          current = (current + delta + steps.length) % steps.length;
+          renderScreenStep();
+        }
+
+        function stopScreenLoop() {
+          if (!timer) return;
+          window.clearInterval(timer);
+          timer = undefined;
+          play.textContent = '自动循环';
+          play.setAttribute('aria-pressed', 'false');
+        }
+
+        function startScreenLoop() {
+          if (timer) return;
+          play.textContent = '暂停循环';
+          play.setAttribute('aria-pressed', 'true');
+          timer = window.setInterval(() => advanceScreenStep(1), 2300);
+        }
+
+        previous.addEventListener('click', () => { stopScreenLoop(); advanceScreenStep(-1); });
+        next.addEventListener('click', () => { stopScreenLoop(); advanceScreenStep(1); });
+        play.addEventListener('click', () => { if (timer) stopScreenLoop(); else startScreenLoop(); });
+        renderScreenStep();
+        if (!reduceMotion) window.setTimeout(startScreenLoop, 900);
+      });
+
+      document.querySelectorAll('[data-iic-compare]').forEach(demo => {
+        const steps = [
+          { status: '1 / 5 · 初始化总线', active: ['hardware'], hardware: 'CPU 设置时钟时序、地址和中断/DMA 选项；IIC 外设接管 SCL/SDA。', software: 'CPU 把两根 GPIO 配成开漏输出，准备好微秒级延时函数；时序全由代码负责。' },
+          { status: '2 / 5 · 生成 START', active: ['hardware', 'software'], hardware: '外设状态机在 SCL 为高时拉低 SDA，自动形成 START 并进入发送地址状态。', software: 'CPU 先释放 SCL/SDA 为高，再在 SCL 高时把 SDA 拉低；每一步都要由代码控制。' },
+          { status: '3 / 5 · 地址与 ACK', active: ['hardware', 'software'], hardware: '外设按设定时序移出地址和读写位，硬件在第 9 个时钟采样 ACK 并更新状态标志。', software: 'CPU 循环写 SDA、拉低/释放 SCL，并等待实际 SCL 线为高；第 9 个时钟把 SDA 切回输入/释放后采样 ACK。' },
+          { status: '4 / 5 · 连续收发数据', active: ['hardware', 'software'], hardware: '字节由移位寄存器收发；连续数据可配 FIFO、中断或 DMA，CPU 不必逐位翻转引脚。', software: '每一位都由 CPU 拉低或释放 SDA、拉低/释放 SCL 并等待线为高；中断会拉长周期，速率与占用受限。' },
+          { status: '5 / 5 · STOP 释放总线', active: ['hardware', 'software'], hardware: '外设在 SCL 高时释放 SDA 生成 STOP，并置位完成/错误标志供软件处理。', software: 'CPU 手动保持 SCL 为高后释放 SDA；若时序或开漏处理错了，可能无法生成规范 STOP。' }
+        ];
+        const cards = [...demo.querySelectorAll('[data-iic-kind]')];
+        const status = demo.querySelector('.iic-compare-status');
+        const previous = demo.querySelector('.iic-compare-prev');
+        const play = demo.querySelector('.iic-compare-play');
+        const next = demo.querySelector('.iic-compare-next');
+        let current = 0;
+        let timer;
+
+        function renderIICStep() {
+          const step = steps[current];
+          status.textContent = step.status;
+          cards.forEach(card => {
+            const kind = card.dataset.iicKind;
+            card.classList.toggle('is-active', step.active.includes(kind));
+            card.querySelector('.iic-compare-card-state').textContent = step[kind];
+          });
+        }
+
+        function advanceIICStep(delta) {
+          current = (current + delta + steps.length) % steps.length;
+          renderIICStep();
+        }
+
+        function stopIICLoop() {
+          if (!timer) return;
+          window.clearInterval(timer);
+          timer = undefined;
+          play.textContent = '自动循环';
+          play.setAttribute('aria-pressed', 'false');
+        }
+
+        function startIICLoop() {
+          if (timer) return;
+          play.textContent = '暂停循环';
+          play.setAttribute('aria-pressed', 'true');
+          timer = window.setInterval(() => advanceIICStep(1), 2900);
+        }
+
+        previous.addEventListener('click', () => { stopIICLoop(); advanceIICStep(-1); });
+        next.addEventListener('click', () => { stopIICLoop(); advanceIICStep(1); });
+        play.addEventListener('click', () => { if (timer) stopIICLoop(); else startIICLoop(); });
+        renderIICStep();
+        if (!reduceMotion) window.setTimeout(startIICLoop, 1100);
+      });
+
       const m3Map = document.querySelector('#m3Map');
       const m3Title = document.querySelector('#m3ExplainTitle');
       const m3Text = document.querySelector('#m3ExplainText');
