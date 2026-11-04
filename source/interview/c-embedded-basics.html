@@ -68,6 +68,7 @@
     @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; } }
     .can-loop-state { display:inline-block; margin-left:6px; padding:2px 6px; border-radius:99px; color:#087d77; background:#d8f4ef; font-style:normal; letter-spacing:0; }
     .can-loop-note { margin:11px 0 0; padding:9px 10px; border-left:3px solid #0b918b; border-radius:0 8px 8px 0; color:#557187; background:rgba(255,255,255,.7); font-size:11px; line-height:1.6; }
+    .software-stack { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; align-items:stretch; padding:18px; border:1px solid #cfe0f0; border-radius:18px; background:linear-gradient(135deg,#f9fcff,#eef8f7); box-shadow:0 8px 24px rgba(36,83,117,.06); } .software-layer { min-height:184px; padding:13px; border:1px solid #d6e4ef; border-radius:13px; background:#fff; box-shadow:0 3px 10px rgba(35,74,108,.04); } .software-layer h3 { margin:8px 0 6px; color:#38556e; font-size:14px; line-height:1.35; } .software-layer p { margin:0; color:#5b7187; font-size:11px; line-height:1.65; } .software-level { display:inline-block; padding:3px 6px; border-radius:99px; color:#3b6e97; background:#e8f2fb; font:800 9px ui-monospace,SFMono-Regular,Consolas,monospace; letter-spacing:.03em; } .app-layer { border-top:4px solid #326ddd; } .bsp-layer { border-top:4px solid #098d87; } .library-layer { border-top:4px solid #9c6acd; } .register-layer { border-top:4px solid #d9782d; } .hardware-layer { border-top:4px solid #536f87; } .software-arrow { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:4px; color:#7890a6; font-size:9px; font-weight:800; line-height:1.2; text-align:center; } .software-arrow::before { width:100%; height:2px; border-radius:99px; background:repeating-linear-gradient(90deg,#8fb1cc 0 7px,transparent 7px 12px); content:""; } .software-stack-note { margin-top:11px; padding:11px 13px; border-left:4px solid #326ddd; border-radius:0 10px 10px 0; color:#516d84; background:#f2f7fd; font-size:12px; line-height:1.7; } .software-stack-note strong { color:#2c65b8; } @media (max-width:980px) { .software-stack { grid-template-columns:1fr; gap:4px; } .software-layer { min-height:0; } .software-arrow { flex-direction:row; min-height:24px; } .software-arrow::before { width:24px; height:22px; background:repeating-linear-gradient(180deg,#8fb1cc 0 7px,transparent 7px 12px); } }
   </style>
 </head>
 <body>
@@ -87,6 +88,7 @@
       <a class="nav-sub" href="#concurrency">volatile 与中断协作</a>
       <a class="nav-sub" href="#keywords">const / static / volatile</a>
       <span class="nav-group">02 · 嵌入式基础</span>
+      <a class="nav-sub" href="#software-stack">软件分层与硬件</a>
       <a class="nav-sub" href="#cortex-m3">Cortex-M3 架构</a>
       <a class="nav-sub" href="#dma">DMA 数据搬运</a>
       <a class="nav-sub" href="#dma-bus">DMA 总线与触发</a>
@@ -106,7 +108,7 @@
           <p class="eyebrow">Module 01 / interview basics</p>
           <h1>C语言基础 /<br><span>嵌入式基础</span></h1>
           <p class="lede">面试中不只要会调用库函数，更要说清变量在哪里、并发为什么出错、数据怎样从 MCU 到外设。本页按“C 语言 → 通信协议”建立基础回答框架。</p>
-          <nav class="anchors" aria-label="页内导航"><a href="#c-language">C 语言底层</a><a href="#cortex-m3">Cortex-M3 架构</a><a href="#dma">DMA 数据搬运</a><a href="#dma-bus">DMA 总线与触发</a><a href="#dma-m3-flows">Cortex-M3 数据流</a><a href="#embedded-comms">嵌入式通信</a><a href="#answer-structure">答题结构</a></nav>
+          <nav class="anchors" aria-label="页内导航"><a href="#c-language">C 语言底层</a><a href="#software-stack">软件分层</a><a href="#cortex-m3">Cortex-M3 架构</a><a href="#dma">DMA 数据搬运</a><a href="#dma-bus">DMA 总线与触发</a><a href="#dma-m3-flows">Cortex-M3 数据流</a><a href="#embedded-comms">嵌入式通信</a><a href="#answer-structure">答题结构</a></nav>
         </div>
         <aside class="hero-board" aria-label="学习路径">
           <h2>把知识点串成可解释的链路</h2>
@@ -160,6 +162,24 @@ ready = 1;
             <p><code>volatile</code> 要求编译器每次都真正访问该地址，适合外设寄存器和 ISR、DMA 可能改写的共享标志；它不是锁，不能保证原子性、互斥、执行顺序或 DMA 缓存一致性。</p>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="section" id="software-stack" aria-labelledby="software-stack-title">
+      <div class="wrap">
+        <div class="heading"><h2 id="software-stack-title">STM32 软件分层：从业务到硬件</h2><p>上层向下调用能力，下层向上提供支撑；分层的目的，是让业务变化与具体芯片、器件变化尽量解耦。</p></div>
+        <div class="software-stack" role="img" aria-label="STM32 从应用业务逻辑、BSP 和设备组件、HAL 或标准外设库、LL 或直接寄存器操作到硬件的分层关系">
+          <article class="software-layer app-layer"><span class="software-level">L4 · Application</span><h3>应用业务逻辑</h3><p>控制策略、状态机、通信协议、任务调度和业务规则；应描述“做什么”，尽量不直接依赖某个 GPIO 或寄存器。</p></article>
+          <div class="software-arrow"><span>↓ 调用</span><span>↑ 支撑</span></div>
+          <article class="software-layer bsp-layer"><span class="software-level">L3 · BSP / Component</span><h3>用户 BSP / 设备组件</h3><p>基于 HAL、SPL、LL 或寄存器实现板级初始化和具体器件接口，例如按键、屏幕、传感器、电机、CAN 收发器。</p></article>
+          <div class="software-arrow"><span>↓ 调用</span><span>↑ 支撑</span></div>
+          <article class="software-layer library-layer"><span class="software-level">L2 · Library API</span><h3>HAL 库 / 标准外设库</h3><p>把外设寄存器、时钟、GPIO、DMA、中断等组织为可调用 API；它们是库级抽象与封装，本身不是某块外设的完整业务驱动。</p></article>
+          <div class="software-arrow"><span>↓ 调用</span><span>↑ 支撑</span></div>
+          <article class="software-layer register-layer"><span class="software-level">L1 · Register Level</span><h3>LL / STM32Snippets / 直接寄存器操作</h3><p>最贴近芯片的硬件访问：配置 RCC、GPIO、外设控制/状态寄存器和中断。若项目不用现成组件，这里也承担最直接的设备驱动实现。</p></article>
+          <div class="software-arrow"><span>↓ 配置与访问</span><span>↑ 电气响应</span></div>
+          <article class="software-layer hardware-layer"><span class="software-level">L0 · Hardware</span><h3>硬件</h3><p>MCU 内核、总线、外设寄存器、GPIO 引脚、DMA、定时器以及板外传感器、屏幕、电机和收发器。</p></article>
+        </div>
+        <aside class="software-stack-note"><strong>面试时的准确表述：</strong>HAL 的抽象层级通常高于 LL；但标准外设库（SPL）与 LL 都比较接近寄存器层，三者不是严格的单条调用链。BSP 可以选择其中任意一种实现，关键是接口边界清楚、时序和错误处理可验证。</aside>
       </div>
     </section>
 
