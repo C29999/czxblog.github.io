@@ -162,6 +162,30 @@ ready = 1;
             <p><code>const</code> 表示不能通过这个名称修改对象，常用于只读配置、查表和函数只读参数；它是接口约束，不等于对象一定在 Flash，也不能阻止硬件、DMA 或其他非 <code>const</code> 别名改变同一地址。</p>
             <p><code>static</code> 用在函数内时让对象只初始化一次、函数返回后值仍保留；用在文件作用域时让变量或函数仅本文件可见，适合封装驱动内部状态。它不提供线程安全，任务和中断共享时仍要处理并发。</p>
             <p><code>volatile</code> 要求编译器每次都真正访问该地址，适合外设寄存器和 ISR、DMA 可能改写的共享标志；它不是锁，不能保证原子性、互斥、执行顺序或 DMA 缓存一致性。</p>
+            <pre class="codebox"><i>/* ADC 中断采样，主循环处理：三个关键字各做不同的事 */</i>
+<b>static const</b> uint16_t kOverCurrentLimit = 3000U; <i>/* const：只读阈值；static：仅本文件可见 */</i>
+<b>static volatile</b> bool s_adcReady = false;          <i>/* volatile：ISR 写，主循环读 */</i>
+
+<b>void</b> ADC1_2_IRQHandler(<b>void</b>)
+{
+  <b>if</b> (ADC1-&gt;ISR &amp; ADC_ISR_EOC) {
+    s_adcReady = true;
+  }
+}
+
+<b>void</b> App_ControlStep(uint16_t adcValue)
+{
+  <b>static</b> uint32_t handledSamples = 0U; <i>/* static：函数多次调用后仍保留计数 */</i>
+
+  <b>if</b> (s_adcReady) {
+    s_adcReady = false;
+    handledSamples++;
+    <b>if</b> (adcValue &gt; kOverCurrentLimit) {
+      Motor_Stop();
+    }
+  }
+}</pre>
+            <p class="deep-note"><strong>并发边界：</strong>这里的 <code>volatile</code> 只保证读取/写入不会被编译器缓存或省略；若 ISR 与主循环可能在“判断并清零”之间并发，或数据超过 CPU 原子访问宽度，仍应使用临界区、原子操作或队列。</p>
           </article>
         </div>
       </div>
