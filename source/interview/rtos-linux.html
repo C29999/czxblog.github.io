@@ -54,6 +54,50 @@
     @keyframes tcp-go-left { 0% { left:calc(94% - 74px); opacity:0; } 12%,86% { opacity:1; } 100% { left:6%; opacity:0; } }
     @media (max-width:780px) { .tcp-flow-head { display:block; } .tcp-key { display:inline-flex; margin-top:9px; } .tcp-lanes { grid-template-columns:1fr 1fr 1fr; min-height:224px; } .tcp-stage:nth-of-type(2),.tcp-stage:nth-of-type(4) { grid-row:2; } .tcp-stage.wire { grid-column:2; grid-row:1; } .tcp-stage:nth-of-type(5) { grid-column:3; grid-row:2; } .tcp-step-list { grid-template-columns:repeat(2,minmax(0,1fr)); } .tcp-notes,.tcp-code-grid { grid-template-columns:1fr; } }
     @media (max-width:520px) { .tcp-flow-demo { padding:15px; } .tcp-lanes { gap:5px; padding:8px 5px; } .tcp-stage { padding:8px 4px; } .tcp-stage span { font-size:10px; } .tcp-packet { min-width:60px; font-size:9px; } .tcp-path i { width:11px; } }
+    .rtos-intro { margin-bottom:18px; padding:14px 16px; border-left:4px solid var(--accent); border-radius:0 14px 14px 0; color:#426274; background:linear-gradient(90deg,var(--pale),transparent); font-size:14px; }
+    .rtos-intro strong { color:#087a75; }
+    .rtos-lab { padding:22px; border:1px solid #cce5e3; border-radius:20px; background:linear-gradient(135deg,#fff,#effbf9); box-shadow:var(--shadow); }
+    .rtos-lab-head { display:flex; justify-content:space-between; align-items:start; gap:20px; }
+    .rtos-lab-head h3 { margin:0; font-size:20px; letter-spacing:-.025em; }
+    .rtos-lab-head p { max-width:550px; margin:4px 0 0; color:var(--muted); font-size:13px; }
+    .rtos-priority-key { display:flex; flex-wrap:wrap; justify-content:end; gap:6px; padding:0; margin:0; list-style:none; }
+    .rtos-priority-key li { padding:4px 8px; border:1px solid #bee1dc; border-radius:99px; color:#286a69; background:#fff; font:800 10px ui-monospace,monospace; }
+    .rtos-priority-key b { color:#087a75; }
+    .rtos-system { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:20px 0 13px; }
+    .rtos-unit { position:relative; min-height:116px; padding:13px; overflow:hidden; border:1px solid #cde6e2; border-radius:14px; background:#fff; box-shadow:0 5px 13px rgba(29,92,88,.04); transition:border-color .2s,box-shadow .2s,transform .2s,background .2s; }
+    .rtos-unit::after { position:absolute; top:0; right:0; bottom:0; left:0; border:2px solid transparent; border-radius:inherit; content:""; pointer-events:none; }
+    .rtos-unit.is-active { border-color:#0b918b; background:#f5fffd; box-shadow:0 10px 23px rgba(11,145,139,.16); transform:translateY(-2px); }
+    .rtos-unit.is-active::after { border-color:#0b918b; animation:rtos-outline 1.15s ease-in-out infinite; }
+    .rtos-unit .rtos-kind { display:inline-flex; padding:3px 7px; border-radius:99px; color:#087a75; background:#dff6f3; font:800 10px ui-monospace,monospace; letter-spacing:.05em; }
+    .rtos-unit h4 { margin:8px 0 0; font-size:16px; letter-spacing:-.02em; }
+    .rtos-unit p { margin:4px 0 0; color:#566f7d; font-size:12px; line-height:1.45; }
+    .rtos-prio { position:absolute; top:12px; right:12px; display:grid; width:24px; height:24px; place-items:center; border-radius:50%; color:#fff; background:#0b918b; font:800 10px ui-monospace,monospace; }
+    .rtos-queue-slots { display:flex; gap:3px; margin-top:10px; }
+    .rtos-queue-slots i { flex:1; height:7px; border-radius:99px; background:#d6eeeb; transition:background .25s,transform .25s; }
+    .rtos-queue-slots i.is-filled { background:#0b918b; transform:scaleY(1.3); }
+    .rtos-bits { display:flex; flex-wrap:wrap; gap:4px; margin-top:9px; }
+    .rtos-bit { padding:3px 5px; border:1px solid #cce4e0; border-radius:5px; color:#708691; background:#f8fcfc; font:800 9px ui-monospace,monospace; transition:color .2s,background .2s,border-color .2s; }
+    .rtos-bit.is-on { color:#fff; border-color:#0b918b; background:#0b918b; }
+    .rtos-status { min-height:50px; margin:0; padding:11px 12px; border-radius:10px; color:#365f70; background:#e9f8f6; font-size:13px; }
+    .rtos-status b { color:#087a75; }
+    .rtos-controls { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .rtos-controls button,.rtos-step { border:1px solid #bcded9; border-radius:8px; color:#286a69; background:#fff; font:800 12px Inter,"PingFang SC","Microsoft YaHei",sans-serif; cursor:pointer; }
+    .rtos-controls button { min-height:34px; padding:5px 11px; }
+    .rtos-controls button:hover,.rtos-controls button:focus-visible,.rtos-step:hover,.rtos-step:focus-visible { color:#fff; border-color:#087a75; background:#087a75; outline:none; }
+    .rtos-controls button:focus-visible,.rtos-step:focus-visible { box-shadow:0 0 0 3px rgba(11,145,139,.22); }
+    .rtos-step-list { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:7px; padding:0; margin:12px 0 0; list-style:none; }
+    .rtos-step { width:100%; min-height:43px; padding:5px 7px; font-size:11px; line-height:1.25; }
+    .rtos-step[aria-current="step"] { color:#fff; border-color:#087a75; background:#087a75; }
+    .rtos-compare { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:17px; }
+    .rtos-compare article { padding:17px; border:1px solid #d6e8e6; border-radius:14px; background:#fff; }
+    .rtos-compare h3 { margin:0; font-size:18px; letter-spacing:-.025em; }
+    .rtos-compare p { margin:7px 0 0; color:#596f7d; font-size:13px; }
+    .rtos-api-map { display:grid; grid-template-columns:auto 18px 1fr; gap:5px 8px; align-items:center; margin-top:12px; color:#466874; font:800 11px/1.4 ui-monospace,monospace; }
+    .rtos-api-map code { padding:4px 6px; border-radius:5px; color:#087a75; background:#e9f8f6; font:inherit; }
+    .rtos-api-map i { height:1px; background:#80bfb8; }
+    @keyframes rtos-outline { 50% { opacity:.4; transform:scale(.97); } }
+    @media (max-width:900px) { .rtos-system { grid-template-columns:repeat(2,minmax(0,1fr)); } .rtos-step-list { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:620px) { .rtos-lab { padding:15px; } .rtos-lab-head { display:block; } .rtos-priority-key { justify-content:start; margin-top:10px; } .rtos-compare { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -64,6 +108,7 @@
       <a href="#overview">学习总览</a>
       <a href="#scheduling">任务与调度</a>
       <a href="#sync">同步与通信</a>
+      <a href="#rtos-lab">RTOS 动态协作</a>
       <a href="#linux">Linux 系统边界</a>
       <a href="#tcp">Linux TCP / Socket</a>
       <a href="#interview">面试追问</a>
@@ -90,6 +135,40 @@
       <section class="section" id="sync">
         <div class="heading"><h2>同步与数据通信</h2><p>回答时先说明“传数据”还是“通知事件”，再选择队列、信号量、事件组或通知机制。</p></div>
         <div class="chain"><div><b>ISR</b><span>采集外设事件，不做耗时处理。</span></div><div><b>QUEUE</b><span>传递数据或数据指针，处理满队列策略。</span></div><div><b>TASK</b><span>在任务上下文解析、计算或记录。</span></div><div><b>ACTUATOR</b><span>输出控制结果并监测异常。</span></div></div>
+      </section>
+
+      <section class="section" id="rtos-lab">
+        <div class="heading"><h2>FreeRTOS 动态协作现场</h2><p>用一个电机控制系统的循环，把任务调度、优先级、队列、信号量、事件组和软件定时器放到同一条真实运行链路中。</p></div>
+        <p class="rtos-intro"><strong>记忆方式：</strong>任务负责执行；优先级决定谁先运行；<strong>队列传数据</strong>；<strong>信号量通知事件或管理资源</strong>；事件组汇总多个状态位；软件定时器负责轻量的超时和周期触发。点击下方 8 步，观察谁被唤醒、谁抢占，以及数据或信号去了哪里。</p>
+        <section class="rtos-lab" id="rtos-lab-demo" aria-labelledby="rtos-lab-title" data-active="timer">
+          <div class="rtos-lab-head"><div><h3 id="rtos-lab-title">一轮控制周期 · 从采样到故障保护</h3><p>优先级数字越大越高。低优先级任务不会“消失”，只是只在没有更高优先级就绪任务时获得 CPU。</p></div><ul class="rtos-priority-key" aria-label="任务优先级"><li><b>P5</b> Safety</li><li><b>P4</b> Control</li><li><b>P2</b> Sample</li><li><b>P1</b> Telemetry</li></ul></div>
+          <div class="rtos-system" aria-label="FreeRTOS 协作模块示意">
+            <article class="rtos-unit" data-rtos-node="timer"><span class="rtos-kind">SOFTWARE TIMER</span><h4>Timer Service Task</h4><p>每 2 ms 执行短回调，只负责通知采样任务；不在回调里做耗时控制计算。</p></article>
+            <article class="rtos-unit" data-rtos-node="sample"><span class="rtos-kind">TASK</span><span class="rtos-prio">P2</span><h4>SampleTask</h4><p>读取编码器、电流等数据；完成后把一条采样结果交给队列。</p></article>
+            <article class="rtos-unit" data-rtos-node="queue"><span class="rtos-kind">MESSAGE QUEUE</span><h4>Control Queue</h4><p>传递结构体或指针，不只是“叫醒”另一个任务。</p><div class="rtos-queue-slots" aria-label="队列占用示意"><i></i><i></i><i></i><i></i></div></article>
+            <article class="rtos-unit" data-rtos-node="control"><span class="rtos-kind">TASK</span><span class="rtos-prio">P4</span><h4>ControlTask</h4><p>阻塞等待队列；拿到新数据后被唤醒，计算并更新 PWM。</p></article>
+            <article class="rtos-unit" data-rtos-node="events"><span class="rtos-kind">EVENT GROUP</span><h4>System Flags</h4><p>组合状态，不传大量数据；可等待任意位或全部位。</p><div class="rtos-bits" aria-label="事件组状态位"><span class="rtos-bit" data-rtos-bit="IMU">IMU_RDY</span><span class="rtos-bit" data-rtos-bit="MOTOR">MOTOR_RDY</span><span class="rtos-bit" data-rtos-bit="CAN">CAN_RDY</span><span class="rtos-bit" data-rtos-bit="FAULT">FAULT</span></div></article>
+            <article class="rtos-unit" data-rtos-node="telemetry"><span class="rtos-kind">TASK</span><span class="rtos-prio">P1</span><h4>TelemetryTask</h4><p>等待多个就绪位齐全后再上报；高优先级控制工作优先完成。</p></article>
+            <article class="rtos-unit" data-rtos-node="semaphore"><span class="rtos-kind">BINARY SEMAPHORE</span><h4>Fault Signal</h4><p>ISR 只 Give 通知；不携带采样数据，也不做复杂处理。</p></article>
+            <article class="rtos-unit" data-rtos-node="safety"><span class="rtos-kind">TASK</span><span class="rtos-prio">P5</span><h4>SafetyTask</h4><p>等待故障信号量；一旦就绪，可抢占控制任务并关断输出。</p></article>
+          </div>
+          <p class="rtos-status" id="rtos-lab-status" aria-live="polite"><b>1 / 8 · 软件定时器到点：</b>Timer Service Task 运行短回调，通知 SampleTask 开始一次采样；定时器回调不应执行耗时算法或阻塞操作。</p>
+          <div class="rtos-controls" aria-label="RTOS 动态步骤控制"><button type="button" id="rtos-prev">← 上一步</button><button type="button" id="rtos-toggle" aria-pressed="false">暂停循环</button><button type="button" id="rtos-next">下一步 →</button></div>
+          <ol class="rtos-step-list" aria-label="一轮 FreeRTOS 协作步骤">
+            <li><button type="button" class="rtos-step" data-rtos-step="0" aria-current="step">1. 软件定时器通知</button></li>
+            <li><button type="button" class="rtos-step" data-rtos-step="1">2. 采样任务就绪</button></li>
+            <li><button type="button" class="rtos-step" data-rtos-step="2">3. 队列传采样数据</button></li>
+            <li><button type="button" class="rtos-step" data-rtos-step="3">4. 高优先级控制抢占</button></li>
+            <li><button type="button" class="rtos-step" data-rtos-step="4">5. 事件组汇总就绪位</button></li>
+            <li><button type="button" class="rtos-step" data-rtos-step="5">6. 低优先级遥测执行</button></li>
+            <li><button type="button" class="rtos-step" data-rtos-step="6">7. ISR Give 故障信号量</button></li>
+            <li><button type="button" class="rtos-step" data-rtos-step="7">8. 安全任务抢占关断</button></li>
+          </ol>
+        </section>
+        <div class="rtos-compare">
+          <article><h3>怎样在面试里区分这些机制？</h3><p><strong>队列</strong>用于传递数据；<strong>二值信号量</strong>用于“事件来了”的通知；<strong>互斥锁</strong>用于保护共享资源并处理优先级反转；<strong>事件组</strong>是多个状态 bit 的组合。不要用事件组或信号量代替一段真实采样数据。</p></article>
+          <article><h3>CMSIS-RTOS2 是什么？</h3><p>它是 ARM 定义的统一 RTOS API 层，不是另一套调度器。STM32 工程底层可以仍是 FreeRTOS；使用 CMSIS-RTOS2 后，业务层调用更统一，未来切换内核时更容易迁移。</p><div class="rtos-api-map" aria-label="FreeRTOS 与 CMSIS-RTOS2 API 对照"><code>xTaskCreate</code><i></i><code>osThreadNew</code><code>xQueueSend</code><i></i><code>osMessageQueuePut</code><code>xSemaphoreGive</code><i></i><code>osSemaphoreRelease</code><code>xEventGroupSetBits</code><i></i><code>osEventFlagsSet</code><code>xTimerCreate</code><i></i><code>osTimerNew</code></div></article>
+        </div>
       </section>
 
       <section class="section" id="linux">
@@ -203,6 +282,72 @@
         schedule();
       });
       stepButtons.forEach((button) => button.addEventListener('click', () => render(Number(button.dataset.tcpStep))));
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) window.clearTimeout(timer);
+        else schedule();
+      });
+      if (paused) {
+        toggle.textContent = '开始循环';
+        toggle.setAttribute('aria-pressed', 'true');
+      }
+      render(0);
+    })();
+  </script>
+  <script>
+    (() => {
+      const lab = document.querySelector('#rtos-lab-demo');
+      const status = document.querySelector('#rtos-lab-status');
+      const nodes = [...document.querySelectorAll('[data-rtos-node]')];
+      const bits = [...document.querySelectorAll('[data-rtos-bit]')];
+      const slots = [...document.querySelectorAll('.rtos-queue-slots i')];
+      const stepButtons = [...document.querySelectorAll('[data-rtos-step]')];
+      const previous = document.querySelector('#rtos-prev');
+      const next = document.querySelector('#rtos-next');
+      const toggle = document.querySelector('#rtos-toggle');
+      if (!lab || !status || !nodes.length || !bits.length || !slots.length || !stepButtons.length || !previous || !next || !toggle) return;
+
+      const steps = [
+        { active: ['timer', 'sample'], bits: [], queue: 0, text: '<b>1 / 8 · 软件定时器到点：</b>Timer Service Task 运行短回调，通知 SampleTask 开始一次采样；定时器回调不应执行耗时算法或阻塞操作。' },
+        { active: ['sample'], bits: ['IMU'], queue: 0, text: '<b>2 / 8 · SampleTask 获得 CPU：</b>它的优先级为 P2，读取传感器并整理一条采样结果。没有更高优先级任务就绪时，调度器让它运行。' },
+        { active: ['sample', 'queue'], bits: ['IMU'], queue: 1, text: '<b>3 / 8 · 队列复制一条数据：</b>SampleTask 通过 xQueueSend()/osMessageQueuePut() 放入采样结构体；队列负责数据交接，不只是一个通知灯。' },
+        { active: ['queue', 'control'], bits: ['IMU'], queue: 0, text: '<b>4 / 8 · ControlTask 被唤醒并抢占：</b>它原先阻塞在队列上。新数据到达后，优先级 P4 的控制任务立即就绪，会先于 P2 和 P1 任务运行。' },
+        { active: ['control', 'events'], bits: ['IMU', 'MOTOR', 'CAN'], queue: 0, text: '<b>5 / 8 · 事件组汇总状态：</b>控制更新 PWM 后置位 MOTOR_RDY；初始化完成的 IMU_RDY、CAN_RDY 与它组成多个状态 bit，事件组不用于传递整段数据。' },
+        { active: ['events', 'telemetry'], bits: ['IMU', 'MOTOR', 'CAN'], queue: 0, text: '<b>6 / 8 · TelemetryTask 等到全部条件：</b>P1 遥测任务可等待 IMU_RDY | MOTOR_RDY | CAN_RDY 全部满足；只有高优先级实时工作完成后，它才获得 CPU。' },
+        { active: ['semaphore', 'safety'], bits: ['IMU', 'MOTOR', 'CAN', 'FAULT'], queue: 0, text: '<b>7 / 8 · 故障 ISR 只 Give：</b>过流中断调用 xSemaphoreGiveFromISR() 通知 SafetyTask。中断里不做关断流程或日志，避免拉长 ISR。' },
+        { active: ['safety', 'events'], bits: ['FAULT'], queue: 0, text: '<b>8 / 8 · P5 安全任务抢占：</b>SafetyTask 从信号量解除阻塞，以最高优先级抢占其他任务，关断 PWM 并置位 FAULT；之后由状态机决定恢复或等待人工处理。' }
+      ];
+      let current = 0;
+      let paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let timer = 0;
+
+      const schedule = () => {
+        window.clearTimeout(timer);
+        if (!paused) timer = window.setTimeout(() => render((current + 1) % steps.length), 5000);
+      };
+      const render = (index) => {
+        current = (index + steps.length) % steps.length;
+        const step = steps[current];
+        lab.dataset.active = step.active.join(' ');
+        nodes.forEach((node) => node.classList.toggle('is-active', step.active.includes(node.dataset.rtosNode)));
+        bits.forEach((bit) => bit.classList.toggle('is-on', step.bits.includes(bit.dataset.rtosBit)));
+        slots.forEach((slot, slotIndex) => slot.classList.toggle('is-filled', slotIndex < step.queue));
+        status.innerHTML = step.text;
+        stepButtons.forEach((button, buttonIndex) => {
+          if (buttonIndex === current) button.setAttribute('aria-current', 'step');
+          else button.removeAttribute('aria-current');
+        });
+        schedule();
+      };
+
+      previous.addEventListener('click', () => render(current - 1));
+      next.addEventListener('click', () => render(current + 1));
+      toggle.addEventListener('click', () => {
+        paused = !paused;
+        toggle.textContent = paused ? '开始循环' : '暂停循环';
+        toggle.setAttribute('aria-pressed', String(paused));
+        schedule();
+      });
+      stepButtons.forEach((button) => button.addEventListener('click', () => render(Number(button.dataset.rtosStep))));
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) window.clearTimeout(timer);
         else schedule();
