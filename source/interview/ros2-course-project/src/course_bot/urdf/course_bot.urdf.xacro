@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<robot name="course_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="controllers_file" default="$(find course_bot)/config/controllers.yaml"/>
+  <xacro:property name="wheel_radius" value="0.065"/>
+  <xacro:property name="wheel_width" value="0.035"/>
+  <material name="blue"><color rgba="0.12 0.45 0.8 1"/></material>
+  <material name="black"><color rgba="0.08 0.09 0.12 1"/></material>
+  <material name="orange"><color rgba="1 0.45 0.12 1"/></material>
+
+  <link name="base_footprint"/>
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/><child link="base_link"/>
+    <origin xyz="0 0 0.13"/>
+  </joint>
+  <link name="base_link">
+    <visual><geometry><box size="0.36 0.28 0.12"/></geometry><material name="blue"/></visual>
+    <collision><geometry><box size="0.36 0.28 0.12"/></geometry></collision>
+    <inertial>
+      <mass value="3.0"/>
+      <inertia ixx="${3.0*(0.28**2+0.12**2)/12}" iyy="${3.0*(0.36**2+0.12**2)/12}" izz="${3.0*(0.36**2+0.28**2)/12}" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <xacro:macro name="wheel" params="side position">
+    <link name="${side}_wheel_link">
+      <visual>
+        <origin rpy="${pi/2} 0 0"/>
+        <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <origin rpy="${pi/2} 0 0"/>
+        <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="0.2"/>
+        <inertia ixx="${0.2*(3*wheel_radius**2+wheel_width**2)/12}" iyy="${0.2*wheel_radius**2/2}" izz="${0.2*(3*wheel_radius**2+wheel_width**2)/12}" ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+    </link>
+    <joint name="${side}_wheel_joint" type="continuous">
+      <parent link="base_link"/><child link="${side}_wheel_link"/>
+      <origin xyz="0 ${position} -0.065"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="5" velocity="15"/>
+      <dynamics damping="0.01" friction="0.0"/>
+    </joint>
+    <gazebo reference="${side}_wheel_link"><mu1>1.0</mu1><mu2>1.0</mu2></gazebo>
+  </xacro:macro>
+  <xacro:wheel side="left" position="0.17"/>
+  <xacro:wheel side="right" position="-0.17"/>
+
+  <xacro:macro name="caster" params="name position">
+    <link name="${name}_caster_link">
+      <visual><geometry><sphere radius="0.025"/></geometry><material name="black"/></visual>
+      <collision><geometry><sphere radius="0.025"/></geometry></collision>
+      <inertial><mass value="0.05"/><inertia ixx="0.0000125" iyy="0.0000125" izz="0.0000125" ixy="0" ixz="0" iyz="0"/></inertial>
+    </link>
+    <joint name="${name}_caster_joint" type="fixed">
+      <parent link="base_link"/><child link="${name}_caster_link"/>
+      <origin xyz="${position} 0 -0.105"/>
+    </joint>
+    <gazebo reference="${name}_caster_link"><mu1>0.001</mu1><mu2>0.001</mu2></gazebo>
+  </xacro:macro>
+  <xacro:caster name="front" position="0.14"/>
+  <xacro:caster name="rear" position="-0.14"/>
+
+  <link name="laser_link">
+    <visual><geometry><cylinder radius="0.035" length="0.04"/></geometry><material name="orange"/></visual>
+    <collision><geometry><cylinder radius="0.035" length="0.04"/></geometry></collision>
+    <inertial><mass value="0.1"/><inertia ixx="0.00005" iyy="0.00005" izz="0.00006" ixy="0" ixz="0" iyz="0"/></inertial>
+  </link>
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_link"/><child link="laser_link"/><origin xyz="0.07 0 0.09"/>
+  </joint>
+  <link name="imu_link">
+    <inertial><mass value="0.01"/><inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/></inertial>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/><child link="imu_link"/><origin xyz="0 0 0"/>
+  </joint>
+
+  <gazebo reference="laser_link">
+    <sensor name="laser" type="gpu_lidar">
+      <always_on>true</always_on><update_rate>10</update_rate><visualize>false</visualize>
+      <topic>/scan</topic><gz_frame_id>laser_link</gz_frame_id>
+      <lidar>
+        <scan><horizontal><samples>360</samples><resolution>1</resolution><min_angle>${-pi}</min_angle><max_angle>${pi}</max_angle></horizontal></scan>
+        <range><min>0.12</min><max>10.0</max><resolution>0.01</resolution></range>
+        <noise><type>gaussian</type><mean>0</mean><stddev>0.005</stddev></noise>
+      </lidar>
+    </sensor>
+  </gazebo>
+  <gazebo reference="imu_link">
+    <sensor name="imu" type="imu">
+      <always_on>true</always_on><update_rate>50</update_rate>
+      <topic>/imu</topic><gz_frame_id>imu_link</gz_frame_id>
+    </sensor>
+  </gazebo>
+
+  <ros2_control name="GazeboSimSystem" type="system">
+    <hardware><plugin>gz_ros2_control/GazeboSimSystem</plugin></hardware>
+    <joint name="left_wheel_joint">
+      <command_interface name="velocity"><param name="min">-15</param><param name="max">15</param></command_interface>
+      <state_interface name="position"/><state_interface name="velocity"/>
+    </joint>
+    <joint name="right_wheel_joint">
+      <command_interface name="velocity"><param name="min">-15</param><param name="max">15</param></command_interface>
+      <state_interface name="position"/><state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+  <gazebo>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(arg controllers_file)</parameters>
+      <ros><remapping>/diff_drive_controller/odom:=/odom</remapping></ros>
+    </plugin>
+  </gazebo>
+</robot>

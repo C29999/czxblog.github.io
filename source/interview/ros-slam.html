@@ -3,9 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="面向在职学习的 ROS 2 与图优化 SLAM 交互学习页。">
-  <title>ROS / SLAM | 面试学习库</title>
+  <meta name="description" content="从嵌入式开发走向机器人控制与系统集成：ROS 2 Jazzy、SLAM、导航，12章课程与章内交互实验。">
+  <title>从嵌入式到机器人 · ROS 2 交互课程</title>
   <link rel="stylesheet" href="module-pages.css">
+  <link rel="stylesheet" href="ros-book.css">
+  <link rel="stylesheet" href="ros2-course-labs.css">
+  <link rel="stylesheet" href="ros2-course-page.css">
   <style>
     :root { --accent:#7653d0; --pale:#f0ebff; }
     .study-intro { margin-bottom:18px; padding:15px 17px; border-left:4px solid var(--accent); border-radius:0 14px 14px 0; color:#4e5370; background:linear-gradient(90deg,var(--pale),transparent); font-size:14px; }
@@ -94,24 +97,50 @@
     .outline-links { display:block; margin-top:9px; }
     .side-nav .outline-link { position:relative; min-height:35px; padding:8px 6px 8px 34px; border-radius:7px; }
     .outline-link b { position:absolute; top:8px; left:7px; color:#9ba9bb; font:800 10px ui-monospace,monospace; }
-    .side-nav .outline-link[aria-current="page"] { color:#5738aa; background:#eee9ff; }
-    .side-nav .outline-link[aria-current="page"] b { color:#7653d0; }
+    .side-nav .outline-link[aria-current] { color:#5738aa; background:#eee9ff; }
+    .side-nav .outline-link[aria-current] b { color:#7653d0; }
     .side-nav .outline-back { margin-top:11px; padding-top:7px; border-top:1px solid #e1eaf3; }
     .side-nav .outline-back .back-nav { margin-top:0; border-top:0; }
     @keyframes dash-shift { to { stroke-dashoffset:-32; } }
     @media (max-width:920px) { .study-map { grid-template-columns:1fr 1fr; } .slam-canvas { grid-template-columns:1fr; } .slam-panel { min-height:225px; } .slam-step-list { grid-template-columns:repeat(3,minmax(0,1fr)); } }
     @media (min-width:641px) and (max-width:980px) { .page-shell { grid-template-columns:182px minmax(0,1fr); gap:18px; } .side-nav { position:sticky; display:block; } }
     @media (max-width:620px) { .study-detail,.book-shelf,.zero-command,.metaphor-lab { grid-template-columns:1fr; } .slam-lab { padding:15px; } .slam-lab-head { display:block; } .slam-lab-key { display:inline-flex; margin-top:9px; } .slam-step-list { grid-template-columns:1fr 1fr; } }
+    .study-toolbar { display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+    .study-toolbar a,.study-toolbar button { display:inline-flex; align-items:center; min-height:44px; padding:10px 16px; border:1px solid #d7cfee; border-radius:12px; color:#5b40a3; background:white; font:inherit; font-size:14px; font-weight:700; text-decoration:none; cursor:pointer; }
+    .study-toolbar .primary { background:#7653d0; color:white; border-color:#7653d0; }
+    .study-toolbar :focus-visible { outline:3px solid #b9a2ed; outline-offset:3px; }
+    .read-progress { position:fixed; z-index:30; top:0; left:0; width:100%; height:3px; pointer-events:none; background:#ece8f7; }
+    .read-progress i { display:block; width:0; height:100%; background:linear-gradient(90deg,#4aa8e8,#7653d0,#e47a94); }
+    .motion-paused *, .motion-paused *::before, .motion-paused *::after { animation-play-state:paused !important; transition:none !important; }
+    .motion-paused { scroll-behavior:auto; }
+    .course-heading { display:block; }
+    .course-heading p { max-width:780px; margin-top:14px; }
+    .version-note { padding:18px 22px; margin:24px 0 0; border:1px solid #dcd3f1; border-radius:14px; background:#f5f1ff; color:#554a71; font-size:14px; }
+    .version-note strong { color:#563a9c; }
+    .source-intro { max-width:760px; color:var(--muted); }
+    #book-source-reader { min-width:0; }
+    #book-source-reader pre { white-space:pre-wrap; overflow-wrap:anywhere; font:16px/1.9 "Microsoft YaHei",sans-serif; max-height:75vh; overflow:auto; padding:24px; background:#fff; border:1px solid #ded8f1; border-radius:14px; }
+    #book-source-reader iframe { width:100%; height:80vh; border:1px solid #ded8f1; border-radius:14px; }
+    #book-source-reader input,#book-source-reader select { max-width:100%; padding:9px; border:1px solid #d7cfee; border-radius:8px; background:white; font:inherit; }
+    #book-source-reader button { min-height:42px; }
+    .source-actions { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:12px 0; }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; } }
   </style>
 </head>
 <body>
+  <div class="read-progress" aria-hidden="true"><i id="read-progress-bar"></i></div>
   <header class="topbar"><a class="back" href="index.html">← 返回面试学习首页</a><a class="back" href="../">返回博客主页 →</a></header>
   <div class="page-shell">
     <aside class="side-nav" aria-label="ROS 与 SLAM 左侧学习目录">
-      <div class="outline-head"><span>PDF OUTLINE</span><p>学习目录</p><small>从 ROS 2 入门，逐步走到 SLAM 图优化</small></div>
+      <div class="outline-head"><span>ROBOT SYSTEMS</span><p>学习目录</p><small>12 章 ROS 2 主线 · 章内实验 · 原书参考</small></div>
       <nav class="outline-links" aria-label="本页章节">
-        <a class="outline-link" href="#overview"><b>00</b>导读：学习顺序</a>
-        <a class="outline-link" href="#ros-zero" aria-current="page"><b>01</b>先认识 ROS 2</a>
+        <a class="outline-link" href="#overview"><b>始</b>学习导读</a>
+        <a class="outline-link" href="#book-course"><b>学</b>ROS 2 系统课程</a>
+        <a class="outline-link" href="#book-experiments"><b>练</b>章内实验索引</a>
+        <a class="outline-link" href="#course-project"><b>做</b>完整仿真项目</a>
+        <a class="outline-link" href="#book-reference"><b>参</b>原书参考讲义</a>
+        <a class="outline-link" href="#book-source"><b>书</b>原书逐页阅读</a>
+        <a class="outline-link" href="#ros-zero"><b>01</b>先认识 ROS 2</a>
         <a class="outline-link" href="#study-path"><b>02</b>学习地图与第一步</a>
         <a class="outline-link" href="#metaphor-lab"><b>03</b>ROS 2 概念速记</a>
         <a class="outline-link" href="#ros-graph"><b>04</b>通信与 QoS</a>
@@ -126,14 +155,44 @@
     </aside>
     <main class="content">
       <section class="hero" id="overview">
-        <p class="eyebrow">Module 04 / robotics software</p>
-        <h1>先认识 ROS 2，<br>再一步步走进<span>SLAM</span></h1>
-        <p class="lede">把这页当作一份由浅入深的学习讲义：先让 ROS 2 的节点和消息跑起来，再理解坐标、仿真与导航，最后才进入定位、建图和图优化。</p>
-        <ul class="tags"><li>Node · Topic · Service</li><li>DDS · QoS</li><li>TF2 · Timestamp</li><li>Frontend · Backend · Loop</li><li>Pose Graph · Gauss-Newton</li></ul>
+        <p class="eyebrow">READ · EXPERIMENT · UNDERSTAND</p>
+        <h1>从嵌入式开发，<br>走向<span>一台完整机器人</span></h1>
+        <p class="lede">你已经理解任务调度、串口协议和编码器。现在把这些经验连成一套机器人系统：从第一条 C++ 消息，到控制底盘、接入传感器、建图和自主导航。每一章先讲清楚，再用动画和实验验证。</p>
+        <ul class="tags"><li>12 章学习主线</li><li>章内交互实验</li><li>C++ 核心节点</li><li>1074 页原书参考</li><li>先仿真 · 再上实机</li></ul>
+        <div class="study-toolbar" aria-label="学习入口"><a class="primary" href="#book-course">开始逐章学习 ↓</a><a href="#book-experiments">先玩交互实验</a><a href="#book-source">打开完整原书</a><button type="button" id="motion-toggle" aria-pressed="false">暂停全部动画</button></div>
+        <p class="version-note"><strong>统一实操环境：</strong>Ubuntu 24.04 · ROS 2 Jazzy · Gazebo Harmonic。网页动画是教学简化模型；配套源码尚未在该 ROS 环境实际运行验证。原书为 2018 年 ROS 1 / Kinetic 参考资料，早期 ROS 2 内容不作为本课程安装依据。请勿混用 catkin / roscore 与现代 ROS 2 命令。</p>
       </section>
 
+
+      <section class="section" id="book-course" aria-labelledby="book-course-title">
+        <div class="heading course-heading"><p class="eyebrow">01 / BUILD A ROBOT SYSTEM</p><h2 id="book-course-title">机器人控制与系统集成 · 12 章主线</h2><p>解决什么问题 → 用熟悉的工程经验理解 → 正式定义 → 动手验证。每章展开小节即可找到对应实验。新课程独立保存进度；C/C++、PID、RTOS 只按需复习。</p></div>
+        <div id="book-reader" data-reader="course"></div>
+        <noscript>请启用 JavaScript 使用交互讲义。也可以直接<a href="ros-book-original.pdf">阅读完整原书 PDF</a>。</noscript>
+      </section>
+      <section class="section" id="book-experiments" aria-labelledby="book-experiments-title">
+        <div class="heading course-heading"><p class="eyebrow">02 / EXPERIMENT INDEX</p><h2 id="book-experiments-title">实验索引 · 回到知识点动手</h2><p>实验已经嵌入相应章节。先预测，再调参数，最后用读数解释变化；播放、暂停、单步和重置都在实验内部。</p></div>
+        <nav id="course-lab-index" class="course-lab-index" aria-label="章内实验索引"></nav>
+        <div id="book-labs" hidden></div>
+      </section>
+      <section class="section" id="course-project">
+        <div class="heading"><p class="eyebrow">PROJECT / FROM SOURCE TO EVIDENCE</p><h2>把仿真做成自己的项目</h2><p>从源码构建到建图保存，再到重新定位与目标导航。按 README 逐项操作，把真实结果记录下来。</p></div>
+        <div class="study-toolbar"><a class="primary" href="ros2-course-project.zip" download>下载完整项目源码 ZIP</a><a href="ros2-course-project/README.md">实操步骤与排错 README</a></div>
+        <p class="version-note"><strong>验证状态：</strong>本地网页交互与源码静态检查和 ROS 整机运行是不同层次。当前未实际运行 ROS / Gazebo；演示录像、rosbag 数据和故障记录需要你完成实操后生成，不提供虚构结果。按实际完成情况写成个人项目。</p>
+      </section>
+      <section class="section" id="book-reference">
+        <div class="heading"><p class="eyebrow">REFERENCE / ROS 1</p><h2>原书参考讲义 · 保留技术语境</h2><p>已整理的原书讲义独立保存进度。原书第 9、10 章请使用下方完整原文；现代 ROS 2 建图与导航按上方第 10、11 章学习。</p></div>
+        <details class="reference-fold"><summary>展开原书参考讲义与机械臂补充实验</summary><div id="book-reference-reader" data-reader="reference"></div><div id="course-arm-reference"></div></details>
+      </section>
+      <section class="section" id="book-source" aria-labelledby="book-source-title">
+        <div class="heading course-heading"><p class="eyebrow">03 / THE COMPLETE SOURCE</p><h2 id="book-source-title">原书全文 · 随时回到出处</h2><p>完整保留你提供的 1074 页 PDF，包括图片、公式和代码排版。文字阅读器便于逐页查找；提取文字中的换行、表格和公式请以 PDF 原页为准。</p></div>
+        <p class="source-intro">来源：胡春旭《ROS机器人开发实践》，机械工业出版社，2018。全文按需加载；约 50 MB 的原版 PDF 只在你打开时读取。</p>
+        <div id="book-source-reader"></div>
+        <p><a href="ros-book-original.pdf" target="_blank" rel="noopener">在新标签页打开完整原书 PDF ↗</a></p>
+      </section>
+      <div class="version-note"><strong>接下来是 ROS 2 补充速查。</strong>以下内容保留原页面的学习路线与图优化演示，单独编号为“补充”，与上方原书章节区分。</div>
+
       <section class="section" id="ros-zero">
-        <div class="heading"><h2>第 1 章 · 先认识 ROS 2：它不是算法，而是一套“机器人公司”协作规则</h2><p>先别被 SLAM、DDS、TF2 吓到。ROS 2 不是操作系统，也不会自动让机器人变聪明；它是让多个程序按统一规则交换信息、一起启动和排错的机器人软件框架。</p></div>
+        <div class="heading"><h2>补充 1 · 先认识 ROS 2：它不是算法，而是一套“机器人公司”协作规则</h2><p>先别被 SLAM、DDS、TF2 吓到。ROS 2 不是操作系统，也不会自动让机器人变聪明；它是让多个程序按统一规则交换信息、一起启动和排错的机器人软件框架。</p></div>
         <div class="cards">
           <article class="card"><span class="label">NODE = 员工</span><h3>一个节点只做一类事</h3><p>把机器人想成一家公司：激光驱动、相机驱动、定位、建图、导航都是不同员工。每个节点各司其职，通过统一接口协作，而不是把所有逻辑塞进一个大程序。</p><ul class="list"><li>例如 lidar_node 只发布扫描；slam_node 只消费数据并估计地图。</li><li>好处是可单独启动、替换、记录和排错。</li></ul></article>
           <article class="card"><span class="label">MESSAGE = 标准表单</span><h3>Topic、Service、Action 怎么选？</h3><p>Topic 像广播电台，持续播放数据；Service 像前台问答，一问一答；Action 像外卖订单，任务长、可取消、过程会汇报进度。</p><ul class="list"><li>激光和 IMU 用 Topic，不等“回复”。</li><li>读取一次配置可用 Service；导航到目标点适合 Action。</li></ul></article>
@@ -143,7 +202,7 @@
       </section>
 
       <section class="section" id="study-path">
-        <div class="heading"><h2>第 2 章 · 先看学习地图，再从第一步开始动手</h2><p>不要按页数硬啃。先从 ROS 2 的命令与节点开始，沿着“能看见 → 能改动 → 能排错 → 能解释”向 SLAM 深入；每个阶段都有可验证的小成果。</p></div>
+        <div class="heading"><h2>补充 2 · 先看学习地图，再从第一步开始动手</h2><p>不要按页数硬啃。先从 ROS 2 的命令与节点开始，沿着“能看见 → 能改动 → 能排错 → 能解释”向 SLAM 深入；每个阶段都有可验证的小成果。</p></div>
         <p class="study-intro"><strong>学习原则：</strong>ROS 2 教程解决“工程怎么搭、消息怎么流”；图优化与状态估计资料解决“位置为什么会漂、怎样把它拉回来”。点击阶段，按“要懂什么 → 工作中做什么 → 得到什么”推进。</p>
         <ol class="study-map" aria-label="从 ROS 2 入门到 SLAM 的七阶段学习路线">
           <li><button type="button" data-study-phase="0" aria-current="step"><b>STEP 01 · 1 周</b><strong>认识终端与 ROS 2</strong><small>Linux · source · ros2 run · 节点与 Topic</small></button></li>
@@ -161,7 +220,7 @@
       </section>
 
       <section class="section" id="metaphor-lab">
-        <div class="heading"><h2>第 3 章 · ROS 2 概念速记：先记住画面，再回到工程事实</h2><p>比喻是帮助理解的扶手，不是技术定义。点一个概念，先看它像什么，再看它在真实 ROS / SLAM 工程里要检查什么。</p></div>
+        <div class="heading"><h2>补充 3 · ROS 2 概念速记：先记住画面，再回到工程事实</h2><p>比喻是帮助理解的扶手，不是技术定义。点一个概念，先看它像什么，再看它在真实 ROS / SLAM 工程里要检查什么。</p></div>
         <div class="metaphor-lab">
           <div class="metaphor-tabs" role="tablist" aria-label="ROS 与 SLAM 概念比喻卡">
             <button class="metaphor-tab" type="button" role="tab" data-metaphor="0" aria-selected="true" aria-controls="metaphor-detail">source · 园区通行证</button>
@@ -176,7 +235,7 @@
       </section>
 
       <section class="section" id="ros-graph">
-        <div class="heading"><h2>第 4 章 · 让 ROS 2 的数据流动起来</h2><p>先明确数据是连续流、短请求还是带反馈的长任务，再选择 Topic、Service 或 Action；QoS 是数据链路的工程取舍，而不是固定模板。</p></div>
+        <div class="heading"><h2>补充 4 · 让 ROS 2 的数据流动起来</h2><p>先明确数据是连续流、短请求还是带反馈的长任务，再选择 Topic、Service 或 Action；QoS 是数据链路的工程取舍，而不是固定模板。</p></div>
         <div class="cards">
           <article class="card"><span class="label">TOPIC</span><h3>发布订阅</h3><p>适合持续数据流，例如激光、里程计、图像和控制状态。发布者和订阅者解耦，但需要处理频率、队列和丢帧策略。</p><div class="diagram"><div class="node">Lidar<br>Publisher</div><i class="link"></i><div class="node">SLAM<br>Subscriber</div><i class="pulse"></i></div><ul class="list"><li>可靠性与延迟需结合数据类型选择。</li><li>关注消息时间戳与 frame_id。</li></ul></article>
           <article class="card"><span class="label">SERVICE / ACTION</span><h3>请求与任务</h3><p>Service 适合快速请求响应；Action 适合导航、机械臂执行等可取消且有阶段反馈的长任务。</p><div class="diagram"><div class="node">Client<br>Goal</div><i class="link"></i><div class="node">Server<br>Feedback</div><i class="pulse"></i></div><ul class="list"><li>不要把高频传感器数据放进 Service。</li><li>Action 要说明 goal、feedback、result。</li></ul></article>
@@ -185,12 +244,12 @@
       </section>
 
       <section class="section" id="tf-time">
-        <div class="heading"><h2>第 5 章 · 给机器人数据补上空间与时间</h2><p>数据能够传到不代表能用：坐标变换并非只有“从 A 到 B”，还需要知道它在什么时刻成立。时间不同步会让正确的几何关系在错误时刻被使用。</p></div>
+        <div class="heading"><h2>补充 5 · 给机器人数据补上空间与时间</h2><p>数据能够传到不代表能用：坐标变换并非只有“从 A 到 B”，还需要知道它在什么时刻成立。时间不同步会让正确的几何关系在错误时刻被使用。</p></div>
         <div class="chain"><div><b>SENSOR FRAME</b><span>激光、相机或 IMU 的安装坐标系。</span></div><div><b>BASE_LINK</b><span>车体参考坐标，连接传感器外参。</span></div><div><b>ODOM</b><span>局部连续但会累计漂移的里程计参考。</span></div><div><b>MAP</b><span>全局地图参考，由定位/SLAM 修正。</span></div></div>
       </section>
 
       <section class="section" id="slam">
-        <div class="heading"><h2>第 6 章 · 进入 SLAM 前，先分清各自职责</h2><p>不要急着背算法名。先理解前端、后端、回环和建图分别解决什么问题；这一章看完，再进入下一章的图优化实验。</p></div>
+        <div class="heading"><h2>补充 6 · 进入 SLAM 前，先分清各自职责</h2><p>不要急着背算法名。先理解前端、后端、回环和建图分别解决什么问题；这一章看完，再进入下一章的图优化实验。</p></div>
         <div class="cards">
           <article class="card"><span class="label">FRONTEND</span><h3>匹配与里程计</h3><p>利用激光、视觉、IMU 或轮速数据估计相邻时刻位姿。输出常会有累计误差，不能当作全局绝对真值。</p><ul class="list"><li>关注特征/扫描匹配和传感器时间。</li><li>观察轨迹是否连续稳定。</li></ul></article>
           <article class="card"><span class="label">BACKEND</span><h3>图优化</h3><p>将里程计、回环等约束放入图中优化全局位姿，目标是在多种观测之间取得整体一致性。</p><ul class="list"><li>异常约束会拉扯整条轨迹。</li><li>优化频率与计算资源需要平衡。</li></ul></article>
@@ -199,7 +258,7 @@
       </section>
 
       <section class="section" id="graph-lab">
-        <div class="heading"><h2>第 7 章 · 图优化交互实验：理解回环为什么能纠偏</h2><p>先理解上一章的 SLAM 职责，再看它的最小模型：节点代表不同时刻的机器人位姿，边代表相对位姿约束。点击步骤观察漂移、回环约束与全局优化的关系。</p></div>
+        <div class="heading"><h2>补充 7 · 图优化交互实验：理解回环为什么能纠偏</h2><p>先理解上一章的 SLAM 职责，再看它的最小模型：节点代表不同时刻的机器人位姿，边代表相对位姿约束。点击步骤观察漂移、回环约束与全局优化的关系。</p></div>
         <section class="slam-lab" id="slam-lab" aria-labelledby="slam-lab-title" data-step="0">
           <div class="slam-lab-head"><div><h3 id="slam-lab-title">一条走歪的轨迹，怎样被回环拉回来？</h3><p>真实系统中的节点还会挂载激光、图像或 IMU 观测。此处用 5 个位姿节点做可交互简化，不替代完整 SLAM 工程。</p></div><span class="slam-lab-key">POSE GRAPH / BEGINNER</span></div>
           <div class="slam-canvas">
@@ -213,7 +272,7 @@
           </div>
           <ol class="slam-step-list" aria-label="图优化学习步骤"><li><button type="button" class="slam-step" data-slam-step="0" aria-current="step">1. 里程计形成链</button></li><li><button type="button" class="slam-step" data-slam-step="1">2. 前端建立约束</button></li><li><button type="button" class="slam-step" data-slam-step="2">3. 回环发现矛盾</button></li><li><button type="button" class="slam-step" data-slam-step="3">4. 残差加权求和</button></li><li><button type="button" class="slam-step" data-slam-step="4">5. 后端全局优化</button></li></ol>
         </section>
-        <div class="reading-intro" id="reading"><h3>第 8 章 · 再按阶段打开四本书</h3><p>先用 ROS 2 教程把工程跑通；理解位姿图后读 Grisetti；需要补概率、协方差与三维几何时读 Barfoot；最后再用 Handbook 选择视觉、激光或融合方向。</p></div>
+        <div class="reading-intro" id="reading"><h3>补充 8 · 再按阶段打开四本书</h3><p>先用 ROS 2 教程把工程跑通；理解位姿图后读 Grisetti；需要补概率、协方差与三维几何时读 Barfoot；最后再用 Handbook 选择视觉、激光或融合方向。</p></div>
         <div class="book-shelf">
           <article class="book-card"><span class="label">01 · ROS 2 配套教程</span><h3>先把机器人软件工程跑顺</h3><p>按工作空间、包、节点、接口、Topic、参数与 Launch 的顺序学习；再进入 TF2、RViz2、Gazebo、ros_gz_bridge 和 Nav2。它解决“系统由哪些节点构成、怎么启动和调试”。</p><ul><li>优先练：ros2 topic / interface / param / launch。</li><li>工作关联：读懂现有 launch、参数文件和 package 依赖。</li></ul></article>
           <article class="book-card"><span class="label">02 · Grisetti 2010</span><h3>把图优化的骨架讲清</h3><p>用位姿节点与约束边表达 SLAM：前端从传感器数据构图，后端通过非线性最小二乘让全部约束尽量一致。回环边出现后，累计漂移才能被全局分摊修正。</p><ul><li>先懂：节点、边、残差、信息矩阵与锚点。</li><li>再懂：Gauss-Newton 的线性化、求解与迭代更新。</li></ul></article>
@@ -222,8 +281,8 @@
         </div>
       </section>
 
-      <section class="section" id="debug"><div class="qa"><p class="eyebrow">Chapter 09 / integration debug</p><h2>第 9 章 · 集成与调试路径</h2><details><summary>RViz2 中地图不更新或机器人位置跳变怎么办？</summary><p>按传感器数据、时间戳、frame_id、TF 树连通性、里程计质量、SLAM 节点日志逐层检查。先用 rosbag2 固化可复现数据，再调参数。</p></details><details><summary>Nav2 是否等于 SLAM？</summary><p>不是。Nav2 主要处理导航行为与路径规划；SLAM 负责定位/建图。项目中可以把二者与已有定位或地图服务集成，但需说明各自职责。</p></details></div></section>
-      <section class="section" id="interview"><div class="qa"><p class="eyebrow">Chapter 10 / interview drills</p><h2>第 10 章 · 用高频追问复盘关键概念</h2><details><summary>TF2 为什么需要时间戳？</summary><p>查询的是某个时刻的坐标关系。时间不同步、发布频率不足或请求超出缓存会导致外推错误，从而让融合或定位使用错误变换。</p></details><details><summary>QoS 为什么会让 Topic 看似“收不到消息”？</summary><p>发布者和订阅者的可靠性、持久性等策略不兼容时可能无法匹配；还要检查命名空间、消息类型和实际发布频率。</p></details></div></section>
+      <section class="section" id="debug"><div class="qa"><p class="eyebrow">Chapter 09 / integration debug</p><h2>补充 9 · 集成与调试路径</h2><details><summary>RViz2 中地图不更新或机器人位置跳变怎么办？</summary><p>按传感器数据、时间戳、frame_id、TF 树连通性、里程计质量、SLAM 节点日志逐层检查。先用 rosbag2 固化可复现数据，再调参数。</p></details><details><summary>Nav2 是否等于 SLAM？</summary><p>不是。Nav2 主要处理导航行为与路径规划；SLAM 负责定位/建图。项目中可以把二者与已有定位或地图服务集成，但需说明各自职责。</p></details></div></section>
+      <section class="section" id="interview"><div class="qa"><p class="eyebrow">Chapter 10 / interview drills</p><h2>补充 10 · 用高频追问复盘关键概念</h2><details><summary>TF2 为什么需要时间戳？</summary><p>查询的是某个时刻的坐标关系。时间不同步、发布频率不足或请求超出缓存会导致外推错误，从而让融合或定位使用错误变换。</p></details><details><summary>QoS 为什么会让 Topic 看似“收不到消息”？</summary><p>发布者和订阅者的可靠性、持久性等策略不兼容时可能无法匹配；还要检查命名空间、消息类型和实际发布频率。</p></details></div></section>
     </main>
   </div>
   <footer>ROS / SLAM · 左侧目录可跳转本页学习章节。</footer>
@@ -324,12 +383,14 @@
         { points: corrected, activeNodes: ['P0', 'P1', 'P2', 'P3', 'P4'], activeEdges: allEdges, loop: true, adjusted: ['P1', 'P2', 'P3', 'P4'], kicker: 'STEP 5 / 5 · BACK-END', title: '全局优化，把误差分摊回整条轨迹', text: '后端像总审计师，反复线性化、求解和更新。它不是只把最后一个点硬拽回咖啡店，而是让多个节点一起小幅调整；通常固定 P0 作为地图原点。', equation: '初值 → 线性化 → 稀疏求解 → 更新；迭代至收敛' }
       ];
       let current = 0;
-      let paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let paused = true;
       let timer = 0;
+      let globalPaused = paused;
+      let visible = false;
 
       const schedule = () => {
         window.clearTimeout(timer);
-        if (!paused) timer = window.setTimeout(() => render((current + 1) % steps.length), 6000);
+        if (!paused && !globalPaused && !document.hidden && visible) timer = window.setTimeout(() => render((current + 1) % steps.length), 6000);
       };
       const render = (index) => {
         current = (index + steps.length) % steps.length;
@@ -364,6 +425,17 @@
       };
       previous.addEventListener('click', () => render(current - 1));
       next.addEventListener('click', () => render(current + 1));
+      const resetGraph = document.createElement('button');
+      resetGraph.type = 'button';
+      resetGraph.className = toggle.className;
+      resetGraph.textContent = '重置';
+      toggle.after(resetGraph);
+      resetGraph.addEventListener('click', () => {
+        paused = true;
+        toggle.textContent = '开始循环';
+        toggle.setAttribute('aria-pressed', 'true');
+        render(0);
+      });
       toggle.addEventListener('click', () => {
         paused = !paused;
         toggle.textContent = paused ? '开始循环' : '暂停循环';
@@ -375,6 +447,16 @@
         if (document.hidden) window.clearTimeout(timer);
         else schedule();
       });
+      document.addEventListener('ros-motion-change', (event) => {
+        globalPaused = Boolean(event.detail.paused);
+        schedule();
+      });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+          visible = entries[0].isIntersecting;
+          schedule();
+        }).observe(lab);
+      } else visible = true;
       if (paused) {
         toggle.textContent = '开始循环';
         toggle.setAttribute('aria-pressed', 'true');
@@ -382,6 +464,16 @@
       render(0);
     })();
   </script>
+  <script src="ros-book-chapters.js"></script>
+  <script src="ros-book-middle.js"></script>
+  <script src="ros-book-advanced.js"></script>
+  <script src="ros2-course-chapters.js"></script>
+  <script src="ros-book-reader.js"></script>
+  <script src="ros-book-labs.js"></script>
+  <script src="ros2-course-labs.js"></script>
+  <script src="ros-book-source.js"></script>
+  <script src="ros-book-page.js"></script>
+  <script src="ros2-course-page.js"></script>
 </body>
 </html>
 

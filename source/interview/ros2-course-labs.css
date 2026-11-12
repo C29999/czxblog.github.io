@@ -1,0 +1,51 @@
+[data-course-labs] { display: grid; gap: 1.25rem; margin-block: 1.5rem; min-width: 0; }
+.rl2-lab { --rl2-border: #d6e0ed; border: 1px solid var(--rl2-border); border-radius: 18px; background: #fff; color: #243c52; padding: clamp(1rem, 3vw, 1.65rem); min-width: 0; overflow-wrap: anywhere; scroll-margin-top: 100px; }
+.rl2-lab .rl2-kicker { color: #63748a; font-size: .74rem; font-weight: 750; letter-spacing: .08em; margin: 0 0 .4rem; }
+.rl2-lab .rl2-title { font-size: clamp(1.05rem, 2vw, 1.3rem); line-height: 1.5; margin: 0 0 .65rem; color: #223d55; }
+.rl2-lab p { line-height: 1.8; }
+.rl2-intro { margin: 0 0 1rem; font-size: .94rem; }
+.rl2-prediction { border: 1px solid #d8e5e8; border-radius: 12px; background: #f3f9f8; padding: .8rem; margin: 0 0 1rem; min-width: 0; }
+.rl2-prediction legend { padding: 0 .35rem; font-size: .9rem; font-weight: 700; }
+.rl2-button { appearance: none; display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: .5rem .8rem; border: 1px solid #bccbdc; border-radius: 9px; color: #24415e; background: #fff; font: inherit; font-size: .85rem; line-height: 1.5; cursor: pointer; white-space: normal; text-align: center; }
+.rl2-button:hover { border-color: #4168ce; background: #edf2ff; }
+.rl2-button[aria-pressed="true"] { border-color: #3456a8; color: #fff; background: #3456a8; }
+.rl2-prediction .rl2-button { margin: .2rem .4rem .2rem 0; }
+.rl2-quiz-answer { margin: .4rem 0 0; font-size: .88rem; color: #116653; }
+.rl2-quiz-answer:empty { display: none; }
+.rl2-inputs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem 1rem; }
+.rl2-input { display: flex; flex-direction: column; gap: .35rem; padding: .6rem .7rem; border: 1px solid #e2e8ef; border-radius: 10px; background: #f8fafc; min-width: 0; font-size: .88rem; }
+.rl2-caption { font-weight: 650; }
+.rl2-input input[type="range"] { width: 100%; margin: .4rem 0; accent-color: #4168ce; min-height: 24px; }
+.rl2-lab select { width: 100%; min-width: 0; min-height: 42px; padding: .45rem .55rem; border: 1px solid #b9c9da; border-radius: 7px; background: #fff; color: #243c52; font: inherit; font-size: .86rem; }
+.rl2-value { color: #355e9c; font: 700 .84rem/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; min-height: 1.2em; }
+.rl2-value:empty { display: none; }
+.rl2-stage { width: 100%; margin: 1rem 0 .7rem; overflow: hidden; border: 1px solid #dce6f0; border-radius: 12px; background: linear-gradient(180deg, #f5f8fd, #fff); }
+.rl2-stage svg { display: block; width: 100%; height: auto; font-family: system-ui, "Microsoft YaHei", sans-serif; }
+.rl2-controls { display: flex; flex-wrap: wrap; gap: .5rem; }
+.rl2-status { margin: .55rem 0; font-size: .78rem; color: #5e7184; }
+.rl2-result { margin: .7rem 0; padding: .75rem 1rem; border-left: 3px solid #0b806f; background: #f0f8f5; border-radius: 0 8px 8px 0; font-size: .9rem; }
+.rl2-boundary { margin: .8rem 0 0; color: #69788a; font-size: .8rem; }
+.rl2-extra:empty { display: none; }
+.rl2-extra { margin-top: 1rem; }
+.rl2-task-cards, .rl2-drop-targets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; }
+.rl2-task-card { padding: .65rem; border: 1px solid #b9cce6; border-radius: 10px; background: #f4f7ff; cursor: grab; font-size: .82rem; }
+.rl2-task-card label { display: block; margin-bottom: .5rem; }
+.rl2-drop-targets { margin-top: .6rem; }
+.rl2-drop-target { border: 1px dashed #769ca8; padding: .8rem .4rem; border-radius: 8px; text-align: center; font-size: .8rem; background: #f1faf8; }
+.rl2-check { display: flex; gap: .6rem; align-items: center; min-height: 42px; padding: .35rem .6rem; border-bottom: 1px solid #e6edf3; font-size: .87rem; cursor: pointer; }
+.rl2-check input { accent-color: #0b806f; width: 18px; height: 18px; flex: 0 0 auto; }
+.rl2-lab :is(button, input, select):focus-visible { outline: 3px solid #d07819; outline-offset: 3px; }
+@media (max-width: 580px) {
+  .rl2-inputs, .rl2-task-cards { grid-template-columns: 1fr; }
+  .rl2-lab { padding: .9rem; border-radius: 13px; }
+  .rl2-stage { margin-inline: -.25rem; width: calc(100% + .5rem); }
+  .rl2-drop-target { font-size: .72rem; }
+  .rl2-button { min-height: 44px; }
+}
+@media print {
+  .rl2-controls, .rl2-drop-targets { display: none; }
+  .rl2-lab { break-inside: avoid; border-color: #999; box-shadow: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rl2-lab *, .rl2-lab *::before, .rl2-lab *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
