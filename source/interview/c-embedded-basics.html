@@ -76,17 +76,21 @@
   </style>
   <link rel="stylesheet" href="embedded-comms-notes.css">
   <script src="embedded-comms-notes.js" defer></script>
+  <link rel="stylesheet" href="embedded-reader.css">
+  <script src="embedded-reader.js" defer></script>
 </head>
 <body>
   <header class="wrap topbar">
+    <button class="reader-nav-toggle" type="button" aria-controls="reader-outline" aria-expanded="true"><span aria-hidden="true">☰</span> 目录</button>
     <a class="back" href="index.html">← 返回面试学习首页</a>
     <a class="back" href="../">返回博客主页 →</a>
     <span class="crumb">MODULE 01 / 基础能力</span>
   </header>
 
   <main class="learning-layout">
-    <aside class="side-nav" aria-label="C语言基础 / 嵌入式基础目录">
-      <p>本页目录</p>
+    <aside class="side-nav" id="reader-outline" aria-labelledby="reader-outline-title">
+      <div class="reader-nav-head"><div><strong id="reader-outline-title">文档目录</strong><span>嵌入式基础 · 学习笔记</span></div><button class="reader-nav-close" type="button" aria-label="收起目录">‹</button></div>
+      <nav class="reader-nav-links" aria-label="章节导航">
       <a href="#overview">学习总览</a>
       <span class="nav-group">01 · C语言基础</span>
       <a class="nav-sub" href="#memory">指针、对象与存储期</a>
@@ -112,7 +116,9 @@
       <a href="#answer-structure">面试答题结构</a>
       <a class="back-nav" href="index.html">← 返回面试学习首页</a>
       <a class="back-nav" href="../">⌂ 返回博客主页</a>
+      </nav>
     </aside>
+    <button class="reader-nav-backdrop" type="button" aria-label="关闭目录" tabindex="-1" hidden></button>
     <div class="learning-content">
     <section class="hero" id="overview">
       <div class="wrap hero-grid">

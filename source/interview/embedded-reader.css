@@ -1,0 +1,52 @@
+:root { --reader-sidebar:232px; --reader-gutter:28px; }
+body { padding-left:var(--reader-sidebar); }
+body.reader-nav-collapsed { padding-left:0; }
+.learning-layout { display:block; width:calc(100% - var(--reader-gutter) * 2); max-width:1130px; margin:0 auto; }
+.learning-content { min-width:0; }
+.learning-content .wrap { width:100%; }
+.topbar { position:sticky; top:0; z-index:20; width:100%; min-height:64px; padding:10px var(--reader-gutter); border-bottom:1px solid #d9e5f0; background:rgba(245,249,253,.97); }
+.topbar .crumb { margin-left:auto; }
+.reader-nav-toggle,.reader-nav-close { display:inline-flex; flex:none; align-items:center; justify-content:center; min-height:38px; padding:6px 11px; border:1px solid #cbd9e8; border-radius:7px; color:#365878; background:#fff; font:inherit; font-size:13px; font-weight:700; cursor:pointer; }
+.reader-nav-toggle { gap:7px; white-space:nowrap; }
+.reader-nav-close { width:34px; padding:0; font-size:25px; }
+.reader-nav-toggle:hover,.reader-nav-close:hover { color:#245fbb; background:#edf4ff; }
+.reader-nav-toggle:focus-visible,.reader-nav-close:focus-visible,.side-nav a:focus-visible { outline:3px solid #326ddd; outline-offset:2px; }
+.learning-layout > .side-nav { position:fixed; inset:0 auto 0 0; z-index:40; display:flex; flex-direction:column; gap:0; width:var(--reader-sidebar); height:100vh; height:100dvh; max-height:none; margin:0; padding:0; overflow:hidden; border:0; border-right:1px solid #d4e0ec; border-radius:0; background:#f0f5fa; box-shadow:none; }
+.reader-nav-collapsed .side-nav { visibility:hidden; transform:translateX(-100%); }
+.reader-nav-head { display:flex; flex:none; align-items:center; justify-content:space-between; gap:10px; min-height:82px; padding:16px; border-bottom:1px solid #d7e2ed; background:#f8fbfe; }
+.reader-nav-head strong { display:block; color:#2b4866; font-size:15px; }
+.reader-nav-head span { display:block; margin-top:3px; color:#74859a; font-size:11px; }
+.reader-nav-links { flex:1; min-height:0; padding:12px 10px 24px; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:#b5c8da transparent; }
+.side-nav .reader-nav-links a { display:block; margin:2px 0; padding:9px 10px; border-radius:6px; font-size:13px; line-height:1.5; }
+.side-nav .reader-nav-links .nav-group { margin:15px 0 5px; padding:11px 10px 3px; font-size:11px; }
+.side-nav .reader-nav-links a.nav-sub { padding:8px 10px 8px 24px; font-size:12px; }
+.side-nav .reader-nav-links a.nav-sub::before { display:inline-block; }
+.side-nav .reader-nav-links a[aria-current="location"] { color:#205fbd; background:#dfeaff; box-shadow:inset 3px 0 #326ddd; font-weight:800; }
+.side-nav .reader-nav-links a.back-nav { margin-top:12px; padding-top:12px; border-top:1px solid #d7e2ed; border-radius:0; }
+.learning-content [id] { scroll-margin-top:88px; }
+.reader-nav-backdrop { display:none; }
+@media (min-width:720px) and (max-width:1180px) {
+  :root { --reader-sidebar:212px; --reader-gutter:20px; }
+  .hero-grid,.c-grid,.protocol-grid,.m3-shell,.dma-arch-shell,.m3-flow-stack { grid-template-columns:1fr; gap:24px; }
+  .heading { display:block; }
+  .heading p { margin-top:10px; }
+  .topbar .crumb { display:none; }
+  .comms-grid,.comms-stats { grid-template-columns:1fr; }
+  .practice-controls,.io-grid,.deep-columns,.implementation-grid,.analogy-row,.role-row { grid-template-columns:1fr; }
+}
+@media (max-width:719px) {
+  :root { --reader-gutter:14px; --reader-sidebar:min(280px,85vw); }
+  body { padding-left:0; }
+  .topbar { min-height:60px; gap:12px; }
+  .topbar .crumb,.topbar > .back:nth-of-type(2) { display:none; }
+  .topbar .back { margin-left:auto; font-size:12px; }
+  .learning-layout > .side-nav { visibility:hidden; transform:translateX(-100%); box-shadow:10px 0 30px rgba(27,48,75,.15); }
+  .reader-nav-open .learning-layout > .side-nav { visibility:visible; transform:none; }
+  body.reader-nav-open { overflow:hidden; }
+  .reader-nav-backdrop:not([hidden]) { position:fixed; inset:0; z-index:30; display:block; width:100%; height:100%; padding:0; border:0; background:rgba(24,43,65,.38); cursor:pointer; }
+}
+@media print {
+  body { padding-left:0; }
+  .learning-layout > .side-nav,.topbar,.reader-nav-backdrop { display:none; }
+  .learning-layout { width:100%; }
+}
