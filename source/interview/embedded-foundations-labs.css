@@ -1,0 +1,22 @@
+.foundation-lab { margin-top:20px; padding:18px; border:1px solid #c9daee; border-radius:14px; background:#f5f9ff; min-width:0; }
+.foundation-lab h4 { margin:0 0 10px; font-size:17px; }
+.foundation-lab .lab-controls { display:flex; flex-wrap:wrap; gap:10px; margin:14px 0; align-items:center; }
+.foundation-lab label { display:flex; flex-wrap:wrap; align-items:center; gap:7px; font-size:13px; }
+.foundation-lab button,.foundation-lab select,.foundation-lab input { min-height:40px; padding:7px 10px; border:1px solid #b9cce3; border-radius:8px; color:#20324b; background:white; font:inherit; }
+.foundation-lab button { cursor:pointer; }
+.foundation-lab button:disabled { opacity:.55; cursor:default; }
+.foundation-lab :focus-visible { outline:3px solid #326ddd; outline-offset:3px; }
+.foundation-lab .bit-grid { display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:5px; margin-top:12px; }
+.foundation-lab .bit-grid button { padding:8px 0; font-size:13px; }
+.foundation-lab .bit-grid button[aria-pressed="true"] { background:#326ddd; color:white; }
+.foundation-lab .bit-grid small { display:block; font-size:10px; }
+.foundation-lab output { display:block; margin:12px 0; padding:12px; border-radius:8px; color:#143e69; background:#e4efff; font:700 14px/1.7 ui-monospace,Consolas,monospace; overflow-wrap:anywhere; }
+.foundation-lab .lab-trace { padding-left:24px; font-size:13px; }
+.foundation-lab .lab-trace li { padding:6px; border-left:3px solid transparent; }
+.foundation-lab .lab-trace li[aria-current="step"] { border-color:#098d87; background:#dff5ef; color:#15594e; }
+.foundation-lab .lab-note { font-size:12px; }
+.foundation-lab details { margin-top:12px; }
+.foundation-lab summary { cursor:pointer; font-weight:700; }
+.foundation-lab pre { overflow:auto; padding:12px; border-radius:8px; color:#e3efff; background:#1e2b42; font-size:12px; }
+@media (max-width:480px) { .foundation-lab { padding:12px; } }
+@media (prefers-reduced-motion:reduce) { .foundation-lab * { transition:none!important; animation:none!important; } }
