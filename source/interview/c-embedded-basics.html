@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="面向嵌入式面试的 C 语言与通信协议基础学习页。">
+  <meta name="description" content="嵌入式基础笔记：C 语言、UART、SPI、I²C、CAN、RS485、USB 与 H.264，配接线图、速率计算和交互排错。">
   <title>C语言基础 / 嵌入式基础 | 面试训练</title>
   <link rel="stylesheet" href="embedded-foundations-labs.css">
   <script src="embedded-foundations-labs.js" defer></script>
@@ -74,6 +74,8 @@
     .screen-spi-demo { margin-top:13px; padding:13px; border:1px solid #d5dff2; border-radius:14px; background:linear-gradient(135deg,#f8fbff,#f3f8ff); } .screen-spi-demo-head { display:flex; justify-content:space-between; gap:10px; align-items:baseline; } .screen-spi-demo-head b { color:#405a76; font-size:13px; } .screen-spi-status { color:#366cc7; font:800 10px ui-monospace,SFMono-Regular,Consolas,monospace; } .screen-spi-stage { display:grid; grid-template-columns:82px minmax(150px,1fr) 82px; gap:8px; align-items:center; margin-top:11px; } .screen-spi-device { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:132px; padding:7px 4px; border:1px solid #cbdced; border-radius:10px; color:#4a657c; background:#fff; text-align:center; } .screen-spi-device>b { margin-top:7px; font-size:11px; } .screen-spi-device>span { margin-top:2px; color:#788da0; font-size:9px; } .screen-spi-core,.screen-spi-display { display:grid; place-items:center; width:48px; height:43px; border:2px solid #3f7ed6; border-radius:8px; color:#2e68bb; background:#e8f1ff; font:800 10px ui-monospace,SFMono-Regular,Consolas,monospace; font-style:normal; } .screen-spi-display { grid-template-columns:repeat(3,1fr); gap:3px; padding:5px; border-color:#0b918b; background:#ddf6f1; } .screen-spi-display span { height:100%; border-radius:2px; background:#83cec5; transition:background .2s ease,box-shadow .2s ease; } .screen-spi-demo.is-backlight .screen-spi-display span,.screen-spi-demo.is-writing .screen-spi-display span { background:#20b6a7; box-shadow:0 0 7px rgba(32,182,167,.45); } .screen-spi-wires { display:grid; gap:5px; } .screen-spi-wire { display:grid; grid-template-columns:65px minmax(0,1fr) 50px; gap:5px; align-items:center; color:#788da0; font-size:9px; } .screen-spi-wire b { color:#5d738a; font:800 9px ui-monospace,SFMono-Regular,Consolas,monospace; text-align:right; } .screen-spi-wire em { overflow:hidden; font-size:9px; font-style:normal; text-overflow:ellipsis; white-space:nowrap; } .screen-spi-trace { position:relative; height:3px; overflow:visible; border-radius:99px; background:#c6d6e5; } .screen-spi-trace::before { position:absolute; top:-2px; right:0; width:0; height:0; border-top:4px solid transparent; border-bottom:4px solid transparent; border-left:6px solid #c6d6e5; content:""; } .screen-spi-wire.is-active { color:#087d77; } .screen-spi-wire.is-active b { color:#087d77; } .screen-spi-wire.is-active .screen-spi-trace { background:repeating-linear-gradient(90deg,#0b918b 0 8px,rgba(11,145,139,.18) 8px 13px); background-size:20px 3px; animation:screen-spi-flow .55s linear infinite; } .screen-spi-wire.is-active .screen-spi-trace::before { border-left-color:#0b918b; } .screen-spi-wire.is-clock .screen-spi-trace { background:repeating-linear-gradient(90deg,#326ddd 0 6px,transparent 6px 10px); background-size:16px 3px; } .screen-spi-wire.is-command .screen-spi-trace { background:repeating-linear-gradient(90deg,#8d5ec0 0 8px,rgba(141,94,192,.18) 8px 13px); } .screen-spi-wire.is-command .screen-spi-trace::before { border-left-color:#8d5ec0; } .screen-spi-packet { position:absolute; top:50%; left:0; z-index:1; padding:2px 4px; border-radius:99px; color:#fff; background:#0b918b; box-shadow:0 2px 5px rgba(11,145,139,.3); font:800 8px/1 ui-monospace,SFMono-Regular,Consolas,monospace; opacity:0; transform:translateY(-50%); } .screen-spi-wire.is-data .screen-spi-packet { opacity:1; animation:screen-spi-packet 1.35s ease-in-out infinite; } .screen-spi-explain { min-height:60px; margin-top:11px; padding:10px; border:1px solid #dce7f0; border-radius:10px; background:rgba(255,255,255,.78); } .screen-spi-explain strong { color:#3569c8; font-size:12px; } .screen-spi-explain p { margin:4px 0 0; color:#586f87; font-size:11px; line-height:1.6; } .screen-spi-note { margin:10px 0 0; color:#667d93; font-size:10px; line-height:1.6; } .screen-spi-note code { color:#3369bf; font-size:.96em; } @keyframes screen-spi-flow { to { background-position:20px 0; } } @keyframes screen-spi-packet { 0% { left:0; opacity:0; } 14%,82% { opacity:1; } 100% { left:calc(100% - 27px); opacity:0; } }
     .iic-compare-demo { margin-top:12px; padding:13px; border:1px solid #cfe3dd; border-radius:14px; background:linear-gradient(135deg,#f8fffd,#eff8ff); } .iic-compare-head { display:flex; justify-content:space-between; gap:10px; align-items:baseline; } .iic-compare-head b { color:#315f68; font-size:13px; } .iic-compare-status { color:#087d77; font:800 10px ui-monospace,SFMono-Regular,Consolas,monospace; } .iic-compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:11px; } .iic-compare-card { padding:11px; border:1px solid #d5e7e3; border-radius:11px; background:#fff; } .iic-compare-card h4 { margin:0; color:#426176; font-size:12px; } .iic-compare-card p { min-height:34px; margin:5px 0 0; color:#647d90; font-size:10px; line-height:1.55; } .iic-mini-bus { display:grid; grid-template-columns:44px 1fr 44px; gap:5px; align-items:center; margin-top:9px; } .iic-mini-chip { padding:7px 3px; border:1px solid #b9d7d1; border-radius:7px; color:#277d76; background:#edfaf7; font:800 9px/1.35 ui-monospace,SFMono-Regular,Consolas,monospace; text-align:center; } .iic-mini-lines { display:grid; gap:6px; } .iic-mini-line { position:relative; height:3px; border-radius:99px; background:#b9d8d4; } .iic-mini-line::after { position:absolute; top:50%; left:50%; color:#5e778d; font:800 8px ui-monospace,SFMono-Regular,Consolas,monospace; transform:translate(-50%,-50%); } .iic-mini-line.scl::after { content:"SCL"; } .iic-mini-line.sda::after { content:"SDA"; } .iic-compare-card.is-active .iic-mini-line { background:repeating-linear-gradient(90deg,#0b918b 0 8px,rgba(11,145,139,.18) 8px 13px); background-size:20px 3px; animation:screen-spi-flow .55s linear infinite; } .iic-compare-card.is-active { border-color:#0b918b; box-shadow:0 4px 11px rgba(11,145,139,.11); } .iic-compare-note { margin-top:10px; color:#5b7489; font-size:11px; line-height:1.6; } .iic-compare-note strong { color:#087d77; } @media (max-width:620px) { .screen-spi-stage { grid-template-columns:64px minmax(0,1fr) 64px; gap:4px; } .screen-spi-wire { grid-template-columns:52px minmax(0,1fr); } .screen-spi-wire em { display:none; } .screen-spi-device { min-height:127px; } .iic-compare-grid { grid-template-columns:1fr; } }
   </style>
+  <link rel="stylesheet" href="embedded-comms-notes.css">
+  <script src="embedded-comms-notes.js" defer></script>
 </head>
 <body>
   <header class="wrap topbar">
@@ -97,10 +99,16 @@
       <a class="nav-sub" href="#dma">DMA 数据搬运</a>
       <a class="nav-sub" href="#dma-bus">DMA 总线与触发</a>
       <a class="nav-sub" href="#dma-m3-flows">Cortex-M3 数据流对比</a>
-      <a class="nav-sub" href="#uart">UART</a>
-      <a class="nav-sub" href="#spi">SPI</a>
-      <a class="nav-sub" href="#i2c">IIC</a>
-      <a class="nav-sub" href="#can">CAN</a>
+      <span class="nav-group">03 · 通信与视频</span>
+      <a class="nav-sub" href="#comms-concepts">先分清：接口与协议</a>
+      <a class="nav-sub" href="#uart">1. UART</a>
+      <a class="nav-sub" href="#spi">2. SPI</a>
+      <a class="nav-sub" href="#i2c">3. IIC</a>
+      <a class="nav-sub" href="#can">4. CAN</a>
+      <a class="nav-sub" href="#rs485">5. RS485</a>
+      <a class="nav-sub" href="#usb">6. USB</a>
+      <a class="nav-sub" href="#h264">7. H.264 视频</a>
+      <a class="nav-sub" href="#comms-summary">对比表与易错点</a>
       <a href="#answer-structure">面试答题结构</a>
       <a class="back-nav" href="index.html">← 返回面试学习首页</a>
       <a class="back-nav" href="../">⌂ 返回博客主页</a>
@@ -111,7 +119,7 @@
         <div>
           <p class="eyebrow">Module 01 / interview basics</p>
           <h1>C语言基础 /<br><span>嵌入式基础</span></h1>
-          <p class="lede">面试中不只要会调用库函数，更要说清变量在哪里、并发为什么出错、数据怎样从 MCU 到外设。本页按“C 语言 → 通信协议”建立基础回答框架。</p>
+          <p class="lede">从 C 语言、MCU 外设走到通信接口与视频编码：看懂数据怎样从内存走到引脚，再到外部设备。先分清电气层、协议与编码，再用接线图和小实验串起来。</p>
           <nav class="anchors" aria-label="页内导航"><a href="#c-language">C 语言底层</a><a href="#software-stack">软件分层</a><a href="#cortex-m3">Cortex-M3 架构</a><a href="#dma">DMA 数据搬运</a><a href="#dma-bus">DMA 总线与触发</a><a href="#dma-m3-flows">Cortex-M3 数据流</a><a href="#embedded-comms">嵌入式通信</a><a href="#answer-structure">答题结构</a></nav>
         </div>
         <aside class="hero-board" aria-label="学习路径">
@@ -119,7 +127,7 @@
           <div class="learning-flow">
             <div class="flow"><span class="flow-no">01</span><span><strong>C 的对象与边界</strong><span>内存 · 指针 · 位操作 · 中断并发</span></span></div>
             <div class="flow"><span class="flow-no">02</span><span><strong>MCU 外设与电气层</strong><span>寄存器 · DMA · 电平 · 时序</span></span></div>
-            <div class="flow"><span class="flow-no">03</span><span><strong>协议数据链路</strong><span>UART · CAN · I²C · SPI</span></span></div>
+            <div class="flow"><span class="flow-no">03</span><span><strong>通信链路与视频编码</strong><span>UART · SPI · I²C · CAN · RS485 · USB · H.264</span></span></div>
           </div>
         </aside>
       </div>
@@ -294,7 +302,35 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
 
     <section class="section" id="embedded-comms" aria-labelledby="comms-title">
       <div class="wrap">
-        <div class="heading"><h2 id="comms-title">第二部分：嵌入式基础通信</h2><p>每种协议都从“连接什么线、典型芯片是什么、开发时验证什么”来理解，而不是只记名称。</p></div>
+        <div class="heading"><h2 id="comms-title">第二部分：通信接口与视频编码</h2><p>七个条目不属于同一层：RS485 规定电气接口，USB 包含总线协议，H.264 规定视频编码。网页实验是教学模型，接线以器件手册为准。</p></div>
+        <article class="comms-intro comms-notes" id="comms-concepts" aria-labelledby="comms-concepts-title">
+          <span class="comms-kicker">先建立分层概念</span>
+          <h3 id="comms-concepts-title">线接上了，只完成了第一步</h3>
+          <p>把通信想成快递：<strong>电气接口是运输工具，字符格式是打包方式，通信协议是单据规则，应用数据是包裹内容。</strong>下面是教学分层，不强行对应完整 OSI 七层。</p>
+          <dl class="comms-grid">
+            <div class="comms-tile"><dt>串行通信：数据怎样排队</dt><dd>数据按时间顺序逐位或逐符号传输；“串行”不等于“只有一根线”。UART、SPI、I²C、CAN、USB 都属于串行通信范畴。</dd></div>
+            <div class="comms-tile"><dt>串口：一个有语境的简称</dt><dd>嵌入式里通常指 UART/USART 异步接口。电脑 COM 口也可能由 USB 虚拟出来；单说“串口”不能判断是 3.3 V 逻辑电平、RS232 还是 RS485。</dd></div>
+            <div class="comms-tile"><dt>电气接口：线上电压怎样表达信息</dt><dd>约定驱动、接收电压及负载等电气条件。RS485 像耐干扰的运输线路，本身不规定站号、寄存器、报文含义或 CRC 算法。</dd></div>
+            <div class="comms-tile"><dt>通信协议：双方怎样听懂</dt><dd>约定数据格式、时序与交互规则；规则可以属于不同层。UART 规定字符收发，CAN 有帧与仲裁，Modbus RTU 再规定站号、功能码与帧校验。</dd></div>
+          </dl>
+          <div class="comms-grid">
+            <section class="comms-tile"><h4>单端 vs 差分：看什么电压？</h4><p><strong>单端</strong>看一根信号线相对参考地的电压，如 MCU 的 UART TX；<strong>差分</strong>主要看两根线的电压差，如 A−B。像看两人身高差，两人一起站上台阶，差值基本不变。</p><p class="comms-small">差分并非不怕干扰，也不等于不需要地参考：两线受扰不等、共模超限、反射都会影响通信。</p></section>
+            <section class="comms-tile"><h4>全双工 vs 半双工：能否同时对话？</h4><p><strong>全双工</strong>像电话，可以同时收发；<strong>半双工</strong>像对讲机，双方轮流说。它与单端/差分是两组独立概念。</p><p class="comms-small">典型 UART 两根数据线支持全双工；两线 RS485 为半双工。UART 单线模式、RS485 四线全双工是另外的接法。</p></section>
+          </div>
+          <h4>UART 的 TX/RX 和 RS485 的 A/B，都是两根线，为什么不同？</h4>
+          <p><code>TX</code> 是本机发送、<code>RX</code> 是本机接收，典型逻辑电平 UART 接法为 <code>TX→对端 RX、RX←对端 TX、GND↔GND</code>。<code>A/B</code> 则共同表示<strong>同一个差分信号</strong>，并不是 A 发 B 收；半双工时请求与响应都经过这同一对线。</p>
+          <div class="comms-callout"><strong>控制器是“写信员”，收发器是“电气翻译员”。</strong>典型 RS485 链路用 UART 控制器产生字符，再用收发器转换电平；原生 CAN 由 CAN 控制器产生 CAN 帧，直接接 CAN 收发器，不占 UART。RS485 标准没有强制必须使用 UART。</div>
+          <details class="comms-note-fold"><summary>CAN 也叫 TX/RX，为什么不能直接拿 UART 代替？</summary><div>
+            <ul>
+              <li><strong>TX/RX 只是方向名。</strong><code>UART_TX</code> 输出 UART 字符，<code>CAN_TX</code> 输出 CAN 位流；同名不代表帧格式、时序与仲裁相同。</li>
+              <li><strong>引脚复用 AF 像切换接线员。</strong>同一物理脚可以选接不同内部外设，但要查具体型号/封装的复用表；选成 CAN 功能后由 CAN 外设管理，它不会把 UART 字节“转换成 CAN”。</li>
+              <li><strong>普通 CAN 收发器</strong>只有逻辑侧 TXD/RXD 与总线侧 CANH/CANL 等接口，负责电气转换，不代做报文 ID、CRC 和仲裁。</li>
+              <li><strong>UART 转 CAN 模块</strong>还需要串口命令解析、CAN 控制器与固件等桥接功能。MCU 经 UART 与模块对话，因此这种方案才会占 UART。</li>
+              <li><strong>外置 CAN 控制器</strong>也不等于收发器：MCU 没有原生 CAN 时，可经 SPI 等接口接外部 CAN 控制器，再接收发器；部分芯片集成两者，应看框图。</li>
+            </ul>
+          </div></details>
+          <p class="comms-small">依据：<a href="#comms-ref-rs485">TI RS485 指南 §2–3、§11</a>、<a href="#comms-ref-can">TI CAN 物理层指南 §2</a>、<a href="#comms-ref-st">ST 参考手册</a>。</p>
+        </article>
         <div class="protocol-grid">
           <article class="protocol" id="uart">
             <div class="protocol-head"><span class="badge">UART</span><span class="kind">异步 · 点对点</span></div>
@@ -326,8 +362,22 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
               <path class="wire" d="M93 73H126M93 99H126"/><path class="wire" d="M196 75H292"/><path class="wire gray" d="M196 105H292"/><text class="t-small" x="212" y="67">CANH</text><text class="t-small" x="212" y="120">CANL</text><circle class="blink" cx="255" cy="75" r="5"/><circle class="blink" cx="275" cy="105" r="5"/>
             </svg></figure>
             <div class="details"><div class="detail"><span>典型芯片</span><strong>STM32G431<br>TJA1051T/3</strong></div><div class="detail"><span>重点</span><strong>Filter · Error<br>120 Ω 终端</strong></div></div>
+            <details class="comms-note-fold comms-notes"><summary>接线图：原生 CAN 的控制器、收发器、供电与地</summary><div>
+              <figure class="comms-diagram"><div class="comms-diagram-scroll" tabindex="0" role="region" aria-label="可横向滚动的 CAN 接线图"><svg viewBox="0 0 900 275" role="img" aria-labelledby="can-wiring-title can-wiring-desc">
+                <title id="can-wiring-title">原生 CAN 非隔离接线示例</title><desc id="can-wiring-desc">MCU 内置 CAN 控制器的 TX 连接 TJA1051T/3 的 TXD，RX 接 RXD。CANH 与 CANL 接远端 CAN 节点。收发器 VCC 为 5V、VIO 为 3.3V，S 拉低正常工作；两端有终端电阻，并建立地参考。</desc>
+                <defs><marker id="can-note-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#287b8b"/></marker></defs>
+                <rect class="device" x="15" y="67" width="210" height="142" rx="12"/><text x="120" y="92" text-anchor="middle">MCU · 3.3 V</text><rect class="inner" x="30" y="103" width="180" height="87" rx="8"/><text x="120" y="124" text-anchor="middle">内置 CAN 控制器</text><text x="120" y="148" text-anchor="middle">帧 / 仲裁 / CRC</text><text class="fine" x="120" y="176" text-anchor="middle">无需 UART 外设</text>
+                <rect class="device" x="380" y="67" width="160" height="142" rx="12"/><text x="460" y="93" text-anchor="middle">TJA1051T/3</text><text x="460" y="118" text-anchor="middle">CAN 收发器</text><text class="fine" x="460" y="181" text-anchor="middle">S → GND：正常模式</text>
+                <path class="wire" d="M225 133H380" marker-end="url(#can-note-arrow)"/><text x="242" y="124">CAN_TX → TXD</text><path class="wire" d="M380 160H225" marker-end="url(#can-note-arrow)"/><text x="242" y="184">CAN_RX ← RXD</text>
+                <rect class="device" x="725" y="67" width="160" height="142" rx="12"/><text x="805" y="96" text-anchor="middle">外部 CAN 设备</text><text x="805" y="122" text-anchor="middle">收发器 + 控制器</text><text class="fine" x="805" y="184" text-anchor="middle">当地供电，各自去耦</text>
+                <path class="wire" d="M540 136H725M540 164H725"/><text x="599" y="126">CANH ↔</text><text x="599" y="190">CANL ↔</text><path class="wire" d="M568 136V142M568 158V164M700 136V142M700 158V164"/><rect class="device" x="564" y="142" width="8" height="16"/><rect class="device" x="696" y="142" width="8" height="16"/><text class="fine" x="558" y="205">两物理端各 120 Ω（典型）</text>
+                <path class="power" d="M120 42V67M426 42V67M496 42V67M805 42V67"/><text class="power-label" x="68" y="32">MCU 电源</text><text class="power-label" x="384" y="32">VCC 5 V</text><text class="power-label" x="478" y="18">VIO 3.3 V</text><text class="power-label" x="764" y="32">设备电源</text>
+                <path class="ground" d="M120 209V240H805V209M460 209V240"/><text x="270" y="262">GND 参考（同地非隔离示例；长线接地/隔离需单独设计）</text>
+              </svg></div><figcaption>CAN 在发送时也监听 RXD，以完成仲裁与错误检测；不是 RS485 那种每帧用 DE 切换。这里 S 是模式控制，不能当作 DE。图省略去耦、保护和连接器细节。</figcaption></figure>
+              <p>特殊方案：<code>MCU UART ↔ 串口解析/转换固件 + CAN 控制器 ↔ CAN 收发器 ↔ CAN 总线</code>。只有完整桥接模块才做 UART→CAN 协议转换。依据：<a href="#comms-ref-tja">NXP TJA1051 §6–7</a>。</p>
+            </div></details>
             <details class="protocol-deep"><summary>查看 CAN 的 IO 配置、收发过程与原因</summary><div class="deep-body">
-              <p class="deep-note">示例为 STM32G431 的 FDCAN1 常见映射 PA12/PA11（AF9）；具体封装、复用表和 TJA1051 的 STB/EN 接法以原理图为准。</p>
+              <p class="deep-note">示例为 STM32G431 的 FDCAN1 常见映射 PA12/PA11（AF9），仍需查具体封装复用表。这里使用 TJA1051T/3：VCC 接 5 V，VIO 接匹配 MCU 的逻辑电源，S=0 为正常模式，S=1 为静默模式；不能把其他型号的 STB/EN 名称套用过来。详见下方接线图与 NXP 手册。</p>
               <div class="io-grid"><div class="io-item"><b>PA12 · FDCAN_TX</b><code>复用输出 → 收发器 TXD</code><p>MCU 只输出逻辑 TXD，不能直接接 CANH/CANL。FDCAN 外设控制该引脚，收发器再把逻辑电平转换为差分信号。</p></div><div class="io-item"><b>PA11 · FDCAN_RX</b><code>复用输入 ← 收发器 RXD</code><p>收发器先比较 CANH/CANL，再把结果送给 MCU。RX 由外部驱动，MCU 仅采样，不应当作普通输出。</p></div><div class="io-item"><b>CANH / CANL</b><code>物理总线 · 非 MCU GPIO</code><p>总线两端才放 120 Ω 终端匹配；收发器负责显性/隐性差分电平与短路保护，控制器负责帧、仲裁和错误状态。</p></div></div>
               <div class="deep-columns"><section><h4>发送：从 Tx FIFO 到总线</h4><ol><li>配置 nominal bit timing、过滤器和收发器正常模式；确认两端终端与公共参考。</li><li>软件把 ID、DLC、数据写入 Tx FIFO/Queue，置位发送请求。</li><li>帧从 SOF 开始；多个节点同时发送时，显性位覆盖隐性位，发送隐性却读到显性的节点退出仲裁。</li><li>控制器自动生成 CRC 并检查 ACK；成功或失败会产生 Tx complete / error 状态，软件读取事件与错误计数。</li></ol></section><section><h4>接收：从总线到 Rx FIFO</h4><ol><li>收发器把差分信号还原为 RXD，FDCAN 校验位时序、CRC、格式与 ACK 条件。</li><li>硬件过滤器决定帧进入 Rx FIFO0/FIFO1 或直接丢弃，避免 CPU 被无关报文打满。</li><li>FIFO 新消息中断到来后读取 ID、DLC 和数据；处理速度要快于报文到达速度。</li><li>持续错误时查看 TEC/REC、bus-off、位时序和终端，而不是只重发应用数据。</li></ol></section></div>
               <div class="transfer-lab" data-transfer="CAN"><div class="transfer-top"><b>逐步演示：CAN 一帧报文</b><span class="transfer-index"></span></div><div class="transfer-step"><strong></strong><p aria-live="polite"></p></div><div class="transfer-dots" aria-hidden="true"></div><div class="transfer-actions"><button class="transfer-prev" type="button">← 上一步</button><button class="transfer-next" type="button">下一步 →</button></div></div>
@@ -427,6 +477,126 @@ write_pos = RX_SIZE - DMA.remaining;</pre>
           </article>
         </div>
       </div>
+    </section>
+
+    <section class="section" id="comms-more" aria-label="RS485、USB 与视频编码笔记">
+      <div class="wrap protocol-grid">
+        <article class="protocol rs485 comms-notes" id="rs485" aria-labelledby="rs485-title">
+          <div class="protocol-head"><span class="badge">05 / RS485</span><span class="kind">电气标准 · 典型两线半双工</span></div>
+          <h3 id="rs485-title">把 UART 字节送到更远的设备</h3>
+          <p><strong>解决什么：</strong>设备相距较远、环境干扰较多时，直接拉 MCU 的逻辑电平 TX/RX 往往不合适。RS485 像给数据换上更适合长途的运输工具；它约定差分驱动和接收等电气条件，<strong>不负责规定报文含义</strong>。常见链路：应用生成 Modbus RTU 帧 → UART → RS485 收发器 → 双绞线 → 对端。</p>
+          <figure class="comms-diagram"><div class="comms-diagram-scroll" tabindex="0" role="region" aria-label="可横向滚动的 RS485 接线图"><svg viewBox="0 0 960 285" role="img" aria-labelledby="rs485-wiring-title rs485-wiring-desc">
+            <title id="rs485-wiring-title">两线半双工 RS485 非隔离接线</title><desc id="rs485-wiring-desc">两个 MCU 各自内置 UART，各接一个 RS485 收发器。TX 到 DI、RO 到 RX，GPIO 控制绑在一起的 DE 和低有效 RE。两个收发器 A 接 A、B 接 B，在总线两端跨接终端电阻，并接适配电源与参考地。</desc>
+            <defs><marker id="rs485-note-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#287b8b"/></marker></defs>
+            <rect class="device" x="14" y="60" width="170" height="170" rx="12"/><text x="99" y="85" text-anchor="middle">本机 MCU</text><rect class="inner" x="28" y="95" width="142" height="65" rx="8"/><text x="99" y="120" text-anchor="middle">内置 UART</text><text class="fine" x="99" y="144" text-anchor="middle">字符收发控制器</text><text x="99" y="190" text-anchor="middle">GPIO 方向控制</text>
+            <rect class="device" x="270" y="60" width="125" height="170" rx="12"/><text x="332" y="84" text-anchor="middle">RS485 收发器</text><text x="332" y="117" text-anchor="middle">D / DI 输入</text><text x="332" y="150" text-anchor="middle">R / RO 输出</text><text x="332" y="187" text-anchor="middle">DE + /RE</text><text class="fine" x="332" y="213" text-anchor="middle">绑在同一 GPIO</text>
+            <path class="wire" d="M184 110H270" marker-end="url(#rs485-note-arrow)"/><text x="206" y="101">TX →</text><path class="wire" d="M270 145H184" marker-end="url(#rs485-note-arrow)"/><text x="206" y="166">RX ←</text><path class="wire" d="M184 185H270" marker-end="url(#rs485-note-arrow)"/>
+            <rect class="device" x="565" y="60" width="125" height="170" rx="12"/><text x="627" y="84" text-anchor="middle">RS485 收发器</text><text x="627" y="117" text-anchor="middle">D / DI 输入</text><text x="627" y="150" text-anchor="middle">R / RO 输出</text><text x="627" y="187" text-anchor="middle">DE + /RE</text><text class="fine" x="627" y="213" text-anchor="middle">对端 GPIO 控制</text>
+            <rect class="device" x="776" y="60" width="170" height="170" rx="12"/><text x="861" y="85" text-anchor="middle">外部设备 MCU</text><rect class="inner" x="790" y="95" width="142" height="65" rx="8"/><text x="861" y="120" text-anchor="middle">内置 UART</text><text class="fine" x="861" y="144" text-anchor="middle">字节 → 应用解析</text><text x="861" y="190" text-anchor="middle">GPIO 方向控制</text>
+            <path class="wire" d="M776 110H690" marker-end="url(#rs485-note-arrow)"/><text x="712" y="101">← TX</text><path class="wire" d="M690 145H776" marker-end="url(#rs485-note-arrow)"/><text x="712" y="166">→ RX</text><path class="wire" d="M776 185H690" marker-end="url(#rs485-note-arrow)"/>
+            <path class="wire" d="M395 110H565M395 155H565"/><text x="456" y="101">A ↔ A</text><text x="456" y="177">B ↔ B</text><path class="wire" d="M430 110V123M430 143V155M530 110V123M530 143V155"/><rect class="device" x="426" y="123" width="8" height="20"/><rect class="device" x="526" y="123" width="8" height="20"/><text class="fine" x="410" y="202">两端匹配，典型各 120 Ω</text><text class="fine" x="437" y="220">一对双绞线</text>
+            <path class="power" d="M99 34V60M332 34V60M627 34V60M861 34V60"/><text class="power-label" x="46" y="23">MCU 电源</text><text class="power-label" x="277" y="23">匹配的 VCC</text><text class="power-label" x="572" y="23">匹配的 VCC</text><text class="power-label" x="810" y="23">设备电源</text>
+            <path class="ground" d="M99 230V252H861V230M332 230V252M627 230V252"/><text x="243" y="276">GND 参考：同地非隔离实验接法；图中“两线”仅数 A/B 数据线</text>
+          </svg></div><figcaption>箭头表示逻辑端的固定方向；A/B 上的请求和响应轮流传输。两端选逻辑电平兼容的收发器，各自供电去耦，不要默认把不同设备的 VCC 并接。接地仅示意同地台架；远距离地电位差需评估，隔离型接口按隔离边界设计，不能随意跨接两侧地。</figcaption></figure>
+          <div class="comms-grid">
+            <section class="comms-tile"><h4>方向控制：谁拿到“对讲机”</h4><p><code>DE=1</code> 允许驱动总线；<code>/RE=0</code> 允许接收。“/”表示低有效。图中绑线：GPIO=1 发、GPIO=0 收；先等使能建立，再发字节，最后等 <code>UART TC</code> 后释放。</p><p class="comms-small">也可分开控制 DE、/RE，发送时仍监听；某些 MCU 自带自动 DE，部分模块自动切换。这些均须核对器件时序。</p></section>
+            <section class="comms-tile"><h4>布线：双绞线不等于随便接</h4><p>典型采用总线干线、短支线，端接在<strong>物理总线两端</strong>，阻值匹配线缆（常见 120 Ω）。偏置/失效保护按收发器设计，不是每节点都加一组。</p><p class="comms-small">图中同名 A↔A 以两器件定义一致为前提。不同厂家 A/B、+/− 命名可能不同，应按真值表确认，不能死记“A 永远是正”。四线全双工需要两对信号线及相应收发器。</p></section>
+          </div>
+          <div class="comms-lab" data-comms-sequence="rs485">
+            <h4>实验 1 · 轮流发送：DMA 完成就能拉低 DE 吗？</h4><p>先预测：如果最后一个停止位还在发送，就关掉驱动，会发生什么？单步追踪一次请求与应答。</p>
+            <ol class="comms-steps"><li data-comms-step>空闲</li><li data-comms-step>使能</li><li data-comms-step>请求</li><li data-comms-step>DMA TC</li><li data-comms-step>UART TC</li><li data-comms-step>应答</li><li data-comms-step>归还总线</li></ol>
+            <div class="comms-result" data-comms-status aria-live="polite"><strong data-comms-title>双方接收，等待请求</strong><p data-comms-description>本机与对端 DE=0、/RE=0。DMA 完成不等于线上最后一位发完。</p></div>
+            <div class="comms-actions"><button type="button" data-comms-action="prev">上一步</button><button type="button" data-comms-action="play" aria-pressed="false">播放步骤</button><button type="button" data-comms-action="next">下一步</button><button type="button" data-comms-action="reset">重置</button></div>
+          </div>
+          <div class="comms-lab" data-comms-signal>
+            <h4>实验 2 · 两根线一起抬高，差值会变吗？</h4><p>先调“同向干扰”，再调“两线不等的扰动”，比较接收器看到的 A−B。</p>
+            <div class="comms-controls"><label>同向干扰 / V<input name="common-noise" type="range" min="-1" max="1" step="0.1" value="0"></label><label>额外差模扰动 / V<input name="differential-noise" type="range" min="-0.8" max="0.8" step="0.1" value="0"></label></div>
+            <div class="comms-signal-bars"><div><span>A</span><meter data-comms-meter="A" min="0" max="4" value="2.5" aria-label="示意 A 电压"></meter><output data-comms-voltage="A">2.5 V</output></div><div><span>B</span><meter data-comms-meter="B" min="0" max="4" value="1.5" aria-label="示意 B 电压"></meter><output data-comms-voltage="B">1.5 V</output></div></div>
+            <p class="comms-result" data-comms-signal-result aria-live="polite">初始 A−B=1.0 V。</p><div class="comms-actions"><button type="button" data-comms-signal-reset>重置电压</button></div>
+            <p class="comms-small">教学电压示意，不代表通用逻辑阈值或 A/B 位极性；未模拟共模范围、终端、衰减和保护。真实收发器只能在其规定范围内抑制共模干扰。</p>
+          </div>
+          <h4>速率笔记：115200 波特 ≠ 每秒 115200 字节</h4>
+          <p><strong>波特率 Bd</strong>＝每秒符号数；<strong>bit/s</strong>＝每秒比特数；<strong>B/s</strong>＝每秒字节数，1 B=8 bit。典型二进制 UART 每符号传 1 bit，所以 115200 Bd 对应 115200 bit/s；其他调制不能一概等同。</p>
+          <p><code>8N1</code>＝8 数据位、无校验、1 停止位，另有 1 起始位：<strong>每传 1 数据字节用 10 位时间，115200÷10=11520 B/s=11.25 KiB/s</strong>，有效数据为 92160 bit/s。实际业务吞吐还要扣协议字段、帧间隔、转向与等待。</p>
+          <div class="comms-lab" data-comms-rate>
+            <h4>实验 3 · 加一个校验位，吞吐会怎样变？</h4>
+            <div class="comms-controls"><label>波特率 / Bd<select name="baud"><option>9600</option><option>19200</option><option selected>115200</option><option>921600</option></select></label><label>校验（固定 8 数据位）<select name="parity"><option value="N">N · 无</option><option value="E">E · 偶</option><option value="O">O · 奇</option></select></label><label>停止位<select name="stop-bits"><option value="1">1</option><option value="2">2</option></select></label></div>
+            <div class="comms-frame" data-comms-frame aria-label="一个 UART 字符的位组成"></div>
+            <div class="comms-stats"><div><span>每数据字节占线</span><output data-comms-bits>10 bit / 字节</output></div><div><span>连续数据字节速率上限</span><output data-comms-bytes>11,520 B/s</output></div><div><span>一个字符耗时</span><output data-comms-time>86.81 μs / 字节</output></div></div>
+            <p data-comms-rate-detail aria-live="polite">115200 ÷ 10 = 11520 B/s。</p><div class="comms-actions"><button type="button" data-comms-rate-reset>恢复 115200 / 8N1</button></div>
+          </div>
+          <p><strong>距离与速率：</strong>线越长，传播延迟、衰减与反射越难处理，通常需要降低速率。TI 指南的示例把短线高速区与长线低速区分开；不能把“约千米”和“数十 Mbit/s”拼成同时可达的承诺。115200 能跑多远仍取决于线缆、边沿、端接、收发器和环境，要实测波形与误码。</p>
+          <h4>接口相同还不能通信：RS485 + Modbus RTU</h4>
+          <p>两端都接 A/B，只代表可能走同一种“路”。还要核对：<strong>供电/地/极性 → 波特率与字符格式 → 站号 → 功能码与寄存器映射 → CRC 与时序</strong>。Modbus RTU 示例帧结构为 <code>站号 | 功能码 | 数据 | CRC低字节 | CRC高字节</code>；站号相同也不能保证寄存器含义相同。</p>
+          <div class="comms-lab" data-comms-fault>
+            <h4>实验 4 · 同样的 A/B，为什么设备不回答？</h4><p>先猜故障在哪一层，再切换条件。该实验展示排查思路，不生成或发送真实报文。</p>
+            <div class="comms-controls"><label>注入一种条件<select><option value="good">匹配：19200 / 8E1 / 站号 1</option><option value="baud">两端波特率不同</option><option value="parity">8N1 对 8E1</option><option value="address">请求站号写错</option><option value="register">寄存器超出设备映射</option><option value="crc">CRC 错误</option><option value="direction">主机 DE 一直为 1</option><option value="protocol">Modbus 对私有协议</option></select></label></div>
+            <div class="comms-result" aria-live="polite"><strong>示例条件匹配</strong><p data-comms-fault-result>假设电气层正常，双方协议及参数一致，示意应答正常。</p></div><div class="comms-actions"><button type="button">恢复匹配条件</button></div>
+          </div>
+          <details class="comms-note-fold"><summary>补充：Modbus RTU 的校验、间隔与排错证据</summary><div>
+            <ul><li>串行规范默认偶校验，常用 <code>8E1</code>；无校验时规范要求 2 停止位（<code>8N2</code>）。市场设备可能另有 8N1 配置，须按手册配对，不能称为规范默认。</li><li>RTU 帧以静默间隔区分。低速时帧间至少 3.5 字符时间；大于 19200 bit/s 时指南建议 t1.5=750 μs、t3.5=1.75 ms。普通 UART 的 IDLE 标志不等于已满足 RTU 帧间隔。</li><li>示波器查 A/B、DE 与地参考；逻辑分析仪解码 UART 侧字节；日志打印原始十六进制帧，再核对站号、功能码、CRC 与设备寄存器表。</li><li>例如读保持寄存器用功能码 03；手册中的“40001”标签不一定是线上直接发送的地址，必须查地址基准和字节序。站号 0 广播不应期待响应。</li></ul>
+          </div></details>
+          <p class="comms-small">依据：<a href="#comms-ref-rs485">TI RS485 指南 §3、§6、§9、§11</a>、<a href="#comms-ref-de">ST AN3070</a>、<a href="#comms-ref-modbus">Modbus 串行规范 §2.5.1、应用规范 §6–7</a>。</p>
+        </article>
+
+        <article class="protocol usb comms-notes" id="usb" aria-labelledby="usb-title">
+          <div class="protocol-head"><span class="badge">06 / USB</span><span class="kind">总线体系 · 主机调度</span></div>
+          <h3 id="usb-title">USB 不只是“另一种串口插头”</h3>
+          <p><strong>解决什么：</strong>让电脑识别、配置并访问各种外设。USB 像学校前台：设备先登记身份（枚举），主机再安排数据传输。它包含电气连接、包与事务、设备枚举等规则；本节以 <strong>USB 2.0 设备连接主机</strong>为例。</p>
+          <div class="comms-grid"><section class="comms-tile"><h4>主机、设备、端点</h4><p>主机负责调度，设备按请求应答。端点像设备内不同的“收发窗口”；<code>IN</code> 始终指设备→主机，<code>OUT</code> 指主机→设备，不按 MCU 的视角反过来。</p></section><section class="comms-tile"><h4>线、速率与连接器</h4><p>USB 2.0 用 D+/D− 差分对轮流收发，另有 VBUS 与 GND。Full-Speed 是 12 Mbit/s，High-Speed 是 480 Mbit/s，都是线上速率，业务吞吐更低。Type-C 是连接器体系，外形本身不能保证高速或 USB PD。</p></section></div>
+          <figure class="comms-diagram"><div class="comms-diagram-scroll" tabindex="0" role="region" aria-label="可横向滚动的 USB 数据路径"><svg viewBox="0 0 900 290" role="img" aria-labelledby="usb-wiring-title usb-wiring-desc">
+            <title id="usb-wiring-title">原生 USB 与 USB 转 UART 对照</title><desc id="usb-wiring-desc">原生 USB 中，主机通过 D+、D- 与设备的 USB PHY 和控制器相连。USB转UART方案中，电脑先连接桥接芯片，桥接芯片 TXD 接 MCU RX，RXD 接 MCU TX。两方案均需正确的 VBUS、电源和地设计。</desc>
+            <rect class="device" x="15" y="20" width="155" height="95" rx="10"/><text x="92" y="56" text-anchor="middle">电脑 · USB 主机</text><text class="fine" x="92" y="82" text-anchor="middle">主机控制器 + PHY</text><rect class="device" x="380" y="20" width="500" height="95" rx="10"/><text x="630" y="50" text-anchor="middle">原生 USB 设备 / MCU</text><text x="630" y="78" text-anchor="middle">USB PHY ↔ USB 控制器 ↔ 类驱动 / 应用</text><text class="fine" x="630" y="101" text-anchor="middle">PHY 可内置或外置；这条数据链不经过 UART</text><path class="wire" d="M170 49H380M170 73H380"/><text x="232" y="42">D+ ↔ D+</text><text x="232" y="97">D− ↔ D−</text>
+            <rect class="device" x="15" y="150" width="155" height="85" rx="10"/><text x="92" y="188" text-anchor="middle">电脑 · USB 主机</text><rect class="device" x="325" y="150" width="190" height="85" rx="10"/><text x="420" y="181" text-anchor="middle">USB-UART 桥接芯片</text><text class="fine" x="420" y="208" text-anchor="middle">USB 端 ↔ UART 端</text><rect class="device" x="715" y="150" width="165" height="85" rx="10"/><text x="797" y="186" text-anchor="middle">MCU UART</text><path class="wire" d="M170 179H325M170 205H325M515 179H715M515 205H715"/><text x="211" y="168">D+ / D−</text><text x="551" y="169">TXD → RX</text><text x="551" y="226">RXD ← TX</text>
+            <text class="power-label" x="30" y="139">两种方案：主机 VBUS（典型 5 V）→ 合规的设备电源/检测电路；不直接接 3.3 V GPIO</text><path class="ground" d="M92 235V253H797V235M420 235V253"/><text x="183" y="278">GND 参考相连；无 RS485 式 DE，引脚与方向由 USB 控制器 / PHY 管理</text>
+          </svg></div><figcaption>USB 2.0 台架数据路径示意。设备可总线供电或自供电，VBUS 检测、防倒灌与电流预算按规范设计；Type-C 还涉及 CC/角色检测，不能只焊 D+/D− 就认为连接完整。</figcaption></figure>
+          <div class="comms-callout"><strong>CDC 虚拟串口不一定占 MCU UART。</strong>原生 USB 固件实现 CDC ACM，可让电脑显示 COM 口；USB-UART 桥接芯片则在另一侧真正输出 UART TX/RX。两种方案电脑上都可能像“串口”，硬件路径却不同。</div>
+          <div class="comms-lab" data-comms-sequence="usb"><h4>实验 · 为什么插上后，要先枚举才传应用数据？</h4><p>预测：主机连设备类型都不知道时，能直接按键盘或串口来访问它吗？</p><ol class="comms-steps"><li data-comms-step>连接</li><li data-comms-step>复位 / 识别</li><li data-comms-step>配置</li><li data-comms-step>端点传输</li></ol><div class="comms-result" data-comms-status aria-live="polite"><strong data-comms-title>连接与检测</strong><p data-comms-description>主机先发现设备，再通过控制传输完成识别和配置。</p></div><div class="comms-actions"><button type="button" data-comms-action="prev">上一步</button><button type="button" data-comms-action="play" aria-pressed="false">播放步骤</button><button type="button" data-comms-action="next">下一步</button><button type="button" data-comms-action="reset">重置</button></div></div>
+          <details class="comms-note-fold"><summary>记笔记：四种传输、实际排错与特殊情况</summary><div><ul><li><strong>控制</strong>用于配置等操作；<strong>批量</strong>适合可靠大块数据；<strong>中断</strong>按调度周期服务，并非设备直接打断主机 CPU；<strong>等时</strong>侧重带宽和时效，USB 2.0 等时传输不靠重传恢复错误。</li><li>不枚举：先查线缆是否带数据、VBUS/GND、时钟和 USB 引脚，再看描述符/控制端点日志。枚举成功但不收数据：查配置、类驱动、端点号、方向与请求长度。</li><li>USB 2.0 一对 D+/D− 不等于所有 USB 都半双工；SuperSpeed 使用额外的收发差分对。原生 USB 不能直接接 UART TX/RX，也不使用 UART 的 8N1 帧。</li><li>“USB 串口设为 115200”通常是类请求/桥接端 UART 的设置，不是把 USB 总线的线速变成 115200 bit/s。</li></ul></div></details>
+          <p class="comms-small">依据：<a href="#comms-ref-usb">USB-IF USB 2.0 §4、§5、§7、§9 与 CDC 规范</a>。</p>
+        </article>
+
+        <article class="protocol h264 comms-notes" id="h264" aria-labelledby="h264-title">
+          <div class="protocol-head"><span class="badge">07 / H.264 视频</span><span class="kind">视频编码标准 · 不规定接线</span></div>
+          <h3 id="h264-title">少传重复内容，让视频更容易存与传</h3>
+          <p><strong>解决什么：</strong>原始视频像素量很大。H.264 / AVC 规定压缩视频的码流语法与解码过程。像连续拍黑板：不必每次完整描述所有重复内容，可以预测大部分画面，再描述差异；<strong>实际算法不只是“相减后打包”</strong>。</p>
+          <div class="comms-grid"><section class="comms-tile"><h4>编码、封装、传输是三件事</h4><p><strong>H.264</strong> 是视频编码；<strong>MP4</strong> 是可容纳视频/音频的容器；<strong>RTP</strong> 可承载实时媒体包，<strong>RTSP</strong> 用于会话控制。USB/以太网等负责承载数据，H.264 本身没有 TX/RX 引脚。</p></section><section class="comms-tile"><h4>三个常见参数</h4><p><strong>分辨率</strong>是每帧像素数；<strong>帧率 fps</strong>是每秒画面数；<strong>码率 bit/s</strong>是编码后每秒数据量。相同分辨率、帧率不保证相同码率或画质。</p></section></div>
+          <div class="comms-lab" data-comms-sequence="video"><h4>实验 1 · 从相机到屏幕，哪一步在压缩？</h4><p>先预测：把 H.264 文件改成 .mp4 后缀，是否就完成了 MP4 封装？沿数据路径找出编码、容器与传输的位置。</p><ol class="comms-steps"><li data-comms-step>原始图像</li><li data-comms-step>预测 / 残差</li><li data-comms-step>编码</li><li data-comms-step>承载 / 解码</li></ol><div class="comms-result" data-comms-status aria-live="polite"><strong data-comms-title>采集原始图像</strong><p data-comms-description>原始像素先进入编码器；改文件后缀不会执行编码或封装。</p></div><div class="comms-actions"><button type="button" data-comms-action="prev">上一步</button><button type="button" data-comms-action="play" aria-pressed="false">播放步骤</button><button type="button" data-comms-action="next">下一步</button><button type="button" data-comms-action="reset">重置</button></div></div>
+          <div class="comms-lab" data-comms-video-budget><h4>实验 2 · 同样 4 Mbit/s，帧率翻倍后每帧预算呢？</h4><p>固定 1920×1080、8-bit YUV 4:2:0（平均 12 bit/像素）。拖动方块体验位置预测，再调整帧率与<strong>假设的编码平均码率</strong>。</p><div class="comms-motion" role="img" aria-label="虚线表示参考块，实色块随位移滑块移动"><span class="comms-ghost"></span><span class="comms-block"></span></div>
+            <div class="comms-controls"><label>示意运动位移<input name="video-motion" type="range" min="0" max="60" step="1" value="40"></label><label>帧率 / fps<select name="video-fps"><option>15</option><option selected>30</option><option>60</option></select></label><label>编码平均码率 / Mbit/s<select name="video-bitrate"><option>2</option><option selected>4</option><option>8</option><option>12</option></select></label></div>
+            <div class="comms-stats"><div><span>未压缩像素数据率</span><output data-comms-raw>746.496 Mbit/s</output></div><div><span>编码视频占用（十进制 MB）</span><output data-comms-storage>30 MB / 分钟</output></div><div><span>平均每帧预算（非每帧定长）</span><output data-comms-frame-budget>16.67 kB / 帧</output></div></div><p data-comms-motion-result aria-live="polite">用位移预测，再补残差。</p><div class="comms-actions"><button type="button" data-comms-video-reset>重置视频参数</button></div><p class="comms-small">计算：原始数据率=宽×高×12×fps；编码体积=码率×时间÷8。MB/kB 按十进制，不含音频、容器和网络开销。这里没有执行真实编码，不能据此推断画质、实际压缩比或硬件性能。</p>
+          </div>
+          <details class="comms-note-fold"><summary>进阶入口：I/P/B、IDR 与延迟，别背成绝对规则</summary><div><ul><li>H.264 用帧内/帧间预测、变换、量化与熵编码等方法减少冗余；更强的量化通常减少数据，也会损失细节。</li><li>常说的 I/P/B 帧，是对图像/条带编码类型的简化叫法：I 主要帧内预测，P 可用参考列表 0，B 可用两个参考列表。不要死记“B 必然各参考一个前帧和后帧”。</li><li><strong>普通 I 图像不都等于 IDR。</strong>IDR 提供参考关系的刷新点；随机接入还需要正确的参数集等信息。GOP 是一组图像的编码组织，越长不保证延迟一定越低。</li><li>嵌入式排错先分段：采集帧率/时间戳 → 编码器配置和输出 → 缓冲积压/丢包 → 解码能力与参数集 → 显示。花屏不一定是算法算错，延迟也不只来自编码器。</li></ul></div></details>
+          <p class="comms-small">依据：<a href="#comms-ref-h264">ITU-T H.264 §3、§7–9</a>；<a href="#comms-ref-rtp">IETF H.264/RTP 与 RTSP 规范</a>。以上交互是概念演示，不是真实视频编解码器。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="comms-summary" aria-labelledby="comms-summary-title">
+      <div class="wrap"><article class="comms-intro comms-notes">
+        <span class="comms-kicker">一页复习</span><h3 id="comms-summary-title">对比时，先问“你在比较哪一层？”</h3>
+        <div class="comms-table-wrap" tabindex="0" role="region" aria-label="可横向滚动的通信与编码对比表"><table class="comms-table"><caption>典型接法对比；供电、地、保护等未在“数据线”列中全部展开</caption><thead><tr><th scope="col">对象</th><th scope="col">主要职责</th><th scope="col">典型数据线 / 方向</th><th scope="col">占用什么资源</th><th scope="col">仍需匹配什么</th></tr></thead><tbody>
+          <tr><th scope="row">UART</th><td>异步字符收发</td><td>TX/RX，单端，通常全双工</td><td>UART/USART 外设</td><td>电平、波特率、帧格式、上层报文</td></tr>
+          <tr><th scope="row">SPI</th><td>同步移位交换</td><td>SCK/MOSI/MISO/CS；典型全双工</td><td>SPI 外设或 GPIO 模拟</td><td>CPOL/CPHA、频率、片选、设备命令</td></tr>
+          <tr><th scope="row">I²C</th><td>寻址与同步传输</td><td>SCL/SDA，开漏上拉，数据双向轮流</td><td>I²C 外设或 GPIO 模拟</td><td>电压、上拉、地址、速率、寄存器</td></tr>
+          <tr><th scope="row">原生 CAN</th><td>CAN 帧、仲裁、错误处理 + 物理层</td><td>控制器 TX/RX → 收发器 → CANH/L；共享总线</td><td>CAN 控制器，不占 UART</td><td>位时序、终端、帧格式、ID 与应用含义</td></tr>
+          <tr><th scope="row">RS485</th><td>差分电气接口</td><td>典型 A/B 一对线、半双工；四线可全双工</td><td>通常 UART + 收发器 + 方向控制</td><td>极性、共模/端接、字符格式、上层协议</td></tr>
+          <tr><th scope="row">USB</th><td>电气、总线事务、枚举等</td><td>USB 2.0 D+/D− 轮流收发；其他代际另论</td><td>USB 控制器 + PHY；桥接方案另有 UART</td><td>角色、速率能力、枚举、类与端点</td></tr>
+          <tr><th scope="row">H.264</th><td>视频编码与解码规则</td><td>没有专用接线；可由多种链路承载</td><td>软件或硬件编解码器</td><td>Profile/Level、参数集、容器/传输、解码能力</td></tr>
+        </tbody></table></div>
+        <div class="comms-grid"><section class="comms-tile"><h4>最容易记反的四句话</h4><ul><li>TX/RX 是相对本端的方向；A/B 是同一信号的两条差分线。</li><li>差分不等于全双工，也不等于不用地参考。</li><li>RS485 ≠ Modbus RTU；H.264 ≠ MP4 ≠ USB。</li><li>接口名称相同，只是兼容条件的一部分。</li></ul></section><section class="comms-tile"><h4>最容易接错或算错的四件事</h4><ul><li>普通 CAN 收发器不能把 UART 变成 CAN；引脚复用也不能。</li><li>DMA TC 不是 UART TC；别提前释放 RS485 的 DE。</li><li>115200 / 8N1 上限是 11520 B/s，实际业务吞吐更低。</li><li>别把每节点都加终端、A 永远为正、任意速率都能跑千米当规则。</li></ul></section></div>
+        <details class="comms-note-fold"><summary>官方资料与核对位置（可追溯）</summary><div><p class="comms-small">本页是重新组织的学习笔记；接线图为典型示意。器件版本、封装、电平与实际板卡仍须逐项对应。</p><ol class="comms-sources">
+          <li id="comms-ref-rs485"><a href="https://www.ti.com/lit/an/slla272d/slla272d.pdf" target="_blank" rel="noopener noreferrer">TI · The RS-485 Design Guide（SLLA272D）</a>：§2–3 电气范围与双工，§6 端接，§9 距离与速率，§11 接地与隔离。</li>
+          <li id="comms-ref-can"><a href="https://www.ti.com/lit/an/slla270/slla270.pdf" target="_blank" rel="noopener noreferrer">TI · Controller Area Network Physical Layer Requirements（SLLA270）</a>：§2 协议分层，控制器与收发器职责。</li>
+          <li id="comms-ref-tja"><a href="https://www.nxp.com/docs/en/data-sheet/TJA1051.pdf" target="_blank" rel="noopener noreferrer">NXP · TJA1051 数据手册</a>：§6 引脚、§7 模式；T/3 的 VIO、S 与不同后缀不能混用。</li>
+          <li id="comms-ref-st"><a href="https://www.st.com/resource/en/reference_manual/rm0440-stm32g4-series-advanced-armbased-32bit-mcus-stmicroelectronics.pdf" target="_blank" rel="noopener noreferrer">ST · STM32G4 RM0440</a>：GPIO 复用、USART 与 FDCAN 独立外设；<a href="https://www.st.com/resource/en/datasheet/stm32g431cb.pdf" target="_blank" rel="noopener noreferrer">STM32G431 数据手册</a>：引脚与 AF 表。</li>
+          <li id="comms-ref-de"><a href="https://www.st.com/resource/en/application_note/an3070-managing-the-driver-enable-signal-for-rs485-and-iolink-communications-with-the-stm32s-usart-stmicroelectronics.pdf" target="_blank" rel="noopener noreferrer">ST · AN3070</a>：USART 与 DMA 配合控制 RS485 Driver Enable。</li>
+          <li id="comms-ref-modbus"><a href="https://www.modbus.org/modbus-specifications" target="_blank" rel="noopener noreferrer">Modbus Organization · 官方规范入口</a>：Serial Line Protocol and Implementation Guide V1.02 §2.5.1；Application Protocol V1.1b3 §6–7（功能码与异常）。</li>
+          <li id="comms-ref-usb"><a href="https://www.usb.org/document-library/usb-20-specification" target="_blank" rel="noopener noreferrer">USB-IF · USB 2.0 Specification</a>：§4–5 系统与传输，§7 电气，§9 枚举；<a href="https://www.usb.org/document-library/class-definitions-communication-devices-12" target="_blank" rel="noopener noreferrer">CDC 1.2 类规范</a>：虚拟通信接口；<a href="https://www.usb.org/usb-type-cr-cable-and-connector-specification" target="_blank" rel="noopener noreferrer">USB Type-C 连接器规范</a>：CC 与连接角色。</li>
+          <li id="comms-ref-h264"><a href="https://www.itu.int/rec/T-REC-H.264" target="_blank" rel="noopener noreferrer">ITU-T · H.264: Advanced video coding for generic audiovisual services</a>：§3 术语、§7 语法/语义、§8–9 解码过程。</li>
+          <li id="comms-ref-rtp"><a href="https://www.rfc-editor.org/rfc/rfc6184" target="_blank" rel="noopener noreferrer">IETF RFC 6184 · RTP Payload Format for H.264 Video</a>；<a href="https://www.rfc-editor.org/rfc/rfc7826" target="_blank" rel="noopener noreferrer">RFC 7826 · RTSP 2.0</a>：区分编码、媒体承载与会话控制。</li>
+        </ol></div></details>
+      </article></div>
     </section>
 
     <section class="section" id="answer-structure" aria-labelledby="answer-title">
