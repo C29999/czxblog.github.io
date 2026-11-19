@@ -1065,12 +1065,12 @@ electric_clock:
 inject:
   head:
     - <link rel="stylesheet" href="/css/site-skin.css?v=20260923-3">
-    - <link rel="stylesheet" href="/css/github-calendar.css?v=20260814-3">
+    - <link rel="stylesheet" href="/css/github-calendar.css?v=20261119-1">
   bottom:
     # aplayer音乐
     - <div class="aplayer no-destroy" data-music-state="blog-music" data-id="8152976493" data-server="netease" data-type="playlist"   data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div>
     - <script src="/js/music-state.js?v=20261005-1"></script>
-    - <script data-pjax src="/js/github-calendar.js?v=20260814-3"></script>
+    - <script data-pjax src="/js/github-calendar.js?v=20261119-1"></script>
 
 
 # CDN Settings

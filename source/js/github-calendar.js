@@ -107,7 +107,7 @@
     return grid
   }
 
-  function createCalendarBlock(title, subtitle, weeks) {
+  function createCalendarBlock(title, weeks) {
     const block = document.createElement('section')
     block.className = 'github-calendar__block'
 
@@ -118,7 +118,10 @@
     heading.textContent = title
 
     const note = document.createElement('span')
-    note.textContent = subtitle
+    const days = getDays(weeks)
+    note.textContent = days.length
+      ? `${days[0].date.replace(/-/g, '/')} – ${days[days.length - 1].date.replace(/-/g, '/')}`
+      : '暂无贡献数据'
 
     head.append(heading, note)
 
@@ -127,6 +130,7 @@
 
     const canvas = document.createElement('div')
     canvas.className = 'github-calendar__canvas'
+    canvas.style.setProperty('--github-calendar-weeks', String(Math.max(weeks.length, 1)))
     canvas.append(createMonths(weeks), createGrid(weeks))
     scroll.append(canvas)
 
@@ -291,8 +295,8 @@
     const mainArea = document.createElement('div')
     mainArea.className = 'github-calendar__main'
     mainArea.append(
-      createCalendarBlock('前半年', '最近 26 周', firstHalfWeeks),
-      createCalendarBlock('后半年', '较早 27 周', secondHalfWeeks)
+      createCalendarBlock(`较早 ${firstHalfWeeks.length} 周`, firstHalfWeeks),
+      createCalendarBlock(`最近 ${secondHalfWeeks.length} 周`, secondHalfWeeks)
     )
 
     const legend = document.createElement('div')
