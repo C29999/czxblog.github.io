@@ -5,6 +5,8 @@
   "scripts": {
     "build": "hexo generate",
     "test:music": "node --test tests/music-state.test.cjs",
+    "test:analytics": "node --test tests/blog-analytics.test.mjs tests/blog-tracker.test.cjs",
+    "preview:analytics": "node tools/blog-preview.mjs",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "server": "hexo server"
@@ -13,6 +15,7 @@
     "version": "7.3.0"
   },
   "dependencies": {
+    "@netlify/blobs": "^11.1.9",
     "add": "^2.0.6",
     "gulp": "^5.0.1",
     "gulp-htmlmin": "^5.0.1",

@@ -1,2 +1,12 @@
+[build]
+  command = "npm run build"
+  publish = "public"
+
 [functions]
   directory = "netlify/functions"
+
+[functions."blog-admin"]
+  included_files = ["netlify/private/**"]
+
+# Preview builds must not collect production visitor data. Production is
+# enabled by NETLIFY + CONTEXT in scripts/blog-analytics.js.

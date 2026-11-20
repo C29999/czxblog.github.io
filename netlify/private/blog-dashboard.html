@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Blog · 访问统计</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/blog/dashboard.css">
+  <script defer src="/blog/dashboard.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="/blog/" aria-label="Blog 统计首页"><span class="brand-icon">B</span> Blog<span class="brand-suffix">STUDIO</span></a>
+      <p class="side-label">数据中心</p>
+      <nav aria-label="后台导航">
+        <a class="active" href="#overview">访问概览</a>
+        <a href="#content">内容表现</a>
+        <a href="#visitors">访客 IP</a>
+      </nav>
+      <div class="access-card"><span class="lock">仅限授权 IP</span><p>自己的访问与点击<br>已从统计中排除</p><code id="current-ip">正在验证…</code></div>
+      <p class="side-note">按北京时间统计<br>最近 90 天记录</p>
+    </aside>
+    <main id="overview">
+      <header class="page-header">
+        <div><p class="eyebrow">BLOG ANALYTICS</p><h1>博客访问统计</h1><p class="subtitle">看看哪些页面被浏览，哪些内容被点击。</p></div>
+        <button id="refresh" type="button" class="secondary">刷新数据</button>
+      </header>
+      <div class="toolbar"><div class="range-group" role="group" aria-label="日期范围"><button type="button" data-days="1" aria-pressed="false">今天</button><button type="button" data-days="7" aria-pressed="true">近 7 天</button><button type="button" data-days="30" aria-pressed="false">近 30 天</button><button type="button" data-days="90" aria-pressed="false">近 90 天</button></div><span id="updated" class="muted">等待加载</span></div>
+      <p id="status" class="status" role="status" aria-live="polite">正在读取统计数据…</p>
+      <div id="results" aria-busy="true">
+        <section class="metrics" aria-label="核心指标">
+          <article class="metric"><span>页面浏览量</span><strong id="views">—</strong><small>PV · 页面打开次数</small></article>
+          <article class="metric"><span>独立访客 IP</span><strong id="visitor-count">—</strong><small>区间内去重 · 不等于人数</small></article>
+          <article class="metric"><span>点击次数</span><strong id="clicks">—</strong><small>链接与已标记的按钮</small></article>
+        </section>
+        <section class="panel trend"><div class="panel-heading"><div><h2>访问趋势</h2><p>每天的页面浏览与互动</p></div><div class="legend"><span>浏览量</span><span>点击量</span></div></div><div id="chart" class="chart"></div><details><summary>查看每日数据</summary><div class="table-scroll"><table><thead><tr><th>日期</th><th>浏览量</th><th>访客 IP</th><th>点击量</th></tr></thead><tbody id="daily-rows"></tbody></table></div></details></section>
+        <div class="content-grid" id="content">
+          <section class="panel"><div class="panel-heading"><div><h2>热门页面</h2><p>按浏览量排序 · 最多 100 项</p></div></div><div class="table-scroll"><table><thead><tr><th>页面路径</th><th>浏览量</th></tr></thead><tbody id="page-rows"></tbody></table></div></section>
+          <section class="panel"><div class="panel-heading"><div><h2>点击去向</h2><p>按点击量排序 · 最多 100 项</p></div></div><div class="table-scroll"><table><thead><tr><th>目标 / 所在页面</th><th>点击量</th></tr></thead><tbody id="target-rows"></tbody></table></div></section>
+        </div>
+        <section class="panel visitors" id="visitors"><div class="panel-heading"><div><h2>访客 IP</h2><p>仅展示所选日期内的访问记录</p></div><label class="search">筛选 IP<input type="search" id="ip-search" placeholder="输入 IPv4 或 IPv6" autocomplete="off"></label></div><div class="table-scroll"><table><thead><tr><th>IP 地址</th><th>浏览量</th><th>点击量</th><th>首次访问</th><th>最近访问</th></tr></thead><tbody id="visitor-rows"></tbody></table></div><div class="pagination"><span id="visitor-page" class="muted"></span><div><button id="previous" type="button" class="secondary">上一页</button><button id="next" type="button" class="secondary">下一页</button></div></div></section>
+      </div>
+      <footer>IP 标识网络出口，同一网络中的设备可能共用 IP。动态 IP、代理及广告拦截会影响统计。<br>只统计启用后的新数据；不记录查询参数、表单内容或精确位置。</footer>
+    </main>
+  </div>
+</body>
+</html>
