@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="ros-book.css">
   <link rel="stylesheet" href="ros2-course-labs.css">
   <link rel="stylesheet" href="ros2-course-page.css">
+  <link rel="stylesheet" href="ros2-visual-slam.css">
   <style>
     :root { --accent:#7653d0; --pale:#f0ebff; }
     .study-intro { margin-bottom:18px; padding:15px 17px; border-left:4px solid var(--accent); border-radius:0 14px 14px 0; color:#4e5370; background:linear-gradient(90deg,var(--pale),transparent); font-size:14px; }
@@ -135,6 +136,7 @@
       <div class="outline-head"><span>ROBOT SYSTEMS</span><p>学习目录</p><small>12 章 ROS 2 主线 · 章内实验 · 原书参考</small></div>
       <nav class="outline-links" aria-label="本页章节">
         <a class="outline-link" href="#overview"><b>始</b>学习导读</a>
+        <a class="outline-link" href="#visual-slam"><b>新</b>视觉 SLAM · 三图笔记</a>
         <a class="outline-link" href="#book-course"><b>学</b>ROS 2 系统课程</a>
         <a class="outline-link" href="#book-experiments"><b>练</b>章内实验索引</a>
         <a class="outline-link" href="#course-project"><b>做</b>完整仿真项目</a>
@@ -159,10 +161,131 @@
         <h1>从嵌入式开发，<br>走向<span>一台完整机器人</span></h1>
         <p class="lede">你已经理解任务调度、串口协议和编码器。现在把这些经验连成一套机器人系统：从第一条 C++ 消息，到控制底盘、接入传感器、建图和自主导航。每一章先讲清楚，再用动画和实验验证。</p>
         <ul class="tags"><li>12 章学习主线</li><li>章内交互实验</li><li>C++ 核心节点</li><li>1074 页原书参考</li><li>先仿真 · 再上实机</li></ul>
-        <div class="study-toolbar" aria-label="学习入口"><a class="primary" href="#book-course">开始逐章学习 ↓</a><a href="#book-experiments">先玩交互实验</a><a href="#book-source">打开完整原书</a><button type="button" id="motion-toggle" aria-pressed="false">暂停全部动画</button></div>
+        <div class="study-toolbar" aria-label="学习入口"><a class="primary" href="#visual-slam">看视觉 SLAM 三图演示 ↓</a><a href="#book-course">开始逐章学习</a><a href="#book-experiments">先玩交互实验</a><a href="#book-source">打开完整原书</a><button type="button" id="motion-toggle" aria-pressed="false">暂停全部动画</button></div>
         <p class="version-note"><strong>统一实操环境：</strong>Ubuntu 24.04 · ROS 2 Jazzy · Gazebo Harmonic。网页动画是教学简化模型；配套源码尚未在该 ROS 环境实际运行验证。原书为 2018 年 ROS 1 / Kinetic 参考资料，早期 ROS 2 内容不作为本课程安装依据。请勿混用 catkin / roscore 与现代 ROS 2 命令。</p>
       </section>
 
+
+      <section class="section vs-note" id="visual-slam" aria-labelledby="vs-title">
+        <div class="heading">
+          <p class="eyebrow">FIELD NOTES / MONOCULAR VISUAL SLAM</p>
+          <h2 id="vs-title">一段航行，三种视角</h2>
+          <p>ROS 2 视觉 SLAM 笔记：无人船采集图像，云端运行 ORB-SLAM3。先看相机怎样观察岸边，再看像素如何对应，最后理解相机轨迹与稀疏地标怎样逐步形成。</p>
+        </div>
+        <div class="vs-kicker"><span>船端采集 → 云端计算</span><span>ROS 2 接口设计</span><span>单目 · 任意尺度</span><span>更新于 2026-11-23</span></div>
+        <div class="vs-demo" id="vs-demo" aria-label="视觉 SLAM 三幅同步教学动画">
+          <div class="vs-demo-head"><strong>沿岸航行 · 同一帧的三种表达</strong><span>SIMULATION / 20 FPS TIMELINE</span></div>
+          <div class="vs-views">
+            <figure class="vs-view">
+              <div class="vs-view-head"><b>01</b><div><h3>机器人云端图像</h3><small>CAMERA → CLOUD</small></div></div>
+              <canvas id="vs-camera" width="640" height="400" role="img" aria-label="合成船载相机画面：航行时岸边建筑与码头产生透视变化">船沿岸移动，相机看到的近处码头和远处建筑具有不同的像素位移。</canvas>
+              <figcaption><strong>云端解码后的视角示意</strong>船沿岸移动，近处码头与远处建筑产生不同视差。画面没有模拟真实网络延迟。</figcaption>
+            </figure>
+            <figure class="vs-view">
+              <div class="vs-view-head"><b>02</b><div><h3>对应的图像变换</h3><small>GRAYSCALE → CORRESPONDENCE</small></div></div>
+              <canvas id="vs-features" width="640" height="400" role="img" aria-label="相同画面的灰度图与特征对应：绿色为当前地标投影，橙线连接最多一秒前的位置">灰度化后，用绿色方框标出静态地标，橙色线连接同一地标在先前画面中的位置。</canvas>
+              <figcaption><strong>灰度图 + 跨帧像素对应</strong>绿框是当前投影，橙线连向 1 秒前的位置（起始不足 1 秒时取首帧）。这是已知地标对应，非实际 ORB 检测。</figcaption>
+            </figure>
+            <figure class="vs-view">
+              <div class="vs-view-head"><b>03</b><div><h3>SLAM 建图输出</h3><small>POSE → SPARSE MAP</small></div></div>
+              <canvas id="vs-map" width="640" height="400" role="img" aria-label="稀疏地图示意：逐步出现的地标、紫色相机轨迹和当前视锥，坐标为任意尺度">相机运动形成基线后，逐步显示岸边地标和相机轨迹；这些坐标来自合成场景。</canvas>
+              <figcaption><strong id="vs-points">等待运动基线</strong>紫线是相机轨迹，黄色点与视锥表示当前位置和朝向；地图是斜俯视图，不是占据栅格。</figcaption>
+            </figure>
+          </div>
+          <div class="vs-legend" aria-label="动画图例"><span>当前地标</span><span>历史像素 / 当前相机</span><span>轨迹与视锥</span></div>
+          <div class="vs-controls">
+            <button type="button" id="vs-play" aria-pressed="true">暂停演示</button>
+            <button type="button" id="vs-step">单步 +1 帧</button>
+            <button type="button" id="vs-reset">回到起点</button>
+            <output id="vs-readout" for="vs-time">0.0 / 18.0 s · 帧 000</output>
+          </div>
+          <div class="vs-timeline"><label for="vs-time">采集时间</label><input id="vs-time" type="range" min="0" max="360" value="0" step="1" aria-label="三幅动画共用的采集时间轴"><span>18 s</span></div>
+          <p class="vs-status" id="vs-status" role="status">正在加载演示；下方笔记无需 JavaScript 也可阅读。</p>
+          <noscript><p class="vs-disclosure">请启用 JavaScript 播放三幅同步动画。图中含义与完整笔记仍可在此阅读。</p></noscript>
+        </div>
+        <p class="vs-disclosure"><strong>演示边界：</strong>三幅动画由同一个合成三维场景生成。特征对应、相机轨迹和地标位置均来自已知场景，用于解释原理；没有在浏览器运行 ORB-SLAM3，也不是实船录像或实测精度。真实单目 SLAM 需要估计这些未知量，且存在尺度不确定性。拖动时间轴可对照同一采集时刻。</p>
+        <div class="vs-pipeline" aria-label="无人船到云端的处理流程">
+          <article><small>01 / ONBOARD</small><h3>采集与记录</h3><p>单目相机 → 曝光时间戳、帧序号与标定版本 → 编码上传。同时保留本地录像，断网后可离线复盘。</p></article>
+          <article><small>02 / TRANSPORT</small><h3>传输与解码</h3><p>视频与采集元数据绑定。云端按采集顺序解码，丢弃重复、过期帧；有限缓冲避免越算越落后。</p></article>
+          <article><small>03 / ROS 2 CLOUD</small><h3>跟踪与建图</h3><p>Image + CameraInfo → ROS 2 适配节点 → TrackMonocular → 跟踪、局部建图、回环与重定位。</p></article>
+          <article><small>04 / OBSERVE</small><h3>显示与回传</h3><p>发布位姿、轨迹、稀疏点云和跟踪状态，在 RViz2 中查看。船端控制与应急逻辑独立运行。</p></article>
+        </div>
+        <details open>
+          <summary>01 · 三张图究竟怎样对应？</summary>
+          <div>
+            <p><strong>从世界点到像素：</strong>相机移动后，同一个岸边三维点会落在新的像素位置。针孔投影可写为 <code>p ∼ K · Tcw · P</code>；K 是内参，Tcw 把地图中的点变换到相机坐标。示意图采用无畸变相机，实机必须使用标定模型。</p>
+            <p><strong>“图像变换”不只是把图片平移或旋转：</strong>第 2 图同时展示灰度化与跨帧对应。真实 ORB-SLAM3 提取 ORB 特征、建立匹配并进行几何验证，利用静态场景与运动视差估计位姿和三维点。一般三维场景的各点深度不同，不能用一个二维仿射变换解释全部像素运动。</p>
+            <p><strong>地图需要运动基线：</strong>第 3 图在地标被连续观察且像素位移足够后显示它。这里用已知场景坐标演示“逐步建图”，没有进行真实三角化。纯旋转或远处几乎没有视差时，真实系统的深度估计会退化。</p>
+            <p><strong>单目的边界：</strong>纯单目视觉不能凭图像恢复绝对米制尺度。稀疏特征地图也不等于可供避障的占据地图。若需要真实距离，可另行设计 GNSS、已知尺度或视觉惯性方案；这些均不假定船上已具备。</p>
+          </div>
+        </details>
+        <details>
+          <summary>02 · ROS 2 节点、话题与时间戳怎么接？</summary>
+          <div>
+            <p><strong>以下是建议接口，不是 ORB-SLAM3 自带的话题。</strong>官方仓库提供核心库与 ROS 示例，不能当成开箱即用的 ROS 2 Jazzy 包。需要自行实现或审查一个 ROS 2 wrapper，并固定源码版本与依赖。</p>
+            <div class="vs-table-scroll"><table><thead><tr><th>生产者 → 消费者</th><th>建议话题 / 类型</th><th>必须约定的含义</th></tr></thead><tbody>
+              <tr><td>云端解码 → SLAM wrapper</td><td><code>/boat/camera/image_raw</code><br><code>sensor_msgs/msg/Image</code></td><td>保留曝光采集时刻；<code>frame_id=camera_optical_frame</code>，明确 mono8 / rgb8 / bgr8。</td></tr>
+              <tr><td>标定发布 → wrapper</td><td><code>/boat/camera/camera_info</code><br><code>sensor_msgs/msg/CameraInfo</code></td><td>与图像分辨率、裁剪、畸变模型一致；wrapper 明确将标定转为 ORB-SLAM3 配置。</td></tr>
+              <tr><td>wrapper → 可视化</td><td><code>/slam/pose</code> · <code>geometry_msgs/msg/PoseStamped</code><br><code>/slam/path</code> · <code>nav_msgs/msg/Path</code></td><td>仅在跟踪有效时输出有效位姿；保留对应图像采集时间与地图会话标识。</td></tr>
+              <tr><td>wrapper → RViz2</td><td><code>/slam/points</code><br><code>sensor_msgs/msg/PointCloud2</code></td><td>稀疏地标快照；同步访问地图，不能直接跨线程遍历变化中的内部对象。</td></tr>
+              <tr><td>wrapper → 监控 / 回传</td><td><code>/slam/status</code><br><code>diagnostic_msgs/msg/DiagnosticArray</code></td><td>跟踪状态、帧龄、丢帧数、map_id；失跟踪不伪装成零位姿。</td></tr>
+            </tbody></table></div>
+            <p>ROS Image 的 <code>header.stamp</code> 表示图像采集时刻，不能用云端收到数据的时间代替。传输层需保留 <code>session_id、frame_id、capture_timestamp、calibration_id</code>；如果编码器重排帧，使用展示时间与元数据恢复采集顺序，再串行调用 <code>TrackMonocular(image, timestamp_seconds)</code>。</p>
+            <p>同一会话内传入时间必须递增；时钟重置时新建会话并重建时间基准。船云时钟需要同步或估计偏差才能测量端到端帧龄。图像话题可从 SensorDataQoS 的小队列、best effort 起步，发布者和订阅者必须兼容；标定也必须保证 wrapper 已收到后才处理图像。</p>
+            <pre><code># 设计中的节点启动后，用这些命令检查实际接口
+ros2 topic info /boat/camera/image_raw --verbose
+ros2 topic hz /boat/camera/image_raw
+ros2 topic echo /boat/camera/camera_info --once
+ros2 topic echo /slam/status --once
+ros2 bag record /boat/camera/image_raw /boat/camera/camera_info \
+  /slam/pose /slam/path /slam/points /slam/status</code></pre>
+            <p>这些是接口检查命令，不是本页附带的可直接启动的云端 SLAM 服务；wrapper 和真实 ROS 环境仍需实现、编译与验证。</p>
+          </div>
+        </details>
+        <details>
+          <summary>03 · Tcw、光学坐标系与船体坐标系</summary>
+          <div>
+            <p>约定 <code>T_ab</code> 将 b 系坐标变换到 a 系。ORB-SLAM3 的 <code>Tcw</code> 是世界到相机的变换；发布相机在地图中的位姿时使用 <code>Twc = inverse(Tcw)</code>。还必须检查跟踪状态，不能只凭返回对象存在就认为结果有效。</p>
+            <p>ROS 光学坐标约定为 x 向右、y 向下、z 向前；船体 <code>base_link</code> 通常为 x 向前、y 向左、z 向上。不要直接把光学坐标的平移和旋转贴上 <code>base_link</code> 标签。</p>
+            <p class="vs-equation">T_map_base = T_map_camera × inverse(T_base_camera)</p>
+            <p><code>T_base_camera</code> 来自相机到船体的外参标定。上述组合要求平移的尺度一致：纯单目地图没有米制尺度时，不能直接混合以米计的相机安装偏移。教学可先在独立的 <code>slam_world</code> 下显示相机轨迹，并明确任意单位；获得尺度与方向对齐后再接入船体 TF。</p>
+            <p>纯单目地图的初始方向也不保证符合 ENU 或重力方向。回环或切换地图可能让全局位姿跳变；需要连续控制时应另有本地 <code>odom</code> 估计，再设计 <code>map → odom → base_link</code>。不能把会跳变的云端全局位姿直接当连续里程计。</p>
+          </div>
+        </details>
+        <details>
+          <summary>04 · 无人船场景与云端部署的关键取舍</summary>
+          <div>
+            <ul>
+              <li><strong>看岸边：</strong>尽量让建筑、码头、岸边固定物占据有效视野。波纹、反光、天空和移动船只不适合当稳定地标；可评估水面区域掩膜，但这需要额外实现与验证。</li>
+              <li><strong>先清晰，再提帧率：</strong>优先稳定安装和短曝光，避免运动模糊；全局快门可减少滚动畸变。可从 1280×720、20 Hz 进行试验，最终按相机、上行带宽和云端耗时调整；这是配置起点，不是性能保证。</li>
+              <li><strong>编码取舍：</strong>低延迟视频编码可降低带宽，但压缩损伤、长 GOP 和丢包可能破坏特征。关闭 B 帧、合理设置关键帧间隔作为试验起点；若分辨率或裁剪改变，内参必须对应更新。</li>
+              <li><strong>有界处理：</strong>云端待处理图像队列可从 2–3 帧起步，过期帧及时丢弃；跳帧过大又会导致失跟踪，因此还要联合调整采集率、码率和算力。断线恢复时等待可解码帧，标记新会话或执行重定位。</li>
+              <li><strong>控制留在船端：</strong>回传结果附带采集时间和有效状态。过期、失跟踪或新地图尚未对齐的位姿不能驱动当前控制；本地控制、急停与失联策略应独立于云链路。</li>
+              <li><strong>服务器单独部署：</strong>本 Netlify 页面承载学习笔记与动画。持续运行 ORB-SLAM3 需要另配云主机或容器服务；先以 CPU 跟踪 / 建图压测，按实测资源需求扩容。</li>
+            </ul>
+          </div>
+        </details>
+        <details>
+          <summary>05 · 从离线回放到实船，如何验收？</summary>
+          <div>
+            <ol>
+              <li><strong>标定与离线：</strong>保存标定参数、分辨率和图像采集时间。先用岸边录像离线回放，检查初始化、跟踪状态和相同地点的重定位；不要先把网络问题混进算法问题。</li>
+              <li><strong>ROS 2 接口：</strong>核对话题类型、QoS、图像编码、时间戳递增、坐标轴方向和位姿求逆。RViz2 中相机移动方向应与原始录像一致。</li>
+              <li><strong>真实链路：</strong>记录采集、解码、开始跟踪、结束跟踪和回传时间；统计队列长度、丢帧与帧龄的 P50 / P95。阈值由船速、任务和控制要求决定。</li>
+              <li><strong>故障注入：</strong>测试限速、乱序、断网、重连、相机重启和时间戳回跳。检查不会无限积压，也不会持续发布失效位姿；必要时清空会话并明确重建地图。</li>
+              <li><strong>量化评估：</strong>若有 GNSS / RTK 等真值，纯单目轨迹需说明 Sim(3) 对齐及尺度处理，再报告 ATE / RPE 与跟踪成功率。没有真值时只报告可观测状态，不能把“轨迹看着平滑”当作精度验证。</li>
+            </ol>
+          </div>
+        </details>
+        <ul class="vs-sources" aria-label="官方资料">
+          <li><a href="https://github.com/UZ-SLAMLab/ORB_SLAM3" target="_blank" rel="noopener">ORB-SLAM3 官方仓库 ↗</a></li>
+          <li><a href="https://github.com/UZ-SLAMLab/ORB_SLAM3/blob/master/include/System.h" target="_blank" rel="noopener">TrackMonocular 接口 ↗</a></li>
+          <li><a href="https://docs.ros.org/en/jazzy/p/sensor_msgs/msg/Image.html" target="_blank" rel="noopener">ROS 2 Image 时间戳 ↗</a></li>
+          <li><a href="https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Quality-of-Service-Settings.html" target="_blank" rel="noopener">ROS 2 QoS ↗</a></li>
+          <li><a href="https://www.ros.org/reps/rep-0103.html" target="_blank" rel="noopener">REP-103 坐标约定 ↗</a></li>
+          <li><a href="https://www.ros.org/reps/rep-0105.html" target="_blank" rel="noopener">REP-105 坐标系 ↗</a></li>
+        </ul>
+      </section>
 
       <section class="section" id="book-course" aria-labelledby="book-course-title">
         <div class="heading course-heading"><p class="eyebrow">01 / BUILD A ROBOT SYSTEM</p><h2 id="book-course-title">机器人控制与系统集成 · 12 章主线</h2><p>解决什么问题 → 用熟悉的工程经验理解 → 正式定义 → 动手验证。每章展开小节即可找到对应实验。新课程独立保存进度；C/C++、PID、RTOS 只按需复习。</p></div>
@@ -474,6 +597,7 @@
   <script src="ros-book-source.js"></script>
   <script src="ros-book-page.js"></script>
   <script src="ros2-course-page.js"></script>
+  <script src="ros2-visual-slam.js"></script>
 </body>
 </html>
 
